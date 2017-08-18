@@ -36,6 +36,7 @@
 \usepackage{xargs}
 \usepackage[pdftex,dvipsnames]{xcolor}
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\usepackage[labelfont=bf]{caption} % Make figure and table tags bold too
 \usepackage[unicode,bookmarks=false,pdfstartview={FitW},colorlinks,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
 \newcommand{\email}[1]{\href{mailto:#1}{#1}}
 \newcommand{\doi}[1]{\texttt{\href{http://dx.doi.org/#1}{doi:#1}}}
@@ -152,5 +153,5 @@
   \immediate\write\@auxout{\string
   \newlabel{lastpage}{{}{\thepage}{}{}}}%
   \addtocounter{page}{1}}
-  
-\newcommand{\code}[1]{\colorbox[gray]{0.9}{\texttt{#1}}}  
+
+\newcommand{\code}[1]{\colorbox[gray]{0.9}{\texttt{#1}}}

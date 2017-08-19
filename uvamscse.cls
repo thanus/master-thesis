@@ -22,6 +22,7 @@
 % \def\chapterautorefname{Chapter} % "Chapter X" instead of "SS X" when referring to chapters
 % \def\sectionautorefname{Section}
 
+\usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{tocloft}
 \usepackage{boxedminipage}
@@ -155,3 +156,8 @@
   \addtocounter{page}{1}}
 
 \newcommand{\code}[1]{\colorbox[gray]{0.9}{\texttt{#1}}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage}

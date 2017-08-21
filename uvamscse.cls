@@ -35,7 +35,7 @@
 \usepackage{epigraph}
 \usepackage{url}
 \usepackage{xargs}
-\usepackage[pdftex,dvipsnames]{xcolor}
+\usepackage[pdftex,dvipsnames,table,xcdraw]{xcolor}
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 \usepackage[labelfont=bf]{caption} % Make figure and table tags bold too
 \usepackage[unicode,bookmarks=false,pdfstartview={FitW},colorlinks,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
@@ -161,3 +161,5 @@
 \fancyhf{}
 \fancyhead[L]{\leftmark}
 \fancyhead[R]{\thepage}
+
+\renewcommand{\arraystretch}{1.3} % Vertical spacing in tables

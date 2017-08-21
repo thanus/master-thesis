@@ -325,7 +325,120 @@ experiments within ING Bank.
 
 \section{Results}
 Discuss the results of the test approach.
-\info{add image}
+
+\subsection{Codegen-Akka}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|lcc|}
+\hline
+\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \hline
+\rowcolor[HTML]{EFEFEF}
+openAccount                 & \checkmark{}           & \checkmark{}        \\
+withdraw                    & \checkmark{}           & \checkmark{}        \\
+\rowcolor[HTML]{EFEFEF}
+deposit                     & \checkmark{}           & \checkmark{}        \\
+interest                    & \checkmark{}           & \checkmark{}        \\
+\rowcolor[HTML]{EFEFEF}
+block                       & \checkmark{}           & \checkmark{}        \\
+unblock                     & \checkmark{}           & \checkmark{}        \\
+\rowcolor[HTML]{EFEFEF}
+close                       & \checkmark{}           & \times{}            \\ \hline
+\end{tabular}
+\caption{Results: testing account specification transitions}
+\label{fig:ch5-res-codegenakka-account}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|lcc|}
+\hline
+\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \hline
+\rowcolor[HTML]{EFEFEF}
+start                       & \checkmark{}           & \checkmark{}        \\
+book                        & \checkmark{}           & \checkmark{}        \\
+\rowcolor[HTML]{EFEFEF}
+fail                        & \checkmark{}           & \checkmark{}        \\ \hline
+\end{tabular}
+\caption{Results: testing transaction specification transitions}
+\label{fig:ch5-res-codegenakka-transaction}
+\end{table}
+
+\subsection{Codegen-Datomic}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|lcc|}
+\hline
+\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \hline
+\rowcolor[HTML]{EFEFEF}
+openAccount                 & \checkmark{}           & \checkmark{}        \\
+withdraw                    & \checkmark{}           & \checkmark{}        \\
+\rowcolor[HTML]{EFEFEF}
+deposit                     & \checkmark{}           & \checkmark{}        \\
+interest                    & \checkmark{}           & \times{}            \\
+\rowcolor[HTML]{EFEFEF}
+block                       & \checkmark{}           & \checkmark{}        \\
+unblock                     & \checkmark{}           & \checkmark{}        \\
+\rowcolor[HTML]{EFEFEF}
+close                       & \checkmark{}           & \times{}            \\ \hline
+\end{tabular}
+\caption{Results: testing account specification transitions}
+\label{fig:ch5-res-codegendatomic-account}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|lcc|}
+\hline
+\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \hline
+\rowcolor[HTML]{EFEFEF}
+start                       & \checkmark{}           & \checkmark{}        \\
+book                        & \checkmark{}           & \checkmark{}        \\
+\rowcolor[HTML]{EFEFEF}
+fail                        & \checkmark{}           & \checkmark{}        \\ \hline
+\end{tabular}
+\caption{Results: testing transaction specification transitions}
+\label{fig:ch5-res-codegendatomic-transaction}
+\end{table}
+
+\subsection{Codegen-Scala-ES}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|lcc|}
+\hline
+\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \hline
+\rowcolor[HTML]{EFEFEF}
+openAccount                 & \checkmark{}           & \checkmark{}        \\
+withdraw                    & \checkmark{}           & \checkmark{}        \\
+\rowcolor[HTML]{EFEFEF}
+deposit                     & \checkmark{}           & \checkmark{}        \\
+interest                    & \checkmark{}           & \times{}            \\
+\rowcolor[HTML]{EFEFEF}
+block                       & \checkmark{}           & \checkmark{}        \\
+unblock                     & \checkmark{}           & \checkmark{}        \\
+\rowcolor[HTML]{EFEFEF}
+close                       & \checkmark{}           & \times{}            \\ \hline
+\end{tabular}
+\caption{Results: testing account specification transitions}
+\label{fig:ch5-res-codegenscalaes-account}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|lcc|}
+\hline
+\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \hline
+\rowcolor[HTML]{EFEFEF}
+start                       & \checkmark{}           & \checkmark{}        \\
+book                        & \checkmark{}           & \checkmark{}        \\
+\rowcolor[HTML]{EFEFEF}
+fail                        & \checkmark{}           & \checkmark{}        \\ \hline
+\end{tabular}
+\caption{Results: testing transaction specification transitions}
+\label{fig:ch5-res-codegenscalaes-transaction}
+\end{table}
 
 \section{Analyse}
 Analyse of the results

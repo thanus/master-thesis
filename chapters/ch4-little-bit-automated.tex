@@ -383,4 +383,28 @@ $\forall e s_{1} \to s_{2}, s_{2} \gets s_{1}, pre(e)$.
 Conclusion
 
 \section{Threats to validity}
-Threats to validity
+
+\subsection*{Limited specifications}
+In the conducted experiments are the specifications account and transaction used
+to test the generated system from these specifications. With these experiments
+and specifications, we did find faults in the code generators. Although are
+these specifications quite simple, \textit{e.g.}, for a bank these
+specifications would be more complex. These experiments take into account the
+generosity of specifications, but with such a large amount of complex
+specifications, it is questionable whether these experiments still produce
+valuable results.
+
+\subsection*{Rebel interpretation in SMT Solver}
+The SMT solver can be seen as an interpreter for Rebel specifications. The
+conducted experiments use the SMT solver to test the generated systems from the
+specifications. We already discussed before the limitation of interpretation of
+Rebel specifications, and in some cases, workarounds have been used. There may
+be more unknown limitations of the interpretation of Rebel specifications, which
+can cause the conducted experiments give incorrect results.
+
+\subsection*{Valid execution trace}
+The experiment from \autoref{sec:ch5} tests only valid execution traces from
+the SMT solver, \textit{i.e.}, testing only what should be possible according to
+the specification. Testing valid execution traces is not enough, testing not
+valid execution traces can be valuable. Thus the experiment from
+\autoref{sec:ch4} already does this, but as discussed it has a few limitations.

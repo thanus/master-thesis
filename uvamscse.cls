@@ -164,7 +164,6 @@
 \fancyhead[L]{\leftmark}
 \fancyhead[R]{\thepage}
 
-\renewcommand{\arraystretch}{1.3} % Vertical spacing in tables
 
 % pifont
 \newcommand{\cmark}{\ding{51}}

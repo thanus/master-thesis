@@ -9,8 +9,8 @@ systems becomes difficult and a single modification can result in unexpected
 behaviour of a larger part of the system.
 
 Within the domain knowledge, reasoning about the expected behaviour of a system,
-changes and errors are hard. Rebel aims to solve these challenges by centralizing the domain knowledge and relating
-it to the running systems. Rebel is a formal specification language which is
+changes and errors are hard. \textit{Rebel} aims to solve these challenges by centralizing the domain knowledge and relating
+it to the running systems. \textit{Rebel} is a formal specification language which is
 used for controlling the intrinsic complexity of software for financial
 enterprise systems.~\cite[p.~1]{stoel_storm_vinju_bosman_2016}
 
@@ -18,28 +18,28 @@ Software testing is an important part in software projects.~\cite[p.~4]{myers201
 process within large systems can be challenging, it entails not only defining
 and executing a lot of test cases, solving thousands of errors, handling
 thousands of modules, but also enormous project management. To facilitate this
-process Rebel offers automated simulation and checking of specifications with
+process \textit{Rebel} offers automated simulation and checking of specifications with
 the use of a Satisfiability Modulo Theories (SMT) solver. This solves to some
-extent the testing and reasoning of Rebel specifications, but this is only
-within in the Rebel domain.
+extent the testing and reasoning of \textit{Rebel} specifications, but this is only
+within in the \textit{Rebel} domain.
 
 With the use of code generators, code can be
-generated from Rebel specifications. The problem with code generation is that the resulting
-product is leaving the Rebel domain, causing loss of testing and reasoning with
+generated from \textit{Rebel} specifications. The problem with code generation is that the resulting
+product is leaving the \textit{Rebel} domain, causing loss of testing and reasoning with
 the use of formal methods. The challenge is to regain the benefits from the
-Rebel domain to be able to test and reason about running systems.
-% The challenge is to regain the benefits from the Rebel domain to be able to test and reason about systems with the use of formal methods.
+\textit{Rebel} domain to be able to test and reason about running systems.
+% The challenge is to regain the benefits from the \textit{Rebel} domain to be able to test and reason about systems with the use of formal methods.
 
 \section{Problem statement}\label{sec:problem-statement}
 
-% Ultimately, running systems should be generated from Rebel specifications. Since Rebel is a declarative language it will not always be straightforward to generate a correct system from this. Again SMT solvers might hold the key as shown in other work like [9].
+% Ultimately, running systems should be generated from \textit{Rebel} specifications. Since \textit{Rebel} is a declarative language it will not always be straightforward to generate a correct system from this. Again SMT solvers might hold the key as shown in other work like [9].
 
 According to the study~\cite[p.~3]{stoelcase} it should be possible to generate
-running systems from Rebel specifications. Right now this is possible and
-running systems are generated from Rebel specifications. It isn't always straightforward to generate a correct system from Rebel
-specifications since Rebel is a declarative language.~\cite[p.~3]{stoelcase}
+running systems from \textit{Rebel} specifications. Right now this is possible and
+running systems are generated from \textit{Rebel} specifications. It isn't always straightforward to generate a correct system from \textit{Rebel}
+specifications since \textit{Rebel} is a declarative language.~\cite[p.~3]{stoelcase}
 As mentioned before, the simulation and checking for the correctness of
-specifications is only in the Rebel domain.
+specifications is only in the \textit{Rebel} domain.
 
 The running systems which are
 generated from specifications need to be properly based on these specifications,
@@ -47,7 +47,7 @@ it should be conform to these specifications. So additional work is necessary fo
 the generation process to know that running systems are conform to the
 specifications.
 
-The language Rebel promised to be deterministic, this also holds
+The language \textit{Rebel} promised to be deterministic, this also holds
 for the generated system. So nondeterministic behaviour should be identified.
 
 For ING Bank it is especially important that there is no corrupted data within
@@ -74,9 +74,9 @@ The following questions are defined to achieve the research goal:
 The research is about testing the implementation correctness of specifications.
 For the problems in \autoref{sec:problem-statement}, the
 study~\cite[p.3]{stoelcase} proposed a possible solution for these problems,
-which is to use SMT Solvers. As before mentioned, the mapping of the Rebel
+which is to use SMT Solvers. As before mentioned, the mapping of the \textit{Rebel}
 language to the SMT formulas makes it possible to check and simulate
-specifications. Hereby, there is an interpreter for Rebel specifications, which
+specifications. Hereby, there is an interpreter for \textit{Rebel} specifications, which
 is the SMT Solver.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
 
 In the same study,
@@ -89,8 +89,8 @@ trace.
 
 Due to all these reasons, it seems to be a good solution to use the SMT
 Solver which holds the key in testing the generated system. Theoretically, with
-this approach, it is possible to regain the benefits from the Rebel domain, and
-again able to test and reason about Rebel specifications and generated system.
+this approach, it is possible to regain the benefits from the \textit{Rebel} domain, and
+again able to test and reason about \textit{Rebel} specifications and generated system.
 
 
 The hypothesis is that the SMT Solver can be used to test the implementation
@@ -107,10 +107,10 @@ system derived from an incorrect specification isn't really effective.
 system cannot be compiled, it is possible that there might be a fault in the
 code generator. Although, with this approach testing a not compilable system is
 impossible.
-\item \textbf{The Rebel specifications are correctly interpreted by the SMT
+\item \textbf{The \textit{Rebel} specifications are correctly interpreted by the SMT
 Solver.} The SMT Solver is used as an oracle/black box in the testing approach
-since it is an interpreter for Rebel specification. However, when something goes
-wrong with the mapping of the Rebel language to the SMT formulas, then there is
+since it is an interpreter for \textit{Rebel} specification. However, when something goes
+wrong with the mapping of the \textit{Rebel} language to the SMT formulas, then there is
 some misbehaviour of the specification in the SMT Solver.
 \end{itemize}
 
@@ -131,9 +131,9 @@ The research has the following contributions:
 
 \begin{enumerate}
   \item Tool for testing a generated system from a specification.
-  \item Limitations in Rebel or SMT encoding.
+  \item Limitations in \textit{Rebel} or SMT encoding.
   \item Bugs and its categories.
-  \item Solved the future work of Rebel paper
+  \item Solved the future work of \textit{Rebel} paper
 \end{enumerate}
 
 \section{Related Work}

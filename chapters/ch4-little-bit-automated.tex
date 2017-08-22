@@ -111,7 +111,24 @@ event deposit(amount: Money) {
 
 \section{Results}
 Discuss the results of the test approach.
-\info{add image}
+
+\subsection{Codegen-Akka}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{cc}
+\toprule
+\textbf{Transition to test} & \textbf{Transition} \\ \midrule
+openAccount                 & \cmark{}            \\
+withdraw                    & \xmark{}            \\
+deposit                     & \xmark{}            \\
+interest                    & \cmark{}            \\
+block                       & \cmark{}            \\
+unblock                     & \cmark{}            \\
+close                       & \xmark{}            \\ \bottomrule
+\end{tabular}
+\caption{Results: testing account specification transitions}\label{fig:ch5-res-codegenakka-account}
+\end{table}
 
 \section{Analyse}
 Analyse of the results

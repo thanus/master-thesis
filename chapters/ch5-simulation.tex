@@ -95,20 +95,20 @@ As discussed in \autoref{sec:research-method}, a model testing approach is
 already done to test existing banking systems. Although, in this approach, it
 was only possible to test the SUT interactively using the simulation. The traces
 are used to check whether the SUT accepts the execution from the trace and
-whether it behaves as the specification
-\cite[p.5]{stoel_storm_vinju_bosman_2016}. In addition, with the use of traces,
-it solves also the problems from the previous chapter, we know exactly what is
-done by the SMT and playback it in the SUT. Therefore, we're going to use the
-traces in this approach to check the behaviour of the SUT.
+whether it behaves as the specification.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
+In addition, with the use of traces, it solves also the problems from the
+previous chapter, we know exactly what is done by the SMT and playback it in the
+SUT. Therefore, we're going to use the traces in this approach to check the
+behaviour of the SUT.
 
 \subsection{Evaluation points}
 Evaluation points and expectations.
 
 \section{Approach}
-It is possible that a trace can contain multiple steps, e.g. to unblock an
-account, an account needs first to be opened and blocked. To playback the steps
-from a given trace on the SUT, we're going to split every transition into three
-steps as in \cite{stoel_storm_vinju_bosman_2016}:
+It is possible that a trace can contain multiple steps, \textit{e.g.}, to
+unblock an account, an account needs first to be opened and blocked. To playback
+the steps from a given trace on the SUT, we're going to split every transition
+into three steps as in ~\cite{stoel_storm_vinju_bosman_2016}:
 \begin{enumerate}
 \item \textbf{pre-transition check} Check whether the current state from the SUT
 is conform to the current state from the trace
@@ -136,10 +136,11 @@ automated. These problems are discussed in the paragraphs below.
 The pre-transition checks entail the check for the current state of the SUT is
 conform to the current state from the trace. Although with the simulation it is
 only possible to reason about individual steps. For some transitions a current
-state is required, e.g. an account needs to be blocked first to unblock it. In
-the simulation, a current state needs to be defined to check whether the step
-can be made from the current state. This is also the case in the SUT since a
-current state needs to be initialized first before the transition is made.
+state is required, \textit{e.g.}, an account needs to be blocked first to
+unblock it. In the simulation, a current state needs to be defined to check
+whether the step can be made from the current state. This is also the case in
+the SUT since a current state needs to be initialized first before the
+transition is made.
 
 To initialize the current state in the SUT checking can be used. By defining
 the current state with checking, it is checked and return a valid trace when
@@ -151,8 +152,8 @@ When a state to reach is defined for checking, the identifiers for the entities
 are only unique within that trace. For example for
 \autoref{fig:tebl-opened-simple-account}, the identifier for the opened account
 from the traces is \textit{NL10INGB0000001}. The identifiers for similar
-entities are auto-incremented, e.g. when an additional account entity is
-specified in \autoref{fig:tebl-opened-simple-account} the identifier is then
+entities are auto-incremented, \textit{e.g.}, when an additional account entity
+is specified in \autoref{fig:tebl-opened-simple-account} the identifier is then
 \textit{NL10INGB0000002}. This is not only the case with IBAN numbers but also
 with Integer, String, etc. This isn't a problem when a single transition is
 tested, but when multiple transitions are tested when there are multiple
@@ -163,25 +164,26 @@ stuff, for the smt stuff.} The invalid IBAN numbers isn't a problem for the
 checking since checking is only used to reason about possible traces. However,
 this doesn't hold in the SUT, since SUT is a banking system and here it must
 conform to the IBAN standards. It is possible with checking to define the
-properties of an entity, e.g. the IBAN for an account. To solve the problem with
-the collision of existing entities, a random identifier should be given for each
-entity. Therefore, for each type like Integer, is a simple random generator
-implemented. This generator generates a random identifier which is used as the
-identifier for the entities in checking. Unlike the basic types, IBAN is a more
-complex type to generate since the type should conform to the IBAN standards.
-Therefore, Iban4j \footnote{\url{https://github.com/arturmkrtchyan/iban4j/tree/ce1ca12b947755d1d96aab294d1ea15c78090ca2}}
+properties of an entity, \textit{e.g.}, the IBAN for an account. To solve the
+problem with the collision of existing entities, a random identifier should be
+given for each entity. Therefore, for each type like Integer, is a simple random
+generator implemented. This generator generates a random identifier which is
+used as the identifier for the entities in checking. Unlike the basic types,
+IBAN is a more complex type to generate since the type should conform to the
+IBAN standards. Therefore, Iban4j \footnote{\url{https://github.com/arturmkrtchyan/iban4j/tree/ce1ca12b947755d1d96aab294d1ea15c78090ca2}}
 is used to generate random IBAN account numbers which are compliant to the
 ISO\_13616 ISO\_9362 standards.
 
 Another pitfall with the use of checking is the use of more complex
-specifications, e.g. the transaction specification. With such specifications, it
-is possible to have a reference to another specification. In the case of the
-transaction specification involves two references, namely account specification.
-To use checking in such specifications must be taken into account the references
-to other specifications. Which means that for every referencing specification in
-checking, imports need to be resolved and defined, and the entity needs to be
-defined with an identifier. Note that these identifiers should be again random,
-otherwise it will cause again collisions of existing entities.
+specifications, \textit{e.g.}, the transaction specification. With such
+specifications, it is possible to have a reference to another specification. In
+the case of the transaction specification involves two references, namely
+account specification. To use checking in such specifications must be taken into
+account the references to other specifications. Which means that for every
+referencing specification in checking, imports need to be resolved and defined,
+and the entity needs to be defined with an identifier. Note that these
+identifiers should be again random, otherwise it will cause again collisions of
+existing entities.
 
 Altogether, a generated tebl for checking the current state looks as follows in
 \autoref{fig:tebl-gen-validated-transaction}.
@@ -522,7 +524,7 @@ Note the question mark in this message. This error message is part of the
 post-transition check where the new state of the SUT is tested. On line number
 35 is the instance account shown after the transition and on the line below you
 can see the same question mark. Both question mark relates to each other, which
-is the state of a given specification. In testing single specifications, e.g. in
+is the state of a given specification. In testing single specifications, \textit{e.g.}, in
 \autoref{fig:result-codegenakka-close}, we've seen that the state is present
 from the result of the SMT Solver. In this case, the model checker/simulation
 doesn't return the state when multiple instances are involved. So this also

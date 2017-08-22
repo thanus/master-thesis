@@ -33,6 +33,7 @@
 \usepackage[nottoc,notlot,notlof]{tocbibind}
 \usepackage{multirow}
 \usepackage{epigraph}
+\usepackage{pifont}
 \usepackage{url}
 \usepackage{xargs}
 \usepackage[pdftex,dvipsnames,table,xcdraw]{xcolor}
@@ -163,3 +164,7 @@
 \fancyhead[R]{\thepage}
 
 \renewcommand{\arraystretch}{1.3} % Vertical spacing in tables
+
+% pifont
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}

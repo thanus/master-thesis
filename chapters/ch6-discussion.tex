@@ -34,14 +34,3 @@ Most of the bugs we did find with out proof of concepts are within the category 
 Distribution another category for bugs, although we didn't find any bugs related to distribution with our proof of concepts. The proof of concept from \autoref{sec:ch5} tests also transitions which contain synchronization. Since no bugs are found, it can be assumed that the synchronized transitions works, in the sense of the result of the tested transitions were the same as the trace from the SMT Solver. As discussed before, the synchronized transitions are also translated to logical formulas. These formulas contain no logic about synchronization, and therefore it should be possible to identify misbehaviour in synchronization. Several studies claim also to find faults in distributed algorithms.
 
 % encoding strategy.
-
-\section{Threats to validity}
-
-\subsection*{Limited specifications}
-In the conducted experiments are the specifications account and transaction used to test the generated system from these specifications. With these experiments and specifications, we did find faults in the code generators. Although are these specifications quite simple, e.g. for a bank these specifications would be more complex. These experiments take into account the generosity of specifications, but with such a large amount of complex specifications, it is questionable whether these experiments still produce valuable results.
-
-\subsection*{Rebel interpretation in SMT Solver}
-The SMT solver can be seen as an interpreter for Rebel specifications. The conducted experiments use the SMT solver to test the generated systems from the specifications. We already discussed before the limitation of interpretation of Rebel specifications, and in some cases, workarounds have been used. There may be more unknown limitations of the interpretation of Rebel specifications, which can cause the conducted experiments give incorrect results.
-
-\subsection*{Valid execution trace}
-The experiment from \autoref{sec:ch5} tests only valid execution traces from the SMT solver, i.e. testing only what should be possible according to the specification. Testing valid execution traces is not enough, testing not valid execution traces can be valuable. Thus the experiment from \autoref{sec:ch4} already does this, but as discussed it has a few limitations.

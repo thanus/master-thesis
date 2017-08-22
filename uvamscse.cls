@@ -32,10 +32,12 @@
 \usepackage{amscd}
 \usepackage[nottoc,notlot,notlof]{tocbibind}
 \usepackage{multirow}
+\usepackage{booktabs}
 \usepackage{epigraph}
+\usepackage{pifont}
 \usepackage{url}
 \usepackage{xargs}
-\usepackage[pdftex,dvipsnames]{xcolor}
+\usepackage[pdftex,dvipsnames,table,xcdraw]{xcolor}
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 \usepackage[labelfont=bf]{caption} % Make figure and table tags bold too
 \usepackage[unicode,bookmarks=false,pdfstartview={FitW},colorlinks,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
@@ -160,4 +162,8 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\leftmark}
-\fancyhead[R]{\thepage}
+\fancyfoot[C]{\thepage}
+
+% pifont
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}

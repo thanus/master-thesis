@@ -5,14 +5,59 @@
 
 \section{Automated checking}
 
-The lightweight version from the previous chapter is only able to one specific bug, the bug itself is created by manually modifying the generated system. Now, this lightweight version needs to be automated to automatically generate a test for every transition from a specification.
+The lightweight version from the previous chapter is only able to one specific
+bug, the bug itself is created by manually modifying the generated system. Now,
+this lightweight version needs to be automated to automatically generate a test
+for every transition from a specification.
 
-With every transition, it is possible to reach a state or stay in the current state. To check Rebel specifications, the state to reach with a transition needs to be defined. As mentioned before, the goal of model checking is to find a state which is reachable with some properties which don't hold \cite[p.5]{stoel_storm_vinju_bosman_2016}. Thus defining only the reachable state isn't enough, the properties of interest for a transition needs to be specified. Each property is different per transition, so these properties should be different for the defined state. For example with the transition closed you want to check with the property balance with != 0 euro, and with the transition withdraw you want to check with the property balance below zero. Basically, with this approach we're testing the inverse of the preconditions. So we're testing what should not be possible according to the specification. 
+With every transition, it is possible to reach a state or stay in the current
+state. To check Rebel specifications, the state to reach with a transition needs
+to be defined. As mentioned before, the goal of model checking is to find a
+state which is reachable with some properties which don't hold
+~\cite[p.5]{stoel_storm_vinju_bosman_2016}. Thus defining only the reachable
+state isn't enough, the properties of interest for a transition needs to be
+specified. Each property is different per transition, so these properties should
+be different for the defined state. For example with the transition closed you
+want to check with the property balance with != 0 euro, and with the transition
+withdraw you want to check with the property balance below zero. Basically, with
+this approach we're testing the inverse of the preconditions. So we're testing
+what should not be possible according to the specification.
 
-This is a well known approach in mutation testing. Mutation testing is fault-based testing technique, which generates faulty programs by syntactic changes to the original program \cite[p.1]{jia2011analysis}. The set of faulty programs are called mutants, each mutant contains a different syntactic change. In our case, only one mutant is generated. A test suite for a program is used to determine whether the faulty programs are detected. A mutant is killed when it is detected by the test suite. The mutant is in our case killed when the result from the SMT Solver and the generated system are the same, we're using the same approach for comparison from . Mutation testing generates a mutant based on mutation operator, which is a transformation rule that generates a mutant from the original program \cite[p.3-4]{jia2011analysis}. The mutation operator for our approach is Negate Conditionals Mutator \footnote{\url{http://pitest.org/quickstart/mutators}}, this operator belongs to the type relational operator replacement \cite[p.688]{king1991fortran}.
+\subsection{Evaluation points}
+Evaluation points and expectations.
+
+\section{Approach}
+This is a well known approach in mutation testing. Mutation testing is
+fault-based testing technique, which generates faulty programs by syntactic
+changes to the original program \cite[p.1]{jia2011analysis}. The set of faulty
+programs are called mutants, each mutant contains a different syntactic change.
+In our case, only one mutant is generated. A test suite for a program is used to
+determine whether the faulty programs are detected. A mutant is killed when it
+is detected by the test suite. The mutant is in our case killed when the result
+from the SMT Solver and the generated system are the same, we're using the same
+approach for comparison from . Mutation testing generates a mutant based on
+mutation operator, which is a transformation rule that generates a mutant from
+the original program \cite[p.3-4]{jia2011analysis}. The mutation operator for
+our approach is Negate Conditionals Mutator
+\footnote{\url{http://pitest.org/quickstart/mutators}}, this operator belongs to
+the type relational operator replacement \cite[p.688]{king1991fortran}.
+
+\info{add image}
 
 \subsection{Checking}
-Only expressions which contain a reference to the specification fields needs to be flipped since it is only possible in tebl to specify the reachable state with the properties of interest (these properties are not part of the transition). Earlier the definition of the close event transition was given in \autoref{fig:account-close-event} which contains the following statement \code{this.balance == EUR 0.00;}. When this statement is translated to tebl and also with an inverse expression, it looks as follows \code{balance != EUR 0.00;}. Thus the translated expression is just the opposite expression of the statement defined in the close transition. Translating expressions to inverse expressions is done for all expressions with relational operators. The chosen mutation operator Negate Conditionals Mutator will mutate expressions according to the replacement table in \autoref{fig:table-replacement-conditions}.
+Only expressions which contain a reference to the specification fields needs to
+be flipped since it is only possible in tebl to specify the reachable state with
+the properties of interest (these properties are not part of the transition).
+Earlier the definition of the close event transition was given in
+\autoref{fig:account-close-event} which contains the following statement
+\code{this.balance == EUR 0.00;}. When this statement is translated to tebl and
+also with an inverse expression, it looks as follows
+\code{balance != EUR 0.00;}. Thus the translated expression is just the opposite
+expression of the statement defined in the close transition. Translating
+expressions to inverse expressions is done for all expressions with relational
+operators. The chosen mutation operator Negate Conditionals Mutator will mutate
+expressions according to the replacement table in
+\autoref{fig:table-replacement-conditions}.
 
 \begin{table}[]
 \centering
@@ -29,17 +74,32 @@ Only expressions which contain a reference to the specification fields needs to 
 \label{fig:table-replacement-conditions}
 \end{table}
 
-\subsection{Generated system} 
-The expressions for the transition in the generated system are also flipped. Although, it isn't necessary to flip always the expressions. For some transitions is an initial state expected, e.g. to execute the transition unblock of the account specification, the account should be in the state blocked. So an initial state needs to be constructed for some transitions. Of course, the SMT Solver is able to construct its own initial state to reach a state. 
+\subsection{Generated system}
+The expressions for the transition in the generated system are also flipped.
+Although, it isn't necessary to flip always the expressions. For some
+transitions is an initial state expected, e.g. to execute the transition unblock
+of the account specification, the account should be in the state blocked. So an
+initial state needs to be constructed for some transitions. Of course, the SMT
+Solver is able to construct its own initial state to reach a state.
 
-The definition of the deposit transition is given in \autoref{fig:account-deposit-event} and contains the following statement in the precondition \code{amount > EUR 0.00;}. First, the initial state needs to be constructed which is opened. Here comes the flipping of the expressions, so the following statement from the deposit definition \code{amount > EUR 0.00;} is flipped. Then the deposit transition needs to take place in the generated system. Therefore, the transition parameters need to be determined based on the flipped expression. Looking for the opposite expression with a value is for that statement an amount less than or equal to 0 euro. For example, the following transition parameter is generated to be used in the deposit transition \code{"amount": "EUR -2.00"}. 
+The definition of the deposit transition is given in
+\autoref{fig:account-deposit-event} and contains the following statement in the
+precondition \code{amount > EUR 0.00;}. First, the initial state needs to be
+constructed which is opened. Here comes the flipping of the expressions, so the
+following statement from the deposit definition \code{amount > EUR 0.00;} is
+flipped. Then the deposit transition needs to take place in the generated
+system. Therefore, the transition parameters need to be determined based on the
+flipped expression. Looking for the opposite expression with a value is for that
+statement an amount less than or equal to 0 euro. For example, the following
+transition parameter is generated to be used in the deposit transition
+\code{"amount": "EUR -2.00"}.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
 event deposit(amount: Money) {
 	preconditions {
 		amount > EUR 0.00;
-	} 
+	}
 	postconditions {
 		new this.balance == this.balance + amount;
 	}
@@ -49,10 +109,48 @@ event deposit(amount: Money) {
 \label{fig:account-deposit-event}
 \end{sourcecode}
 
+\section{Results}
+Discuss the results of the test approach.
+
+\subsection{Codegen-Akka}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{cc}
+\toprule
+\textbf{Transition to test} & \textbf{Transition} \\ \midrule
+openAccount                 & \cmark{}            \\
+withdraw                    & \xmark{}            \\
+deposit                     & \xmark{}            \\
+interest                    & \cmark{}            \\
+block                       & \cmark{}            \\
+unblock                     & \cmark{}            \\
+close                       & \xmark{}            \\ \bottomrule
+\end{tabular}
+\caption{Results: testing account specification transitions}\label{fig:ch5-res-codegenakka-account}
+\end{table}
+
+\section{Analyse}
+Analyse of the results
+
+\subsection{Codegen-Akka}
+The proof of concept uses in this test run the Codegen-Akka generator.
+
 % https://github.com/cwi-swat/ing-rebel-generators/commit/999e6b40307a79fb245ace15375c27461c92374e
-\subsection{Bug: closing an account with balance}
+\subsubsection{Bug: closing an account with balance}
 \label{sec:bug-close-account}
-When this automated version of checking is executed, it produces some false positives. After investigating the tests for the transitions, the test for close transition seems not be successful (see \autoref{fig:result-close-account}). According to the model checker, it seems to be that the state isn't reachable (the same tebl file is generated as in \autoref{fig:tebl-closed-account}). It seems to be that the state is reachable in the generated system. When we take a look at the account in the generated system, the account looks as follows in \autoref{fig:closed-account-json}. The state of the account is in closed, which is correct according to the specification, but the balance of the account is 52 euro. In Chapter 3 we already discussed the event definition of close in \autoref{fig:account-close-event}, the balance should be equal to zero. From this, we can conclude that we've discovered a bug in the generated system.
+When this automated version of checking is executed, it produces some false
+positives. After investigating the tests for the transitions, the test for close
+transition seems not be successful (see \autoref{fig:result-close-account}).
+According to the model checker, it seems to be that the state isn't reachable
+(the same tebl file is generated as in \autoref{fig:tebl-closed-account}). It
+seems to be that the state is reachable in the generated system. When we take a
+look at the account in the generated system, the account looks as follows in
+\autoref{fig:closed-account-json}. The state of the account is in closed, which
+is correct according to the specification, but the balance of the account is 52
+euro. In Chapter 3 we already discussed the event definition of close in
+\autoref{fig:account-close-event}, the balance should be equal to zero. From
+this, we can conclude that we've discovered a bug in the generated system.
 
 % close account
 
@@ -97,7 +195,7 @@ Result successful transition test: false
 % 	Close the account.
 % }
 
-% event close() { 
+% event close() {
 % 	preconditions {
 % 		this.balance == EUR 0.00;
 % 	}
@@ -112,7 +210,7 @@ Result successful transition test: false
 % \begin{lstlisting}[]
 % module simple_transaction.OpenedToClosedViaCloseTest
 
-% import simple_transaction.Account 
+% import simple_transaction.Account
 
 % state doCheck {
 %   closed Account with balance != EUR 0.00;
@@ -123,12 +221,18 @@ Result successful transition test: false
 % \caption{Closed account test}
 % \end{sourcecode}
 
-Now we know that we have discovered a bug, we want to know where this takes place and if the code isn't generated correctly from the specification. The method which handles the close transition has the following check in \autoref{fig:java-notequal-check}. The if statement checks whether the balance of the account is not equal to 0 euro. The condition in the if statement isn't satisfied with the balance of 52 euro. That's why the exception \textit{BuildCASTransactionException} isn't thrown.
+Now we know that we have discovered a bug, we want to know where this takes
+place and if the code isn't generated correctly from the specification. The
+method which handles the close transition has the following check in
+\autoref{fig:java-notequal-check}. The if statement checks whether the balance
+of the account is not equal to 0 euro. The condition in the if statement isn't
+satisfied with the balance of 52 euro. That's why the exception
+\textit{BuildCASTransactionException} isn't thrown.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[language=Java]
 if(! (isNotEqual(_entity.getBalance(), Money.of(org.joda.money.CurrencyUnit.of("EUR"), 0.00)))) {
-  throw new BuildCASTransactionException("Predicate did not hold: CloseTransaction: this.balance == 
+  throw new BuildCASTransactionException("Predicate did not hold: CloseTransaction: this.balance ==
   EUR 0.00");
 }
 \end{lstlisting}
@@ -136,24 +240,41 @@ if(! (isNotEqual(_entity.getBalance(), Money.of(org.joda.money.CurrencyUnit.of("
 \label{fig:java-notequal-check}
 \end{sourcecode}
 
-The question right now is, how is the above code generated. \info{synthesis phase ref} After taking a look at the synthesization of expression, the expressions from Rebel are not properly translated. The synthesization for an equal expression for the type money or percentage looks as follows in \autoref{fig:rascal-datomic-synthesize-equal}. The expression is synthesized to the method \textit{isNotEqual} with two parameters. 
+The question right now is, how is the above code generated.
+\info{synthesis phase ref} After taking a look at the synthesization of
+expression, the expressions from Rebel are not properly translated. The
+synthesization for an equal expression for the type money or percentage looks as
+follows in \autoref{fig:rascal-datomic-synthesize-equal}. The expression is
+synthesized to the method \textit{isNotEqual} with two parameters.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
-private str g(e:(Expr)`<Expr lhs> == <Expr rhs>`, tmap t) = "isNotEqual(<g(lhs, t)>, <g(rhs, t)>)" 
+private str g(e:(Expr)`<Expr lhs> == <Expr rhs>`, tmap t) = "isNotEqual(<g(lhs, t)>, <g(rhs, t)>)"
   when isType(t, lhs, (Type)`Percentage`) || isType(t, lhs, (Type)`Money`);
 \end{lstlisting}
 \caption{Generate equal expression in Rascal}
 \label{fig:rascal-datomic-synthesize-equal}
 \end{sourcecode}
 
-So the expression isn't properly synthesized, and it should be synthesized to \textit{isEqual} instead of \textit{isNotEqual}. With this modification, it isn't possible anymore to close an account with some balance (this also applies to other expressions of the type equal).
+So the expression isn't properly synthesized, and it should be synthesized to
+\textit{isEqual} instead of \textit{isNotEqual}. With this modification, it
+isn't possible anymore to close an account with some balance (this also applies
+to other expressions of the type equal).
 
 % https://github.com/cwi-swat/ing-rebel-generators/pull/6
-\subsection{Bug: deposit with a maximum amount}
+\subsubsection{Bug: deposit with a maximum amount}
 \label{sec:bug-compile-max-deposit}
 
-The automated checking is implemented with the ability to first start the generated system and then run the tests against it. For a new test run, the specification has changed a little bit. It is now possible to only deposit with a maximum amount (see \autoref{fig:java-deposit-maxamount}). After the code is generated, the testing framework isn't able to start the system. There is a compile error as you can see in \autoref{fig:java-result-lessthan-compile-error}, the binary operator "$<$" isn't applicable on the type \textit{org.joda.money.Money}. The compile error is thrown by the source code from \autoref{fig:java-lessthan-compile-error}, which is part of the method which handles the deposit transition.
+The automated checking is implemented with the ability to first start the
+generated system and then run the tests against it. For a new test run, the
+specification has changed a little bit. It is now possible to only deposit with
+a maximum amount (see \autoref{fig:java-deposit-maxamount}). After the code is
+generated, the testing framework isn't able to start the system. There is a
+compile error as you can see in
+\autoref{fig:java-result-lessthan-compile-error}, the binary operator "$<$"
+isn't applicable on the type \textit{org.joda.money.Money}. The compile error
+is thrown by the source code from \autoref{fig:java-lessthan-compile-error},
+which is part of the method which handles the deposit transition.
 
 % less than, not compilable. Duplicate method for greaterThan should be lessThan
 
@@ -162,7 +283,7 @@ The automated checking is implemented with the ability to first start the genera
 event deposit(amount: Money) {
 	preconditions {
 		amount < EUR 250.00;
-	} 
+	}
 	postconditions {
 		new this.balance == this.balance + amount;
 	}
@@ -185,7 +306,7 @@ Error:(63, 23) java: bad operand types for binary operator '<'
 \begin{sourcecode}[h!]
 \begin{lstlisting}[language=Java]
 if(! ((amount < Money.of(org.joda.money.CurrencyUnit.of("EUR"), 200.00)))) {
-  throw new BuildCASTransactionException("Predicate did not hold: DepositTransaction: 
+  throw new BuildCASTransactionException("Predicate did not hold: DepositTransaction:
   amount < EUR 200.00");
 }
 \end{lstlisting}
@@ -193,14 +314,22 @@ if(! ((amount < Money.of(org.joda.money.CurrencyUnit.of("EUR"), 200.00)))) {
 \label{fig:java-lessthan-compile-error}
 \end{sourcecode}
 
-The synthesization of the generated is shown in \autoref{fig:rascal-datomic-synthesize-lessthan}. Also here are the Rebel expression not properly translated. The default expression with the binary operator "$<$" is properly translated to an expression with two expressions with an the binary operator "$<$". As seen before this doesn't work with \textit{org.joda.money.Money}. Above this method, you can see the synthesization of the expression with the binary operator "$\leq$". This method is already defined before and this is a typical copy paste fault, the method should synthesize expressions with the binary operator "$<$".
+The synthesization of the generated is shown in
+\autoref{fig:rascal-datomic-synthesize-lessthan}. Also here are the Rebel
+expression not properly translated. The default expression with the binary
+operator "$<$" is properly translated to an expression with two expressions with
+ an the binary operator "$<$". As seen before this doesn't work with
+ \textit{org.joda.money.Money}. Above this method, you can see the
+ synthesization of the expression with the binary operator "$\leq$". This method
+ is already defined before and this is a typical copy paste fault, the method
+ should synthesize expressions with the binary operator "$<$".
 
 % Duplicate method for greaterThan should be lessThan. This method is duplicate to the method g() on line 43. It should be
 % lessThan instead of greaterThan.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
-private str g(e:(Expr)`<Expr lhs> \> <Expr rhs>`, tmap t) = "isGreaterThan(<g(lhs, t)>, <g(rhs, t)>)" 
+private str g(e:(Expr)`<Expr lhs> \> <Expr rhs>`, tmap t) = "isGreaterThan(<g(lhs, t)>, <g(rhs, t)>)"
   when isType(t, lhs, (Type)`Percentage`) || isType(t, lhs, (Type)`Money`);
 private str g(e:(Expr)`<Expr lhs> \< <Expr rhs>`, tmap t) = "(<g(lhs, t)> \< <g(rhs, t)>)";
 \end{lstlisting}
@@ -211,9 +340,31 @@ private str g(e:(Expr)`<Expr lhs> \< <Expr rhs>`, tmap t) = "(<g(lhs, t)> \< <g(
 \section{Evaluation}
 \label{sec:ch4-evaluation}
 
-In this proof of concept is the account specification used to test the SUT. This proof of concept generates automatically tests for transitions. A part of the generated test for a transition is checking, which used to test the state to reach with the flipped preconditions. So, in this proof of concept, we're testing what should be not possible according to the specification. The result of the checking from the SMT Solver varies, e.g. an opened account can be reached by the \textit{openAccount} transition or by the transition \textit{openAccount} and \textit{withdraw}. After the checking, a transition is performed in the SUT. In this proof of concept, it's unknown whether the performed transition with its parameters in the SUT is the same as the transition computed by the SMT Solver. This causes some false positives in the test run. Also, it is difficult to play like the SMT Solver, it is unknown which result the SMT Solver will give and the SMT Solver is smarter/better in checking the satisfiability of a given constraints. To conclude, the checking used in this proof of concept tests only the states and in the SUT are transitions tested. 
+\subsection{Evalution points}
+In this proof of concept is the account specification used to test the SUT.
+This proof of concept generates automatically tests for transitions. A part of
+the generated test for a transition is checking, which used to test the state to
+reach with the flipped preconditions. So, in this proof of concept, we're
+testing what should be not possible according to the specification. The result
+of the checking from the SMT Solver varies, e.g. an opened account can be
+reached by the \textit{openAccount} transition or by the transition
+\textit{openAccount} and \textit{withdraw}. After the checking, a transition
+is performed in the SUT. In this proof of concept, it's unknown whether the
+performed transition with its parameters in the SUT is the same as the
+transition computed by the SMT Solver. This causes some false positives in the
+test run. Also, it is difficult to play like the SMT Solver, it is unknown which
+result the SMT Solver will give and the SMT Solver is smarter/better in checking
+the satisfiability of a given constraints. To conclude, the checking used in
+this proof of concept tests only the states and in the SUT are transitions
+tested.
 
-With this proof of concept, we've found a bug in the generated system, which was discussed in \autoref{sec:bug-close-account}. The other bug is out of scope since the SUT isn't able to compile. The found bug belongs to the category injected code since the generated code for the precondition is wrong. In this case, the final state closed is reached where the preconditions of the close transition don't hold. So the theory for this found bug is: $\forall e s_{1} \to s_{2}, s_{2} \gets s_{1}, pre(e)$.
+With this proof of concept, we've found a bug in the generated system, which was
+discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
+since the SUT isn't able to compile. The found bug belongs to the category
+injected code since the generated code for the precondition is wrong. In this
+case, the final state closed is reached where the preconditions of the close
+transition don't hold. So the theory for this found bug is:
+$\forall e s_{1} \to s_{2}, s_{2} \gets s_{1}, pre(e)$.
 
 % claims from finding the bugs.
 
@@ -227,3 +378,33 @@ With this proof of concept, we've found a bug in the generated system, which was
 % % of?
 % \item $\forall e s1 \to s2, s2 alleen bereikbaar via (1), dan pre(e)$
 % \end{itemize}
+
+\subsection{Conclusion}
+Conclusion
+
+\section{Threats to validity}
+
+\subsection*{Limited specifications}
+In the conducted experiments are the specifications account and transaction used
+to test the generated system from these specifications. With these experiments
+and specifications, we did find faults in the code generators. Although are
+these specifications quite simple, \textit{e.g.}, for a bank these
+specifications would be more complex. These experiments take into account the
+generosity of specifications, but with such a large amount of complex
+specifications, it is questionable whether these experiments still produce
+valuable results.
+
+\subsection*{Rebel interpretation in SMT Solver}
+The SMT solver can be seen as an interpreter for Rebel specifications. The
+conducted experiments use the SMT solver to test the generated systems from the
+specifications. We already discussed before the limitation of interpretation of
+Rebel specifications, and in some cases, workarounds have been used. There may
+be more unknown limitations of the interpretation of Rebel specifications, which
+can cause the conducted experiments give incorrect results.
+
+\subsection*{Valid execution trace}
+The experiment from \autoref{sec:ch5} tests only valid execution traces from
+the SMT solver, \textit{i.e.}, testing only what should be possible according to
+the specification. Testing valid execution traces is not enough, testing not
+valid execution traces can be valuable. Thus the experiment from
+\autoref{sec:ch4} already does this, but as discussed it has a few limitations.

@@ -116,8 +116,11 @@ Discuss the results of the test approach.
 \section{Analyse}
 Analyse of the results
 
+\subsection{Codegen-Akka}
+The proof of concept uses in this test run the Codegen-Akka generator.
+
 % https://github.com/cwi-swat/ing-rebel-generators/commit/999e6b40307a79fb245ace15375c27461c92374e
-\subsection{Bug: closing an account with balance}
+\subsubsection{Bug: closing an account with balance}
 \label{sec:bug-close-account}
 When this automated version of checking is executed, it produces some false
 positives. After investigating the tests for the transitions, the test for close
@@ -242,7 +245,7 @@ isn't possible anymore to close an account with some balance (this also applies
 to other expressions of the type equal).
 
 % https://github.com/cwi-swat/ing-rebel-generators/pull/6
-\subsection{Bug: deposit with a maximum amount}
+\subsubsection{Bug: deposit with a maximum amount}
 \label{sec:bug-compile-max-deposit}
 
 The automated checking is implemented with the ability to first start the

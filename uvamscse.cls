@@ -162,8 +162,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\leftmark}
-\fancyhead[R]{\thepage}
-
+\fancyfoot[C]{\thepage}
 
 % pifont
 \newcommand{\cmark}{\ding{51}}

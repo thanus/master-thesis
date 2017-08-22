@@ -330,114 +330,90 @@ Discuss the results of the test approach.
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{|lcc|}
-\hline
-\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \hline
-\rowcolor[HTML]{EFEFEF}
-openAccount                 & \checkmark{}           & \checkmark{}        \\
-withdraw                    & \checkmark{}           & \checkmark{}        \\
-\rowcolor[HTML]{EFEFEF}
-deposit                     & \checkmark{}           & \checkmark{}        \\
-interest                    & \checkmark{}           & \checkmark{}        \\
-\rowcolor[HTML]{EFEFEF}
-block                       & \checkmark{}           & \checkmark{}        \\
-unblock                     & \checkmark{}           & \checkmark{}        \\
-\rowcolor[HTML]{EFEFEF}
-close                       & \checkmark{}           & \times{}            \\ \hline
+\begin{tabular}{ccc}
+\toprule
+\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \midrule
+openAccount                 & \cmark{}               & \cmark{}            \\
+withdraw                    & \cmark{}               & \cmark{}            \\
+deposit                     & \cmark{}               & \cmark{}            \\
+interest                    & \cmark{}               & \cmark{}            \\
+block                       & \cmark{}               & \cmark{}            \\
+unblock                     & \cmark{}               & \cmark{}            \\
+close                       & \cmark{}               & \xmark{}            \\ \bottomrule
 \end{tabular}
-\caption{Results: testing account specification transitions}
-\label{fig:ch5-res-codegenakka-account}
+\caption{Results: testing account specification transitions}\label{fig:ch5-res-codegenakka-account}
 \end{table}
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{|lcc|}
-\hline
-\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \hline
-\rowcolor[HTML]{EFEFEF}
-start                       & \checkmark{}           & \checkmark{}        \\
-book                        & \checkmark{}           & \checkmark{}        \\
-\rowcolor[HTML]{EFEFEF}
-fail                        & \checkmark{}           & \checkmark{}        \\ \hline
+\begin{tabular}{ccc}
+\toprule
+\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \midrule
+start                       & \cmark{}               & \cmark{}            \\
+book                        & \cmark{}               & \cmark{}            \\
+fail                        & \cmark{}               & \cmark{}            \\ \bottomrule
 \end{tabular}
-\caption{Results: testing transaction specification transitions}
-\label{fig:ch5-res-codegenakka-transaction}
+\caption{Results: testing transaction specification transitions}\label{fig:ch5-res-codegenakka-transaction}
 \end{table}
 
 \subsection{Codegen-Datomic}
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{|lcc|}
-\hline
-\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \hline
-\rowcolor[HTML]{EFEFEF}
-openAccount                 & \checkmark{}           & \checkmark{}        \\
-withdraw                    & \checkmark{}           & \checkmark{}        \\
-\rowcolor[HTML]{EFEFEF}
-deposit                     & \checkmark{}           & \checkmark{}        \\
-interest                    & \checkmark{}           & \times{}            \\
-\rowcolor[HTML]{EFEFEF}
-block                       & \checkmark{}           & \checkmark{}        \\
-unblock                     & \checkmark{}           & \checkmark{}        \\
-\rowcolor[HTML]{EFEFEF}
-close                       & \checkmark{}           & \times{}            \\ \hline
+\begin{tabular}{ccc}
+\toprule
+\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \midrule
+openAccount                 & \cmark{}               & \cmark{}            \\
+withdraw                    & \cmark{}               & \cmark{}            \\
+deposit                     & \cmark{}               & \cmark{}            \\
+interest                    & \cmark{}               & \xmark{}            \\
+block                       & \cmark{}               & \cmark{}            \\
+unblock                     & \cmark{}               & \cmark{}            \\
+close                       & \cmark{}               & \xmark{}            \\ \bottomrule
 \end{tabular}
-\caption{Results: testing account specification transitions}
-\label{fig:ch5-res-codegendatomic-account}
+\caption{Results: testing account specification transitions}\label{fig:ch5-res-codegendatomic-account}
 \end{table}
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{|lcc|}
-\hline
-\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \hline
-\rowcolor[HTML]{EFEFEF}
-start                       & \checkmark{}           & \checkmark{}        \\
-book                        & \checkmark{}           & \checkmark{}        \\
-\rowcolor[HTML]{EFEFEF}
-fail                        & \checkmark{}           & \checkmark{}        \\ \hline
+\begin{tabular}{ccc}
+\toprule
+\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \midrule
+start                       & \cmark{}               & \cmark{}            \\
+book                        & \cmark{}               & \cmark{}            \\
+fail                        & \cmark{}               & \cmark{}            \\ \bottomrule
 \end{tabular}
-\caption{Results: testing transaction specification transitions}
-\label{fig:ch5-res-codegendatomic-transaction}
+\caption{Results: testing transaction specification transitions}\label{fig:ch5-res-codegendatomic-transaction}
 \end{table}
 
 \subsection{Codegen-Scala-ES}
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{|lcc|}
-\hline
-\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \hline
-\rowcolor[HTML]{EFEFEF}
-openAccount                 & \checkmark{}           & \checkmark{}        \\
-withdraw                    & \checkmark{}           & \checkmark{}        \\
-\rowcolor[HTML]{EFEFEF}
-deposit                     & \checkmark{}           & \checkmark{}        \\
-interest                    & \checkmark{}           & \times{}            \\
-\rowcolor[HTML]{EFEFEF}
-block                       & \checkmark{}           & \checkmark{}        \\
-unblock                     & \checkmark{}           & \checkmark{}        \\
-\rowcolor[HTML]{EFEFEF}
-close                       & \checkmark{}           & \times{}            \\ \hline
+\begin{tabular}{ccc}
+\toprule
+\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \midrule
+openAccount                 & \cmark{}               & \cmark{}            \\
+withdraw                    & \cmark{}               & \cmark{}            \\
+deposit                     & \cmark{}               & \cmark{}            \\
+interest                    & \cmark{}               & \xmark{}            \\
+block                       & \cmark{}               & \cmark{}            \\
+unblock                     & \cmark{}               & \cmark{}            \\
+close                       & \cmark{}               & \xmark{}            \\ \bottomrule
 \end{tabular}
-\caption{Results: testing account specification transitions}
-\label{fig:ch5-res-codegenscalaes-account}
+\caption{Results: testing account specification transitions}\label{fig:ch5-res-codegenscalaes-account}
 \end{table}
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{|lcc|}
-\hline
-\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \hline
-\rowcolor[HTML]{EFEFEF}
-start                       & \checkmark{}           & \checkmark{}        \\
-book                        & \checkmark{}           & \checkmark{}        \\
-\rowcolor[HTML]{EFEFEF}
-fail                        & \checkmark{}           & \checkmark{}        \\ \hline
+\begin{tabular}{ccc}
+\toprule
+\textbf{Transition to test} & \textbf{Current state} & \textbf{Transition} \\ \midrule
+start                       & \cmark{}               & \cmark{}            \\
+book                        & \cmark{}               & \cmark{}            \\
+fail                        & \cmark{}               & \cmark{}            \\ \bottomrule
 \end{tabular}
-\caption{Results: testing transaction specification transitions}
-\label{fig:ch5-res-codegenscalaes-transaction}
+\caption{Results: testing transaction specification transitions}\label{fig:ch5-res-codegenscalaes-transaction}
 \end{table}
 
 \section{Analyse}

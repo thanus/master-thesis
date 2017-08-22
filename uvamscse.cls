@@ -32,6 +32,7 @@
 \usepackage{amscd}
 \usepackage[nottoc,notlot,notlof]{tocbibind}
 \usepackage{multirow}
+\usepackage{booktabs}
 \usepackage{epigraph}
 \usepackage{pifont}
 \usepackage{url}

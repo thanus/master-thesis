@@ -35,7 +35,7 @@ programs are called mutants, each mutant contains a different syntactic change.
 In our case, only one mutant is generated. A test suite for a program is used to
 determine whether the faulty programs are detected. A mutant is killed when it
 is detected by the test suite. The mutant is in our case killed when the result
-from the SMT Solver and the generated system are the same. We're using the same
+from the SMT Solver and the SUT are the same. We're using the same
 approach from \autoref{sec:ch3} to compare the results of the SMT solver and
 SUT.
 
@@ -151,7 +151,7 @@ positives. After investigating the tests for the transitions, the test for the \
 transition seems not be successful (see \autoref{fig:result-close-account}).
 According to the model checker, it seems to be that the state isn't reachable
 (the same tebl file is generated as in \autoref{fig:tebl-closed-account}). It
-seems to be that the state is reachable in the generated system.
+seems to be that the state is reachable in the SUT.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -265,7 +265,7 @@ to other expressions of the type equal).
 \subsubsection{Bug: deposit with a maximum amount}\label{sec:bug-compile-max-deposit}
 
 The automated checking is implemented with the ability to first start the
-generated system and then run the tests against it. For a new test run, the
+SUT and then run the tests against it. For a new test run, the
 specification has changed a little bit. It is now possible to only deposit with
 a maximum amount (see \autoref{fig:java-deposit-maxamount}). After the code is
 generated, the testing framework isn't able to start the system. There is a
@@ -360,7 +360,7 @@ the satisfiability of a given constraints.
 To conclude, the checking used in this proof of concept tests only the states, regardless of which transitions are
 being performed, and testing the SUT focuses more on testing transitions.
 
-With this proof of concept, we've found a bug in the generated system, which was
+With this proof of concept, we've found a bug in the SUT, which was
 discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
 since the SUT isn't able to compile. The found bug belongs to the category
 injected code since the generated code for the precondition is wrong. In this

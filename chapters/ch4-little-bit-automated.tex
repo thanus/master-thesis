@@ -192,38 +192,6 @@ discovered a bug in the SUT.
 \caption{account state in json}\label{fig:closed-account-json}
 \end{sourcecode}
 
-% \begin{sourcecode}
-% \begin{lstlisting}[]
-% @doc {
-% 	Close the account.
-% }
-
-% event close() {
-% 	preconditions {
-% 		this.balance == EUR 0.00;
-% 	}
-% }
-% \end{lstlisting}
-% \caption{close event definition from specification}
-% \end{sourcecode}
-
-
-
-% \begin{sourcecode}
-% \begin{lstlisting}[]
-% module simple_transaction.OpenedToClosedViaCloseTest
-
-% import simple_transaction.Account
-
-% state doCheck {
-%   closed Account with balance != EUR 0.00;
-% }
-
-% check doCheck reachable in max 6 steps;
-% \end{lstlisting}
-% \caption{Closed account test}
-% \end{sourcecode}
-
 Now we know that we have discovered a bug, we want to know where this takes
 place and whether the code isn't generated correctly from the specification. The
 method which handles the \textit{close} transition has the following check in

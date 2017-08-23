@@ -1,17 +1,11 @@
-\chapter{Test mechanics}
-\label{sec:ch3}
+\chapter{Test mechanics}\label{sec:ch3}
 
 In this chapter, we explain how to implement the lightweight proof of concept. The intention of the lightweight version is to know that the test approach is able to find bugs in generated systems. Therefore, we need to understand how the existing foundations from Rebel can be reused.
 
-\info{juiste semantiek is aleks. mijn is meer templating}
-
-\info{threat of validaty/ assumption: semantiek van rebel goed naar smt formulas}
-\info{state alles testen explosie, dus synchronisatie fouten vinden}
 \info{lezen over: small world hypothesis}
-\info{tussentijds weet je het niet}
 
 \section{The account specification}
-An extended account specification from \autoref{fig:simple-account-spec} is used for this proof of concept, the implementation in Rebel is shown in \autoref{fig:account-spec} \footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Account.ebl}}. According to the specification, an account can be opened with a minimum deposit of 50 euro. When an account is opened, it is possible to withdraw or deposit money. Besides deposit and withdraw, the balance may increase or decrease by interest. To disable any account, the block event can be used to put the account to the state blocked. The final state of account is closed, therefore there should not be any remaining balance. When an account is in the state closed, no further action is allowed since it is in the final state. The invariant is specified to keep every account with a positive balance.
+An extended account specification\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Account.ebl}} from \autoref{fig:simple-account-spec} is used for this proof of concept, the implementation in Rebel is shown in \autoref{fig:account-spec}. According to the specification, an account can be opened with a minimum deposit of 50 euro. When an account is opened, it is possible to withdraw or deposit money. Besides deposit and withdraw, the balance may increase or decrease by interest. To disable any account, the block event can be used to put the account to the state blocked. The final state of account is closed, therefore there should not be any remaining balance. When an account is in the state closed, no further action is allowed since it is in the final state. The invariant is specified to keep every account with a positive balance.
 
 % invariant paper ref, should be implemented in every event
 
@@ -20,60 +14,62 @@ An extended account specification from \autoref{fig:simple-account-spec} is used
 specification Account {
 	fields {
 		accountNumber: IBAN @key
-		balance: Money		
+		balance: Money
 	}
-	
-	events { 
+
+	events {
 		openAccount[minimalDeposit = EUR 50.00]
-		withdraw[]   
-		deposit[] 
-		interest[]   
-		block[]  
-		unblock[] 
+		withdraw[]
+		deposit[]
+		interest[]
+		block[]
+		unblock[]
 		close[]
-	} 
-	 
+	}
+
 	invariants {
 		positiveBalance
 	}
-	
+
 	lifeCycle {
 		initial init -> opened: openAccount
-		
+
 		opened -> opened: withdraw, deposit, interest
 			     -> blocked: block
 			     -> closed: close
-		
+
 		blocked -> opened: unblock
-		
-		final closed		
+
+		final closed
 	}
 }
 \end{lstlisting}
-\caption{Account specification}
-\label{fig:account-spec}
+\caption{Account specification}\label{fig:account-spec}
 \end{sourcecode}
 
-As you can see in the specification, it describes only what is possible with an account and not how. The specification doesn't contain the definition of the events. These definitions are specified somewhere else to promote reuse of events and invariants for other Rebel entities, and to make Rebel specifications more concise \cite[p.4]{stoel_storm_vinju_bosman_2016}.
-The specification of account has a close event to close an account which is illustrated in \autoref{fig:account-close-event} \footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Library.ebl}}. The precondition of the close event is that the balance of the account should be equal to zero. There are no postconditions, this means that the postconditions satisfied. So there are no properties changed of the account, but only the state is changed to closed.
+The specification of account has a close event\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Library.ebl}}
+to close an account which is illustrated in \autoref{fig:account-close-event}.
+The precondition of the close event is that the balance of the account should be
+equal to zero. There are no postconditions, this means that the postconditions
+are satisfied. So there are no properties changed of the account, but only the state
+is changed to closed.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
-event close() { 
+event close() {
 	preconditions {
 		this.balance == EUR 0.00;
 	}
 }
 \end{lstlisting}
-\caption{close event definition from account specification}
-\label{fig:account-close-event}
+\caption{close event definition from account specification}\label{fig:account-close-event}
 \end{sourcecode}
 
 \section{Introducing a bug}
 
-As mentioned earlier, an initial lightweight version is expected, and then motivated improvements with evaluation and validation. The approach is to start with a lightweight version which is able to trigger a bug and test it against the SMT Solver. For the lightweight version, it is an easily reproducible bug. This lightweight version is then able to trigger and test one specific bug.
+As mentioned earlier, an initial lightweight version is expected, then it will be extended with motivated improvements with evaluation and validation. The approach is to start with a lightweight version which is able to trigger a bug and test it with the SMT Solver. For the lightweight version, it is an easily reproducible bug. This lightweight version is then able to trigger and test one specific bug.
 
-\autoref{fig:account-close-pre} illustrates the code which is generated to check the precondition for the close event. From this code, we can see that also the balance of an account should be zero before it is getting closed. We assume that the precondition correctly generated.
+\autoref{fig:account-close-pre} illustrates the code which is generated to check the precondition for the close event. From this code, we can see that the balance of an account should be zero before it is getting closed. We assume that the precondition is correctly generated.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[language=scala]
@@ -87,17 +83,17 @@ case Close() => {
 
 }
 \end{lstlisting}
-\caption{Generated Precondition for close event}
-\label{fig:account-close-pre}
+\caption{Generated Precondition for close event}\label{fig:account-close-pre}
 \end{sourcecode}
 
-The first bug to trigger is to close an account with some balance. In order to do this, the precondition of the close event should be changed in the generated system (see \autoref{fig:mod-spec-gen}). By manually making the changes in the generated system, we know that there is definitely a bug in the generated system, assuming that the specification is correct. The modified precondition looks as follows in \autoref{fig:account-close-mod-pre}. The precondition is changed to \textit{RebelConditionCheck.success}, this means that the precondition is satisfied.
+The first bug to trigger is to close an account with some balance. In order to do this, the precondition of the close event should be changed in the generated system (see \autoref{fig:mod-spec-gen}). By manually making the changes in the generated system (system under test), we know that there is definitely a bug in the generated system, assuming that the specification is correct.
+
+The modified precondition looks as follows in \autoref{fig:account-close-mod-pre}. The precondition is changed to \textit{RebelConditionCheck.success}, this means that the precondition is satisfied.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[scale=0.26]{figures/mod-generated.pdf}
-  \caption{Modification in specification development}
-  \label{fig:mod-spec-gen}
+  \caption{Modification in specification development}\label{fig:mod-spec-gen}
 \end{figure}
 
 \begin{sourcecode}[h!]
@@ -106,17 +102,29 @@ case Close() => {
   RebelConditionCheck.success
 }
 \end{lstlisting}
-\caption{Modified Precondition for close event}
-\label{fig:account-close-mod-pre}
+\caption{Modified Precondition for close event}\label{fig:account-close-mod-pre}
 \end{sourcecode}
 
-Right now we have introduced a bug in the generated system, so the generated system doesn't conform to the specification. We discussed earlier that we are going to use the SMT Solver to find bugs in the generated system. So having an account with some balance in the state closed should not be possible from the SMT Solver. To let the SMT Solver solve this situation, it is necessary to generate the appropriate SMT constraints. \improvement{tebl explanation? reference to paper} \autoref{fig:tebl-closed-account} illustrates a tebl file for closed account. It defines the state of a closed account where the balance isn't equal to zero. The SMT Solver tries to solve this in max 6 steps. \improvement{explain steps, refer to paper. also explain why 6 steps}
+Right now we have introduced a bug in the system under test (SUT), so the
+generated system doesn't conform to the specification. We discussed earlier that
+we are going to use the SMT solver to find bugs in the SUT.
+
+Having an account with some balance in the state closed should not be possible
+according to the specification. To let the SMT Solver solve this situation, it
+is necessary to generate the appropriate SMT formulas. Therefore, checking can
+be used to check whether the given state with its properties is reachable.
+
+For this situation, is the following tebl file created, which is shown in
+\autoref{fig:tebl-closed-account}. It defines the state of a closed account with
+the property balance, where the balance isn't equal to zero. Also, here is 6
+used as configurable time-out. The SMT solver tries to solve this problem in
+max 6 steps.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
 module simple_transaction.ClosedAccountWithBalance
 
-import simple_transaction.Account 
+import simple_transaction.Account
 
 state closedAccountWithBalance {
   closed Account with balance != EUR 0.00;
@@ -124,30 +132,25 @@ state closedAccountWithBalance {
 
 check closedAccountWithBalance reachable in max 6 steps;
 \end{lstlisting}
-\caption{Closed account test}
-\label{fig:tebl-closed-account}
+\caption{Closed account test}\label{fig:tebl-closed-account}
 \end{sourcecode}
 
-Now we've defined the input for the SMT Solver. Similar behaviour should be defined for the generated system. So an account needs to be opened and closed afterwards. \improvement{solving bank ref model checking} The tebl file can be passed to the model checker and this return a Boolean whether if the state is reachable or not. A state is reachable when it can be reached from the initial state via valid transition(s) \cite[p.4]{stoel_storm_vinju_bosman_2016}. For the generated system, simply defining a function to check whether the request is successful or not is enough. Since we've defined the input for both systems and are able to compare it, we can trigger the bug and compare the results of it. As you can see in \autoref{fig:result-trigger-one-bug}, the results of the model checker state that the defined state in \label{fig:tebl-closed-account} isn't reachable and that the state in the generated system is reachable. 
+The input for the SMT solver is now defined. Similar behaviour should be defined
+for the generated system. So an account needs to be opened and closed
+afterwards.
 
-% \begin{sourcecode}[h]
-% \begin{lstlisting}[]
-% public bool check() {
-%   copyState();
-  
-%   bool reachableState = testIfStateIsReachable();
-%   println("Reachable state <reachableState>");
-  
-%   openAccount();
-  
-%   bool closedAccount = isSuccessful(closeAccount());
-%   println("Closed account <closedAccount>");
-  
-%   return reachableState == closedAccount;
-% }
-% \end{lstlisting}
-% \caption{Testing close account in rascal}
-% \end{sourcecode}
+The tebl file is passed to the model checker and it returns whether the given
+SMT problem is reachable or not. A state is reachable when it can be reached
+from the initial state via valid
+transitions.~\cite[p.~4]{stoel_storm_vinju_bosman_2016} To check if the state is
+reachable in the generated system, the request made for the given transition
+contains afterwards a check whether the request is successful.
+
+Since we've defined the input for both systems and are able to compare it, we
+can trigger the bug and compare the results of it. As you can see in
+\autoref{fig:result-trigger-one-bug}, the results of the model checker state
+that the defined state in \autoref{fig:tebl-closed-account} isn't reachable and
+that the state in the SUT is reachable.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -157,13 +160,11 @@ Reachable state false
 Closed account true
 bool: false
 \end{lstlisting}
-\caption{Results closing account comparison}
-\label{fig:result-trigger-one-bug}
+\caption{Results closing account comparison}\label{fig:result-trigger-one-bug}
 \end{sourcecode}
 
-\section{Evaluation}
-\label{sec:ch3-evalution}
-As we have seen with this lightweight version, it is able to find one specific bug with the use of an SMT Solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As first, \cite[p.274]{voelter2013dsl} states that a majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be bugs in the fixed code (skeleton). The second part is the template control code which is injected into the generated code. The manually introduced bug from the previous chapter belongs  to this category. 
+\section{Evaluation}\label{sec:ch3-evalution}
+As we have seen with this lightweight version, it is able to find one specific bug with the use of an SMT Solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As first,~\cite[p.274]{voelter2013dsl} states that a majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be bugs in the fixed code (skeleton). The second part is the template control code which is injected into the generated code. The manually introduced bug from the previous chapter belongs  to this category.
 
 \unsure{\textbf{Onduidelijkheid DSL fowler}: styles of code generation: Model-Aware Generation and Model Ignorant Generation. Styles for generating textual output: Transformer
 Generation and Templated Generation.}

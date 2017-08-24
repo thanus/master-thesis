@@ -7,22 +7,26 @@ approach and how to solve them by using the simulator.
 \section{More complex specifications}
 In the previous approaches is only the account specification used. In this proof
 of concept, we're going to use more complex specifications, complex in the sense
-that they depend and interact with each other. Therefore, we're going to use the
+that they depend and interact with each other.
+
+We're going to use the
 same account specification from \autoref{fig:account-spec}. As an addition to
 account specification, we use a transaction specification. Via this
 specification money can be transferred between two accounts.
-The Rebel implementation of the transaction is shown in
-\autoref{fig:transaction-spec} \footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Transaction.ebl}}.
+The Rebel implementation of the transaction \footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Transaction.ebl}} is shown in \autoref{fig:transaction-spec}.
 As you can see the transaction specification contains more fields than the
 account specification. The two remarkable fields are from and to, both are the
-type of IBAN \info{ref paper}. Note that after the type definition an annotation
-is given to specify a reference to another specification, in this case, account
-specification. The fields to and from are used to indicate between whom the
-transaction takes place. According to the specification, the transaction first
-needs to be started. When a transaction is in the state validated and booking
-cannot be made, the transition fail can be used to put the transaction in its
+type of \textit{IBAN}. \textit{IBAN} is a built-in \textit{Rebel}
+type.~\cite[p.~3]{stoel_storm_vinju_bosman_2016} Note that after the type
+definition an annotation is given to specify a reference to another
+specification, in this case, account specification. The fields to and from are
+used to indicate between whom the transaction takes place.
+
+According to the transaction specification, the transaction first
+needs to be started. When a transaction is in the state validated and a booking
+cannot be made, the transition \textit{fail} can be used to put the transaction in its
 final state failed. To successfully complete a transaction is the transition
-book used. In comparison to the account specification, does the transaction
+\textit{book} used. In comparison to the account specification, does the transaction
 specification two final states, which are booked and failed. When the final
 state booked or failed is reached, then there is no further action allowed.
 Note that the transaction specification doesn't have an invariant.
@@ -30,21 +34,24 @@ Note that the transaction specification doesn't have an invariant.
 Another difference in the transaction specification is that event definitions
 can contain sync expressions. From the previous event definitions, we've only
 seen pre- and postconditions. Sync expressions are used for synchronization.
-These sync expressions are also translated to SMT formulas. These sync
-expressions translated to the SMT Solver are just logical formulas, there is no
-logic for synchronization in these formulas. Of course, the generated system has
+These sync expressions are also translated to SMT formulas.
+
+The sync expressions translated to the SMT solver are just logical formulas,
+there is no logic for synchronization in these formulas. Of course, the generated system has
 implemented synchronization for these transitions. So it is possible to also
 test synchronization in the SUT. There are also several studies which reports
 that SMT-based approaches to model checking can be used to test distributed
-algorithms \cite{konnov2015you,alberti2015smt}.
-% Sync expressions are used to synchronously execute a blocking transition without the interference of other related transitions which may change the state of the instances used within the sync expressions. \unsure{which is better? or a paper ref?}
-The block transition uses this feature to express sync operations (see
-\autoref{fig:transaction-book-event}). A sync operation is here used to withdraw
-an amount from one account and to deposit to another account.
+algorithms.~\cite{konnov2015you, alberti2015smt}
 
-\info{new scala generator, two-phase commit for distribution.}
-\info{explain sync stuff and about distribution, look at implementation of
-sync in smt. Theoretically it is possible to find errors in distributed stuff.}
+% Sync expressions are used to synchronously execute a blocking transition without the interference of other related transitions which may change the state of the instances used within the sync expressions. \unsure{which is better? or a paper ref?}
+
+The \textit{book} transition uses the synchronization feature to express sync
+operations (see \autoref{fig:transaction-book-event}). A sync operation is here
+used to withdraw an amount from one account and to deposit to another account.
+
+% \info{new scala generator, two-phase commit for distribution.}
+% \info{explain sync stuff and about distribution, look at implementation of
+% sync in smt. Theoretically it is possible to find errors in distributed stuff.}
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -93,22 +100,35 @@ event book() {
 
 As discussed in \autoref{sec:research-method}, a model testing approach is
 already done to test existing banking systems. Although, in this approach, it
-was only possible to test the SUT interactively using the simulation. The traces
-are used to check whether the SUT accepts the execution from the trace and
-whether it behaves as the specification.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
-In addition, with the use of traces, it solves also the problems from the
-previous chapter, we know exactly what is done by the SMT and playback it in the
-SUT. Therefore, we're going to use the traces in this approach to check the
-behaviour of the SUT.
+was only possible to test the SUT interactively using the simulation. In this
+approach are the traces from the SMT solver used to check whether the
+SUT accepts the execution from the trace and whether it behaves as the
+specification.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
 
-\subsection{Evaluation points}
+By using the traces, solves also the problems from the previous proof of
+concept. With the use of traces, we know exactly which possible transitions the
+SMT solver has performed and then playback these transitions in the SUT. So,
+we're going to use the traces in this approach to check the behaviour of the
+SUT.
+
+\subsection{Evaluation criteria}
 Evaluation points and expectations.
 
+\subsubsection{Bugs}
+Trigger the bug from the previous proof of concept. Find bugs where similiar
+behaviour is performed as from the SMT solver.
+
+\subsubsection{Efficiency}
+
+
+\subsubsection{Coverage}
+All transitions are tested.
+
+
 \section{Approach}
-It is possible that a trace can contain multiple steps, \textit{e.g.}, to
-unblock an account, an account needs first to be opened and blocked. To playback
-the steps from a given trace on the SUT, we're going to split every transition
-into three steps as in ~\cite{stoel_storm_vinju_bosman_2016}:
+To playback the steps from a given trace on the SUT, we're going to split every
+transition into three steps as in the
+study~\cite[p.~6]{stoel_storm_vinju_bosman_2016}:
 \begin{enumerate}
 \item \textbf{pre-transition check} Check whether the current state from the SUT
 is conform to the current state from the trace
@@ -124,9 +144,11 @@ which has the pre- and postcondition of the to be executed transition
 \cite[p.6]{stoel_storm_vinju_bosman_2016}. The current state $s_{1}$ holds the
 constraints of the current values of the simulated specification. Hereafter, to
 execute the transition the user is asked to provide the data for the transition
-parameters. Before we can use the simulation, solve two things: current state,
-user feedback. User feedback isn't relevant in this case since it needs to be
-automated. These problems are discussed in the paragraphs below.
+parameters.
+
+Before using the simulation, two challenges needs to be solved: defining the
+current state for a given transition and providing the transition parameters
+data values. These challenges are discussed in the paragraphs below.
 
 \subsection{Pre-transition check}
 
@@ -140,13 +162,14 @@ state is required, \textit{e.g.}, an account needs to be blocked first to
 unblock it. In the simulation, a current state needs to be defined to check
 whether the step can be made from the current state. This is also the case in
 the SUT since a current state needs to be initialized first before the
-transition is made.
+transition is performed.
 
 To initialize the current state in the SUT checking can be used. By defining
-the current state with checking, it is checked and return a valid trace when
-it is satisfiable. So for every transition, a tebl needs to be generated for the
-state to reach (current state) to perform the transition. Although there are a
-number of caveats with the use tebl files.
+the current state with checking, the current state is checked and a valid trace
+is given by the model checker when the current state is satisfiable. So for
+every transition, a tebl needs to be generated for the state to reach
+(current state) to perform the transition. Although there are a number of
+caveats with the use tebl files.
 
 When a state to reach is defined for checking, the identifiers for the entities
 are only unique within that trace. For example for
@@ -154,17 +177,20 @@ are only unique within that trace. For example for
 from the traces is \textit{NL10INGB0000001}. The identifiers for similar
 entities are auto-incremented, \textit{e.g.}, when an additional account entity
 is specified in \autoref{fig:tebl-opened-simple-account} the identifier is then
-\textit{NL10INGB0000002}. This is not only the case with IBAN numbers but also
+\textit{NL10INGB0000002}. This is not only the case with IBAN numbers, but also
 with Integer, String, etc. This isn't a problem when a single transition is
-tested, but when multiple transitions are tested when there are multiple
+tested. When multiple transitions are tested and even when there are multiple
 entities, this will result in collisions of existing entities with the same
-identifiers. Note also that the generated IBAN numbers by the SMT Solver are
-also not valid. \improvement{why? representation of iban in smt. String pooling
-stuff, for the smt stuff.} The invalid IBAN numbers isn't a problem for the
+identifiers. Note also that the generated IBAN numbers by the SMT solver are
+also not valid.
+
+The invalid IBAN numbers isn't a problem for the
 checking since checking is only used to reason about possible traces. However,
-this doesn't hold in the SUT, since SUT is a banking system and here it must
+this doesn't hold in the SUT since SUT is a banking system and here it must
 conform to the IBAN standards. It is possible with checking to define the
-properties of an entity, \textit{e.g.}, the IBAN for an account. To solve the
+properties of an entity, \textit{e.g.}, the IBAN for an account.
+
+To solve the
 problem with the collision of existing entities, a random identifier should be
 given for each entity. Therefore, for each type like Integer, is a simple random
 generator implemented. This generator generates a random identifier which is
@@ -172,7 +198,7 @@ used as the identifier for the entities in checking. Unlike the basic types,
 IBAN is a more complex type to generate since the type should conform to the
 IBAN standards. Therefore, Iban4j \footnote{\url{https://github.com/arturmkrtchyan/iban4j/tree/ce1ca12b947755d1d96aab294d1ea15c78090ca2}}
 is used to generate random IBAN account numbers which are compliant to the
-ISO\_13616 ISO\_9362 standards.
+ISO\_13616 and ISO\_9362 standards.
 
 Another pitfall with the use of checking is the use of more complex
 specifications, \textit{e.g.}, the transaction specification. With such
@@ -188,13 +214,18 @@ existing entities.
 Altogether, a generated tebl for checking the current state looks as follows in
 \autoref{fig:tebl-gen-validated-transaction}.
 
+When the current state is defined, the generated tebl is given to the model
+checker. When the current state is satisfiable are the traces used to perform
+the transitions in the SUT. This is in more depth described in the section
+traces. Performing each step from a trace entails the three steps to test and
+perform the transition.
+
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
 module simple_transaction.Test
 
 import simple_transaction.Transaction
 import simple_transaction.Account
-
 
 state doCheck {
   validated Transaction with id == 65227;
@@ -211,24 +242,20 @@ check doCheck reachable in max 6 steps;
 
 \subsubsection*{Current state values}
 After the current state is defined, the same approach from the previous chapter
-can be used to check whether it satisfiable. The SMT Solver returns whether it
-is satisfiable with the traces, including instances with its values. The last
-step is taken and the instances from here. The values from these instances of
-the simulated specifications are given to the current state $s_{1}$
-\improvement{why?}.
+can be used to check whether it satisfiable. The SMT solver returns whether the
+current state is satisfiable with the traces, including the instances with its
+values.
+
+To provide transition parameters data to the simulation, is the last step taken
+with its instances. The last step is taken, because the last step is the
+transition which let to the current state, which is going to be used by the
+simulation. The values from these instances of the simulated specifications are
+given to the current state $s_{1}$.
 
 The simulation checks only whether the step can be made from the given current
 state, it doesn't check whether the current state is reachable. With the use of
-checking for the current state,
-
-
-There is also reason to argue if this is possible
-
-
-
-Execute traces against generated system to have the instances initialized. This
-is in more depth described in chapter traces. Each step within a trace is a
-transition, so test this every three steps.
+checking for the current state is the current state checked whether this is
+satisfiable.
 
 \subsection{Transition check}
 % Execute the given transition from the trace on the SUT
@@ -236,19 +263,20 @@ transition, so test this every three steps.
 \subsubsection*{Transition parameters data values}
 Since simulation is used for reasoning about individual steps, that explains why
 the transition parameters data values for the chosen transition should be
-provided by the user. And as discussed earlier is in the model testing approach
+provided by the user. As discussed earlier is in the model testing approach
 of the study \cite[p.6]{stoel_storm_vinju_bosman_2016} chosen for interactively
-using the simulation. Manually providing the transition parameters data values
+using the simulation.
+
+Manually providing the transition parameters data values
 isn't relevant for us, since our intention is to test automatically the SUT.
 Certainly, these values can be generated randomly, but it should satisfy the
 given pre- and postconditions for the chosen transition. However, it would be
 better to let the SMT solver fill these values, taking into account the pre- and
 postconditions of the chosen transition. At the time of the publication of the
-\cite{stoel_storm_vinju_bosman_2016}, this wasn't possible in the simulation, so
+study~\cite{stoel_storm_vinju_bosman_2016}, this wasn't possible in the simulation, so
 the simulation should be slightly modified.
 
-In cooperation with the author is this feature added to the simulation.
-\footnote{\url{https://github.com/cwi-swat/rebel/commit/0d29eb30a82cc5dd6d8be750daa4a24e4e2786be}}
+In cooperation with the author of the study~\cite{stoel_storm_vinju_bosman_2016} is this feature added to the simulation.~\footnote{\url{https://github.com/cwi-swat/rebel/commit/0d29eb30a82cc5dd6d8be750daa4a24e4e2786be}}
 The simulation is now able that both state variables and transition variables
 can be left open, in the sense of using the expression \textit{ANY}. When the
 expression \textit{ANY} is used, the SMT solver will fill in a value for the
@@ -258,7 +286,10 @@ the chosen transition. \unsure{what about expression as iban?}
 \subsubsection*{Traces}
 A valid trace is a chain of valid transitions from one state to the next state
 \cite[p.5]{stoel_storm_vinju_bosman_2016}. The trace may contain multiple steps,
-each step has instances with its state and values. These instances are specific
+\textit{e.g.}, to unblock an account, an account needs first to be opened and
+blocked. Each step from the traces has instances with its state and values.
+
+The instances are specific
 for that step, the results after performing the step are given in the state and
 values for an instance. A trace for simulation contains the state before
 performing the transition, the step (transition), and then the state after
@@ -287,7 +318,9 @@ determined for the given step and is the generated JSON sent to the endpoint.
 Since a trace contains the instances before and after the step, this can be used
 in the post-transition check to test the SUT. As a result, we can check after or
 before performing the step, whether the SUT behaves similarly as the
-simulated/checked specification. To check whether the new state from the SUT is
+simulated/checked specification.
+
+To check whether the new state from the SUT is
 conform to the trace, the state and values from the instances are read after
 performing the transition. The endpoint is then determined to retrieve the state
 of these instances in the SUT. Then, the results of these instances from the SUT
@@ -308,8 +341,10 @@ identity of the current state is assigned to the \_state field and the identity
 of the transition which led to the current state is assigned to the field
 \_step. This results into that the original life cycle can be expressed, by
 adding constraints on the \_state and \_step fields to the transitions pre- and
-postconditions \cite[p.5]{stoel_storm_vinju_bosman_2016}. The newly added fields
-are also present within the trace from the SMT Solver. In our case, we only use
+postconditions \cite[p.5]{stoel_storm_vinju_bosman_2016}.
+
+The newly added fields
+are also present within the trace from the SMT solver. In our case, we only use
 the \_state field, because we already know which transition let to the current
 state. To compare the current state from the \_state field, it needs to be
 sugared back in order to compare it to the SUT.
@@ -320,9 +355,12 @@ As discussed in the code generation section, the request made to the API of the
 SUT are "standardized", but the response isn't. For the post-transition check,
 it is necessary to check the new state in the SUT, and therefore an adapter
 needs to be defined to be able to compare the results of the SUT and the trace.
+
 The decision is made to only implement an adapter for the code generator
 Codegen-Akka, since this is a more mature code generator and frequently used for
 experiments within ING Bank.
+
+\info{add model checking paper for adapter}
 
 % Using the generated test cases, we can then test the system. Usually, an adapter is used to decouple knowledge of the SUT’s external interfaces from the test generation tool. The test cases provide the inputs and expected outputs to the adapter. The adapter forwards the inputs to the SUT. When the SUT sends a response, the adapter observes it and evaluates it using the expected outputs
 
@@ -492,11 +530,14 @@ open an account with a balance of 50 euros. Afterwards are no transitions
 performed. Thus this current state does not satisfy the precondition of the
 close transition. That's why the simulation wasn't able to perform the
 transition since the given values from the current state to $s_{1}$ weren't
-satisfying for $s_{2}$. The generated tebl for the current state is shown in
+satisfying for $s_{2}$.
+
+The generated tebl for the current state is shown in
 \autoref{fig:tebl-gen-validated-transaction}. Only the state to reach is
 specified with the identifier of the account. As we've seen the event definition
 of \textit{openAccount} in \autoref{fig:account-openaccount-event}, the account
 must be opened with a balance of 50 euros.
+
 To conclude, the simulation wasn't able to test the transition close since the
 precondition of this transition isn't satisfied in the postcondition of $s_{1}$.
 
@@ -527,7 +568,9 @@ Note the question mark in this message. This error message is part of the
 post-transition check where the new state of the SUT is tested. On line number
 35 is the instance account shown after the transition and on the line below you
 can see the same question mark. Both question mark relates to each other, which
-is the state of a given specification. In testing single specifications, \textit{e.g.}, in
+is the state of a given specification.
+
+In testing single specifications, \textit{e.g.}, in
 \autoref{fig:result-codegenakka-close}, we've seen that the state is present
 from the result of the SMT solver. In this case, the model checker/simulation
 doesn't return the state when multiple instances are involved. So this also
@@ -585,8 +628,8 @@ Could not find state ?, expected  "state":{"?":{}}
 \end{sourcecode}
 
 % https://github.com/ING-CoreBank-University/ing-codegen-datomic/commit/4ebcd4df0a90fc10451562a6a43c3fcd8891fce3
-\subsection{Codegen-Datomic}
-\label{sec:bug-interest-javadatomic}
+\subsection{Codegen-Datomic}\label{sec:bug-interest-javadatomic}
+
 In this test run is the Javadatomic generator used. After investigating the test
 run, it seems to be that testing the transition interest fails. As you can see
 in \autoref{fig:result-javadatomic-interest} on line number 55, the request made
@@ -597,7 +640,9 @@ be successful (see line number 28). According to the simulation, on line number
 number 47, you can see the instance after performing the interest step, which
 resulted into an account entity with the state opened and with a negative
 balance. To conclude, the transition interest is possible according to the
-simulation. Although, the request made for the transition interest isn't
+simulation.
+
+Although, the request made for the transition interest isn't
 successful, and when we take a look at the account in the SUT, the account looks
 as follows in \autoref{fig:interest-opened-account-json}. The state of the
 account is still opened and the balance seems to be the same when the account
@@ -741,7 +786,9 @@ of the type \textit{BigDecimal}, and compares the \textit{lhs} to the
 \textit{rhs}, this result should be greater or equal than zero. This function
 isn't correctly defined, since this is the definition for the function
 \textit{isGreaterOrEqualThan}. This code isn't generated but is part of the
-fixed code. Clearly, we've discovered a bug in the SUT for the transition
+fixed code.
+
+Clearly, we've discovered a bug in the SUT for the transition
 interest. As discussed in \autoref{sec:ch3-evalution}, it is possible to have
 bugs in the fixed code. With this proof of concept and testing the javadatomic
 generator, we can conclude that we've found a bug in the fixed code.
@@ -769,7 +816,7 @@ code 400. Also, in this test run is construction the current state for the
 interest transition successful (see line number 26). In this test run has the
 simulation generated the same trace for the interest transition as for the
 Javadatomic generator. The state of the account in the SUT looks as follows in
-\label{fig:interest-opened-account-scalaes-json}. Also here is the state of the
+\autoref{fig:interest-opened-account-scalaes-json}. Also here is the state of the
 account opened and the balance seems to be the same when the account was opened.
 So, the performed interest transition has failed and is the state of the account
 the same before performing the transition.
@@ -877,7 +924,9 @@ The class from \autoref{fig:scala-gen-interest-json} is used in
 \autoref{fig:scala-gen-interest-request}. The \textit{interest} method handles
 the interest transition and as you can see is the class \textit{Interest} used
 as the second parameter. This class is used to bind the interest parameter as a
-type of the \textit{Interest} class. In short, we've discovered a bug in the SUT
+type of the \textit{Interest} class.
+
+In short, we've discovered a bug in the SUT
 for the interest transition. The interest transition bug in the Javadatomic
 generator belongs to the fixed code category, but in this case, for the Scala-ES
 generator, the bug belongs to the injected code category, since the

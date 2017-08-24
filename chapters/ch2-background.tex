@@ -104,7 +104,5 @@ check openAccountCheck reachable in max 6 steps;
 \label{fig:tebl-opened-simple-account}
 \end{sourcecode}
 
-\info{something about trace}
-
 \subsection{Simulation}
 The purpose of simulation and checking differs. The purpose of the simulation is to check the external consistency, checking is used for the internal consistency.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} As explained in the previous paragraph, checking is used to reason about all possible traces. Simulation focuses on individual steps to reason about. So with the simulator, the user is able to quickly check the specification behaves as expected. As checking, the same strategy is used in the simulation, \textit{i.e.}, using SMT solver and encoding for \textit{Rebel} Specifications.

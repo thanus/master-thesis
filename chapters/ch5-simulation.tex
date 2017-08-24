@@ -294,6 +294,8 @@ of these instances in the SUT. Then, the results of these instances from the SUT
 and trace are compared to find any misbehaviour in the SUT.
 \improvement{check all instances}
 
+\subsubsection{Normalization}
+
 Before a Rebel specification is checked or simulated is the specification
 normalized. This normalization process is done to make the SMT formulas easier
 and also to give it partially semantics
@@ -313,6 +315,7 @@ state. To compare the current state from the \_state field, it needs to be
 sugared back in order to compare it to the SUT.
 % Adding Frame Conditions. To guard the fields that are not changed by the event frame conditions are added (Jack- son 2012). These frame conditions make sure that a field has the same value after the transition as before.
 
+\subsubsection{Adapter}
 As discussed in the code generation section, the request made to the API of the
 SUT are "standardized", but the response isn't. For the post-transition check,
 it is necessary to check the new state in the SUT, and therefore an adapter

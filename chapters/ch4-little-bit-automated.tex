@@ -79,13 +79,14 @@ will replace conditionals according to the replacement table in
 \begin{table}[h!]
 \centering
 \begin{tabular}{cc}
-\textbf{Actual expression} & \textbf{Translated expression} \\
+\toprule
+\textbf{Actual expression} & \textbf{Translated expression} \\ \midrule
 !=                         & ==                             \\
 ==                         & !=                             \\
 \textgreater               & \textless=                     \\
 \textgreater=              & \textless                      \\
 \textless                  & \textgreater=                  \\
-\textless=                 & \textgreater                   \\
+\textless=                 & \textgreater                   \\ \bottomrule
 \end{tabular}
 \caption{Conditionals replacement}\label{fig:table-replacement-conditions}
 \end{table}

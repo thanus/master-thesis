@@ -29,6 +29,7 @@
 \usepackage{float}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{placeins}
 \usepackage{amscd}
 \usepackage[nottoc,notlot,notlof]{tocbibind}
 \usepackage{multirow}

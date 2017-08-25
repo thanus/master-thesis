@@ -89,6 +89,7 @@ will replace conditionals according to the replacement table in
 \end{tabular}
 \caption{Conditionals replacement}\label{fig:table-replacement-conditions}
 \end{table}
+\FloatBarrier
 
 \subsection{Generated system}
 The conditionals for the transition in the SUT are also replaced.
@@ -126,6 +127,7 @@ event deposit(amount: Money) {
 \end{lstlisting}
 \caption{deposit event definition from specification}\label{fig:account-deposit-event}
 \end{sourcecode}
+\FloatBarrier
 
 \section{Results}
 Discuss the results of the test approach.
@@ -147,6 +149,7 @@ close                       & \xmark{}            \\ \bottomrule
 \end{tabular}
 \caption{Results: testing account specification transitions}\label{fig:ch5-res-codegenakka-account}
 \end{table}
+\FloatBarrier
 
 \section{Analyse}
 Analyse of the results
@@ -175,6 +178,7 @@ Result successful transition test: false
 \end{lstlisting}
 \caption{Result run}\label{fig:result-close-account}
 \end{sourcecode}
+\FloatBarrier
 
 When we take a look at the account in the SUT, the account looks as
 follows in \autoref{fig:closed-account-json}. The state of the account is in
@@ -201,6 +205,7 @@ discovered a bug in the SUT.
 \end{lstlisting}
 \caption{account state in json}\label{fig:closed-account-json}
 \end{sourcecode}
+\FloatBarrier
 
 Now we know that we have discovered a bug, we want to know where this takes
 place and whether the code isn't generated correctly from the specification. The
@@ -219,6 +224,7 @@ if(! (isNotEqual(_entity.getBalance(), Money.of(org.joda.money.CurrencyUnit.of("
 \end{lstlisting}
 \caption{Code in Java}\label{fig:java-notequal-check}
 \end{sourcecode}
+\FloatBarrier
 
 The question right now is, how is the above code generated. After taking a look at the synthesization of
 expression, the expressions from \textit{Rebel} are not properly translated. The
@@ -233,6 +239,7 @@ private str g(e:(Expr)`<Expr lhs> == <Expr rhs>`, tmap t) = "isNotEqual(<g(lhs, 
 \end{lstlisting}
 \caption{Generate equal expression in Rascal}\label{fig:rascal-datomic-synthesize-equal}
 \end{sourcecode}
+\FloatBarrier
 
 So the expression isn't properly synthesized, and it should be synthesized to
 \textit{isEqual} instead of \textit{isNotEqual}. With this modification, it
@@ -268,6 +275,7 @@ event deposit(amount: Money) {
 \end{lstlisting}
 \caption{deposit event definition from specification}\label{fig:java-deposit-maxamount}
 \end{sourcecode}
+\FloatBarrier
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -277,6 +285,7 @@ Error:(63, 23) java: bad operand types for binary operator '<'
 \end{lstlisting}
 \caption{deposit event definition from specification}\label{fig:java-result-lessthan-compile-error}
 \end{sourcecode}
+\FloatBarrier
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[language=Java]
@@ -287,6 +296,7 @@ if(! ((amount < Money.of(org.joda.money.CurrencyUnit.of("EUR"), 200.00)))) {
 \end{lstlisting}
 \caption{Code in Java}\label{fig:java-lessthan-compile-error}
 \end{sourcecode}
+\FloatBarrier
 
 The synthesization of the generated is shown in
 \autoref{fig:rascal-datomic-synthesize-lessthan}. Also here are the \textit{Rebel}
@@ -312,6 +322,7 @@ private str g(e:(Expr)`<Expr lhs> \< <Expr rhs>`, tmap t) = "(<g(lhs, t)> \< <g(
 \end{lstlisting}
 \caption{Generate equal expression in Rascal}\label{fig:rascal-datomic-synthesize-lessthan}
 \end{sourcecode}
+\FloatBarrier
 
 \section{Evaluation}\label{sec:ch4-evaluation}
 

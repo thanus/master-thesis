@@ -46,6 +46,7 @@ specification Account {
 \end{lstlisting}
 \caption{Account specification}\label{fig:account-spec}
 \end{sourcecode}
+\FloatBarrier
 
 The specification of account has a close event\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Library.ebl}}
 to close an account which is illustrated in \autoref{fig:account-close-event}.
@@ -64,6 +65,7 @@ event close() {
 \end{lstlisting}
 \caption{close event definition from account specification}\label{fig:account-close-event}
 \end{sourcecode}
+\FloatBarrier
 
 \section{Introducing a bug}
 
@@ -85,6 +87,7 @@ case Close() => {
 \end{lstlisting}
 \caption{Generated Precondition for close event}\label{fig:account-close-pre}
 \end{sourcecode}
+\FloatBarrier
 
 The first bug to trigger is to close an account with some balance. In order to do this, the precondition of the close event should be changed in the generated system (see \autoref{fig:mod-spec-gen}). By manually making the changes in the generated system (system under test), we know that there is definitely a bug in the generated system, assuming that the specification is correct.
 
@@ -95,6 +98,7 @@ The modified precondition looks as follows in \autoref{fig:account-close-mod-pre
   \includegraphics[scale=0.26]{figures/mod-generated.pdf}
   \caption{Modification in specification development}\label{fig:mod-spec-gen}
 \end{figure}
+\FloatBarrier
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[language=scala]
@@ -104,6 +108,7 @@ case Close() => {
 \end{lstlisting}
 \caption{Modified Precondition for close event}\label{fig:account-close-mod-pre}
 \end{sourcecode}
+\FloatBarrier
 
 Right now we have introduced a bug in the system under test (SUT), so the
 generated system doesn't conform to the specification. We discussed earlier that
@@ -134,6 +139,7 @@ check closedAccountWithBalance reachable in max 6 steps;
 \end{lstlisting}
 \caption{Closed account test}\label{fig:tebl-closed-account}
 \end{sourcecode}
+\FloatBarrier
 
 The input for the SMT solver is now defined. Similar behaviour should be defined
 for the generated system. So an account needs to be opened and closed
@@ -162,6 +168,7 @@ bool: false
 \end{lstlisting}
 \caption{Results closing account comparison}\label{fig:result-trigger-one-bug}
 \end{sourcecode}
+\FloatBarrier
 
 \section{Evaluation}\label{sec:ch3-evalution}
 As we have seen with this lightweight version, it is able to find one specific bug with the use of an SMT Solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As first,~\cite[p.274]{voelter2013dsl} states that a majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be bugs in the fixed code (skeleton). The second part is the template control code which is injected into the generated code. The manually introduced bug from the previous chapter belongs  to this category.

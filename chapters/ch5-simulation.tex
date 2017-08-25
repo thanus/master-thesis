@@ -78,9 +78,9 @@ specification Transaction {
 	}
 }
 \end{lstlisting}
-\caption{Transaction specification}
-\label{fig:transaction-spec}
+\caption{Transaction specification}\label{fig:transaction-spec}
 \end{sourcecode}
+\FloatBarrier
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -91,9 +91,9 @@ event book() {
 	}
 }
 \end{lstlisting}
-\caption{book event definition from transaction specification}
-\label{fig:transaction-book-event}
+\caption{book event definition from transaction specification}\label{fig:transaction-book-event}
 \end{sourcecode}
+\FloatBarrier
 
 \section{Method}
 % The simulation of Rebel is able to translate a single step to SMT formulas.
@@ -235,9 +235,9 @@ state doCheck {
 
 check doCheck reachable in max 6 steps;
 \end{lstlisting}
-\caption{Generated tebl for the transition book}
-\label{fig:tebl-gen-validated-transaction}
+\caption{Generated tebl for the transition book}\label{fig:tebl-gen-validated-transaction}
 \end{sourcecode}
+\FloatBarrier
 
 \subsubsection*{Current state values}
 After the current state is defined, the same approach from the previous chapter
@@ -385,6 +385,7 @@ close                       & \cmark{}               & \xmark{}            \\ \b
 \end{tabular}
 \caption{Results: testing account specification transitions}\label{fig:ch5-res-codegenakka-account}
 \end{table}
+\FloatBarrier
 
 \begin{table}[h!]
 \centering
@@ -397,6 +398,7 @@ fail                        & \cmark{}               & \cmark{}            \\ \b
 \end{tabular}
 \caption{Results: testing transaction specification transitions}\label{fig:ch5-res-codegenakka-transaction}
 \end{table}
+\FloatBarrier
 
 \subsection{Codegen-Datomic}
 
@@ -415,6 +417,7 @@ close                       & \cmark{}               & \xmark{}            \\ \b
 \end{tabular}
 \caption{Results: testing account specification transitions}\label{fig:ch5-res-codegendatomic-account}
 \end{table}
+\FloatBarrier
 
 \begin{table}[h!]
 \centering
@@ -427,6 +430,7 @@ fail                        & \cmark{}               & \cmark{}            \\ \b
 \end{tabular}
 \caption{Results: testing transaction specification transitions}\label{fig:ch5-res-codegendatomic-transaction}
 \end{table}
+\FloatBarrier
 
 \subsection{Codegen-Scala-ES}
 
@@ -445,6 +449,7 @@ close                       & \cmark{}               & \xmark{}            \\ \b
 \end{tabular}
 \caption{Results: testing account specification transitions}\label{fig:ch5-res-codegenscalaes-account}
 \end{table}
+\FloatBarrier
 
 \begin{table}[h!]
 \centering
@@ -457,6 +462,7 @@ fail                        & \cmark{}               & \cmark{}            \\ \b
 \end{tabular}
 \caption{Results: testing transaction specification transitions}\label{fig:ch5-res-codegenscalaes-transaction}
 \end{table}
+\FloatBarrier
 
 \section{Analyse}
 Analyse of the results
@@ -518,9 +524,9 @@ Response: ("body":"CommandSuccess(OpenAccount(50.00 EUR))","isSuccessful":"true"
     var accountNumber (type: IBAN) = FO9402337176862639
     var balance (type: Money) = EUR50.00
 \end{lstlisting}
-\caption{No test generated for close transition}
-\label{fig:result-codegenakka-close}
+\caption{No test generated for close transition}\label{fig:result-codegenakka-close}
 \end{sourcecode}
+\FloatBarrier
 
 As discussed earlier, the precondition of the close transition is that there
 should be no remaining balance as shown in \autoref{fig:account-close-event}.
@@ -552,9 +558,9 @@ state doCheck {
 
 check doCheck reachable in max 6 steps;
 \end{lstlisting}
-\caption{Generated tebl for the transition book}
-\label{fig:tebl-gen-validated-transaction}
+\caption{Generated tebl for the transition book}\label{fig:tebl-gen-validated-transaction}
 \end{sourcecode}
+\FloatBarrier
 
 \subsubsection{State testing}
 
@@ -622,9 +628,9 @@ JSON payload: { "OpenAccount": { "initialDeposit":"EUR 50.00" } }
 Response: ("body":"CommandSuccess(OpenAccount(50.00 EUR))","isSuccessful":"true","message":"OK","errorBody":"","code":"200")
 Could not find state ?, expected  "state":{"?":{}}
 \end{lstlisting}
-\caption{State not found for entities}
-\label{fig:result-not-found-state}
+\caption{State not found for entities}\label{fig:result-not-found-state}
 \end{sourcecode}
+\FloatBarrier
 
 % https://github.com/ING-CoreBank-University/ing-codegen-datomic/commit/4ebcd4df0a90fc10451562a6a43c3fcd8891fce3
 \subsection{Codegen-Datomic}\label{sec:bug-interest-javadatomic}
@@ -709,9 +715,9 @@ Endpoint: /Account/MD14FLBLJOYGVJMDUZVKLU4C/Interest
 JSON payload: { "Interest": { "currentInterest":"-77.09" } }
 Response: ("body":"","isSuccessful":"false","message":"Bad Request","errorBody":"","code":"400")
 \end{lstlisting}
-\caption{Failing test on interest transition with the use of javadatomic generator}
-\label{fig:result-javadatomic-interest}
+\caption{Failing test on interest transition with the use of javadatomic generator}\label{fig:result-javadatomic-interest}
 \end{sourcecode}
+\FloatBarrier
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -729,8 +735,8 @@ Response: ("body":"","isSuccessful":"false","message":"Bad Request","errorBody":
 }
 \end{lstlisting}
 \caption{Account state in the SUT after performing the interest transition}
-\label{fig:interest-opened-account-json}
-\end{sourcecode}
+\label{fig:interest-opened-account-json}\end{sourcecode}
+\FloatBarrier
 
 The event definition for the interest transition is given in
 \autoref{fig:account-interest-event}. This event definition states that the
@@ -752,9 +758,9 @@ event interest[maxInterest: Percentage = 10%](currentInterest: Percentage) {
   }
 }
 \end{lstlisting}
-\caption{interest event definition from account specification}
-\label{fig:account-interest-event}
+\caption{interest event definition from account specification}\label{fig:account-interest-event}
 \end{sourcecode}
+\FloatBarrier
 
 Now we know that we've discovered a bug, since the simulated transition is
 conform to the specification, we want to know where this misbehaviour occurs and
@@ -775,9 +781,9 @@ if(! (isLessOrEqualThan(currentInterest, 10 /* % */))) {
   throw new BuildCASTransactionException("Predicate did not hold: InterestTransaction: currentInterest <= 10%");
 }
 \end{lstlisting}
-\caption{Code in Java}
-\label{fig:java-gen-interest-pre}
+\caption{Code in Java}\label{fig:java-gen-interest-pre}
 \end{sourcecode}
+\FloatBarrier
 
 The function \textit{isLessOrEqualThan} is shown in
 \autoref{fig:java-less-or-equal-check}. This function takes two parameters, both
@@ -798,9 +804,9 @@ public static boolean isLessOrEqualThan(BigDecimal lhs, BigDecimal rhs) {
   return lhs.compareTo(rhs) >= 0;
 }
 \end{lstlisting}
-\caption{Code in Java}
-\label{fig:java-less-or-equal-check}
+\caption{Code in Java}\label{fig:java-less-or-equal-check}
 \end{sourcecode}
+\FloatBarrier
 
 \subsection{Codegen-Scala-ES}
 \label{sec:bug-interest-scalaes}
@@ -879,9 +885,9 @@ value (&#x27;-77.09&#x27;)\n at [Source: io.undertow.servlet.spec.ServletInputSt
 line: 1, column: 35] (through reference chain: nl.ing.corebank.dto.
 account.Interest[&quot;currentInterest&quot;])","code":"400")
 \end{lstlisting}
-\caption{Failing test on interest transition with the use of Scala-ES generator}
-\label{fig:result-scalaes-interest}
+\caption{Failing test on interest transition with the use of Scala-ES generator}\label{fig:result-scalaes-interest}
 \end{sourcecode}
+\FloatBarrier
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -895,9 +901,9 @@ account.Interest[&quot;currentInterest&quot;])","code":"400")
    "balance":"50.00 EUR"
 }
 \end{lstlisting}
-\caption{Account state in the SUT after performing the interest transition}
-\label{fig:interest-opened-account-scalaes-json}
+\caption{Account state in the SUT after performing the interest transition}\label{fig:interest-opened-account-scalaes-json}
 \end{sourcecode}
+\FloatBarrier
 
 Likewise, the Javadatomic generator, we've discovered a bug in the SUT, since
 the simulated transition isn't conform to the specification. To know where this
@@ -915,9 +921,9 @@ indeed uses the type \textit{Dimensionless} here.
 @JsonCreator
 case class Interest(@JsonProperty("currentInterest") currentInterest: Dimensionless)
 \end{lstlisting}
-\caption{Code in Scala}
-\label{fig:scala-gen-interest-json}
+\caption{Code in Scala}\label{fig:scala-gen-interest-json}
 \end{sourcecode}
+\FloatBarrier
 
 The class from \autoref{fig:scala-gen-interest-json} is used in
 \autoref{fig:scala-gen-interest-request}. The \textit{interest} method handles
@@ -940,9 +946,9 @@ generator, the bug belongs to the injected code category, since the
 def interest(@Suspended asyncResponse: AsyncResponse,
   @PathParam("accountNumber") accountNumber: IBAN, interest: Interest): Unit = {
 \end{lstlisting}
-\caption{Code in Scala}
-\label{fig:scala-gen-interest-request}
+\caption{Code in Scala}\label{fig:scala-gen-interest-request}
 \end{sourcecode}
+\FloatBarrier
 
 % \subsection{Two-phase commit}
 % datetime transaction

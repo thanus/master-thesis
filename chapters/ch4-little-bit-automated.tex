@@ -315,6 +315,41 @@ private str g(e:(Expr)`<Expr lhs> \< <Expr rhs>`, tmap t) = "(<g(lhs, t)> \< <g(
 
 \section{Evaluation}\label{sec:ch4-evaluation}
 
+\subsection{Bugs}
+Expected: Find bugs where the inverse is possible. Just like the example from the test
+mechanics.
+\\
+With this proof of concept, we've found a bug in the SUT, which was
+discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
+since the SUT isn't able to compile. The found bug belongs to the category
+injected code since the generated code for the precondition is wrong. In this
+case, the final state closed is reached where the preconditions of the \textit{close}
+transition don't hold.
+
+\subsection{Efficiency}
+Expected: Test similar as the SMT. Testing the right transition
+\\
+A part of
+the generated test for a transition is checking, which is used to test the state to
+reach with the replaced preconditions. So, in this proof of concept, we're
+testing what should be not possible according to the specification. The result
+of the checking from the SMT Solver varies, \textit{e.g.}, an opened account can be
+reached by the \textit{openAccount} transition or by the transition
+\textit{openAccount} and \textit{withdraw}.
+
+
+\subsection{Coverage}
+Expected: To test all transitions with its state.
+\\
+After the checking, a transition
+is performed in the SUT. In this proof of concept, it's unknown whether the
+performed transition with its parameters in the SUT is the same as the
+transition computed by the SMT Solver. This causes some false positives in the
+test run. Also, it is difficult to play like the SMT Solver, it is unknown which
+result the SMT Solver will give. The SMT solver is also smarter/better in checking
+the satisfiability of a given constraints.
+
+\section{Conclusion}
 In this proof of concept is the account specification used to test the SUT.
 This proof of concept generates automatically tests for transitions.
 
@@ -357,9 +392,6 @@ $\forall e s_{1} \to s_{2}, s_{2} \gets s_{1}, pre(e)$.
 % % of?
 % \item $\forall e s1 \to s2, s2 alleen bereikbaar via (1), dan pre(e)$
 % \end{itemize}
-
-\section{Conclusion}
-Conclusion
 
 \section{Threats to validity}
 

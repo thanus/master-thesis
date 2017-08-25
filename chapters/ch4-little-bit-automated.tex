@@ -24,21 +24,25 @@ want to check whether a negative balance can be achieved with the transition.
 To conclude, with this approach we're testing the inverse of the preconditions. Thus we're testing
 what should not be possible according to the specification.
 
-\subsection{Evaluation criteria}
-Evaluation points and expectations.
+\subsection{Evaluation criteria}\label{sec:ch4-eval-criteria}
 
 \subsubsection{Bugs}
-Find bugs where the inverse is possible. Just like the example from the test
-mechanics.
+Since we're testing with this approach the inverse of the preconditions, thus
+what should be not possible according to the specification, it is expected to
+find bugs in the SUT where it is possible to perform the inverse of a
+transition.
 
 \subsubsection{Efficiency}
-Test similar as the SMT. Testing the right transition
+In this approach is checking used to check what isn't possible according to the
+specification. Therefore, the same tested transition should be tested in the
+SUT.
 
 \subsubsection{Coverage}
-To test all transitions with its state.
+The proof of concept is going to generate test for all transitions. Therefore,
+it is expected to test all the transitions of a specification.
 
 \section{Approach}
-This is a well known approach in mutation testing. Mutation testing is
+The testing approach is a well known approach in mutation testing. Mutation testing is
 fault-based testing technique, which generates faulty programs by syntactic
 changes to the original program.~\cite[p.~1]{jia2011analysis} The set of faulty
 programs are called mutants, each mutant contains a different syntactic change.
@@ -131,9 +135,13 @@ event deposit(amount: Money) {
 \FloatBarrier
 
 \section{Results}
-Discuss the results of the test approach.
 
 \subsection{Codegen-Akka}
+
+For this proof of concept we're testing the generator Codegen-Akka. The results
+of this test run is shown in \autoref{fig:ch5-res-codegenakka-account}. As shown
+in this table, the tests for four transitions are successful and the tests for
+the other three transitions are failed.
 
 \begin{table}[h!]
 \centering
@@ -153,10 +161,8 @@ close                       & \xmark{}            \\ \bottomrule
 \FloatBarrier
 
 \section{Analyse}
-Analyse of the results
 
 \subsection{Codegen-Akka}
-The proof of concept uses in this test run the Codegen-Akka generator.
 
 % https://github.com/cwi-swat/ing-rebel-generators/commit/999e6b40307a79fb245ace15375c27461c92374e
 \subsubsection{Bug: closing an account with balance}\label{sec:bug-close-account}
@@ -328,32 +334,34 @@ private str g(e:(Expr)`<Expr lhs> \< <Expr rhs>`, tmap t) = "(<g(lhs, t)> \< <g(
 \section{Evaluation}\label{sec:ch4-evaluation}
 
 \subsection{Bugs}
-Expected: Find bugs where the inverse is possible. Just like the example from the test
-mechanics.
-\\
+In \autoref{sec:ch4-eval-criteria} we discussed the expectations of the criteria
+bugs. We expected to find bugs in the SUT where it is possible to perform the
+inverse of a transition.
+
 With this proof of concept, we've found a bug in the SUT, which was
 discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
-since the SUT isn't able to compile. The found bug belongs to the category
-injected code since the generated code for the precondition is wrong. In this
-case, the final state closed is reached where the preconditions of the \textit{close}
-transition don't hold.
+since the SUT isn't able to compile. With the bug from
+\autoref{sec:bug-close-account} it is possible that the final state closed is
+reached where the preconditions of the \textit{close} transition don't hold.
+So as expected, we did find a bug in performing the inverse of a transition.
 
 \subsection{Efficiency}
-Expected: Test similar as the SMT. Testing the right transition
-\\
-A part of
-the generated test for a transition is checking, which is used to test the state to
-reach with the replaced preconditions. So, in this proof of concept, we're
-testing what should be not possible according to the specification. The result
-of the checking from the SMT Solver varies, \textit{e.g.}, an opened account can be
-reached by the \textit{openAccount} transition or by the transition
-\textit{openAccount} and \textit{withdraw}.
+For the criteria efficiency it is expected to check what isn't possible
+according to the specification, i.e. testing the same transition in checking as
+well as the SUT.
 
+A part of the generated test for a transition is checking, which is used to test
+the state to reach with the replaced preconditions. So, in this proof of
+concept, we're testing what should be not possible according to the
+specification. The result of the checking from the SMT Solver varies,
+\textit{e.g.}, an opened account can be reached by the \textit{openAccount}
+transition or by the transition \textit{openAccount} and \textit{withdraw}.
 
 \subsection{Coverage}
-Expected: To test all transitions with its state.
-\\
-After the checking, a transition
+It is expected for this criteria to test all the transitions of the
+specification since the proof of concept generated tests for all transitions.
+
+In the proof of concept, after the checking, a transition
 is performed in the SUT. In this proof of concept, it's unknown whether the
 performed transition with its parameters in the SUT is the same as the
 transition computed by the SMT Solver. This causes some false positives in the
@@ -408,26 +416,15 @@ $\forall e s_{1} \to s_{2}, s_{2} \gets s_{1}, pre(e)$.
 \section{Threats to validity}
 
 \subsection*{Limited specifications}
-In the conducted experiments are the specifications account and transaction used
-to test the generated system from these specifications. With these experiments
-and specifications, we did find faults in the code generators. Although are
-these specifications quite simple, \textit{e.g.}, for a bank these
-specifications would be more complex. These experiments take into account the
-generosity of specifications, but with such a large amount of complex
-specifications, it is questionable whether these experiments still produce
-valuable results.
+In the conducted experiment is the account specification account used
+to test the generated system. With this experiment and specification,
+we did find a bug in the code generators.
 
-\subsection*{Rebel interpretation in SMT Solver}
-The SMT solver can be seen as an interpreter for Rebel specifications. The
-conducted experiments use the SMT solver to test the generated systems from the
-specifications. We already discussed before the limitation of interpretation of
-Rebel specifications, and in some cases, workarounds have been used. There may
-be more unknown limitations of the interpretation of Rebel specifications, which
-can cause the conducted experiments give incorrect results.
+The used account specification in this experiment is quite simple. With the use
+of more interacting specifications, the chance is bigger to find faults in the code
+generators since the specifications are interacting with each other.
 
-\subsection*{Valid execution trace}
-The experiment from \autoref{sec:ch5} tests only valid execution traces from
-the SMT solver, \textit{i.e.}, testing only what should be possible according to
-the specification. Testing valid execution traces is not enough, testing not
-valid execution traces can be valuable. Thus the experiment from
-\autoref{sec:ch4} already does this, but as discussed it has a few limitations.
+\subsection*{Invalid execution trace}
+The conducted experiment test only what should be not possible according to the
+specification. It is also important to test whether the SUT is conform to the
+specification, \textit{i.e.}, testing the valid execution trace.

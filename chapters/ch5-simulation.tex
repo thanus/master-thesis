@@ -112,18 +112,22 @@ we're going to use the traces in this approach to check the behaviour of the
 SUT.
 
 \subsection{Evaluation criteria}
-Evaluation points and expectations.
 
 \subsubsection{Bugs}
-Trigger the bug from the previous proof of concept. Find bugs where similiar
-behaviour is performed as from the SMT solver.
+In this approach we're using the traces from the SMT solver to test the SUT,
+thus testing what should be possible according to the specification. The
+expectation here is to find bugs in the SUT which doesn't accept the execution
+from the traces.
 
 \subsubsection{Efficiency}
-Expected: Test similar as the SMT. Testing the right transition
+By using the traces, we check whether the given execution is possible in the
+SUT. Therefore, the expection is to perform the same transition from the traces
+should be performed in the SUT.
 
 \subsubsection{Coverage}
-All transitions are tested.
-
+In this proof of concept is the simulation used to test transitions. Since
+the simulation is able to test single steps, it is expected to test all
+transitions of a specification.
 
 \section{Approach}
 To playback the steps from a given trace on the SUT, we're going to split every
@@ -298,7 +302,7 @@ After everything is defined for the simulation, the simulation can test whether
 it can make the single step. The simulation then works as follows
 \cite[p.6]{stoel_storm_vinju_bosman_2016}:
 \begin{enumerate}
-\item Check whether it is possible to satisfy the contraints of the chosen 
+\item Check whether it is possible to satisfy the contraints of the chosen
 transition given the current staten and the transition parameters data values of
 the event: $p(s_{1}, s_{2})$
 \item Check whether the invariants hold in the state after the transition:
@@ -366,9 +370,13 @@ experiments within ING Bank.
 % as discussed with current state, all transitions contains the tree steps. It is possible that a trace can contain multiple steps, e.g. to unblock an account, an account needs first to be opened and blocked. This requires after executing each step, the step needs to be tested, in the sense of automatically repeating the process.
 
 \section{Results}
-Discuss the results of the test approach.
 
 \subsection{Codegen-Akka}
+
+The results of the test run is shown in
+\autoref{fig:ch5-res-codegenakka-account} and
+\autoref{fig:ch5-res-codegenakka-transaction}. From this result, we can conclude
+that the test for the close transition has failed.
 
 \begin{table}[h!]
 \centering
@@ -401,6 +409,11 @@ fail                        & \cmark{}               & \cmark{}            \\ \b
 \FloatBarrier
 
 \subsection{Codegen-Datomic}
+The results of the test run is shown in
+\autoref{fig:ch5-res-codegendatomic-account} and
+\autoref{fig:ch5-res-codegendatomic-transaction}. From this result, we can
+conclude again that the test for the close transition has failed. Remarkable is
+that also the interest transition has failed.
 
 \begin{table}[h!]
 \centering
@@ -433,6 +446,10 @@ fail                        & \cmark{}               & \cmark{}            \\ \b
 \FloatBarrier
 
 \subsection{Codegen-Scala-ES}
+The results of the test run is shown in
+\autoref{fig:ch5-res-codegendatomic-account} and
+\autoref{fig:ch5-res-codegendatomic-transaction}. Again the test for the
+transition close has failed, but also for the transition interest.
 
 \begin{table}[h!]
 \centering
@@ -465,7 +482,6 @@ fail                        & \cmark{}               & \cmark{}            \\ \b
 \FloatBarrier
 
 \section{Analyse}
-Analyse of the results
 
 \subsection{Codegen-Akka}
 The proof of concept uses in this test run the Codegen-Akka generator.
@@ -545,6 +561,7 @@ must be opened with a balance of 50 euros.
 
 To conclude, the simulation wasn't able to test the transition close since the
 precondition of this transition isn't satisfied in the postcondition of $s_{1}$.
+This holds also for testing other generators.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -956,43 +973,38 @@ def interest(@Suspended asyncResponse: AsyncResponse,
 \section{Evaluation}\label{sec:ch5-evaluation}
 
 \subsection{Bugs}
-Expected: Trigger the bug from the previous proof of concept. Find bugs where similiar
-behaviour is performed as from the SMT solver.
-\\
-Also with this proof of concept we've found bugs in the code generators. The bug
-in the interest transition from \autoref{sec:bug-interest-javadatomic} is found
-in the fixed code. Another bug for the same interest transition from
-\autoref{sec:bug-interest-scalaes} belongs to the category injected code since
-the bug is found in the generated code from the specification. As discussed in
-\autoref{sec:ch3-evalution}, it is possible that there might be bugs in
-templating, in the fixed code or the injected code. With the test run of this
-proof, of concept we've found bugs for both categories.
+The expection for the criteria bugs from \autoref{sec:ch5-eval-criteria} is to
+find bugs in the SUT where execution traces from the SMT solver isn't accepted
+by the SUT.
+
+In this proof of concept we've found bugs in the code generators. For both bugs,
+\autoref{sec:bug-interest-javadatomic} and \autoref{sec:bug-interest-scalaes},
+it wasn't possible to perform the execution from the traces returned by the
+SMT solver. To conclude, we did find bugs as expected where the SUT wasn't
+conform to the specification.
 
 \subsection{Efficiency}
-Expected: Test similar as the SMT. Testing the right transition
-\\
-In this proof of concept are more complex specifications used for testing.
+With the use of traces it is expected to perform the same transition from the
+traces in the SUT.
+
 Checking and simulation are used to generate tests for transitions in this proof
 of concept. The traces given by the simulation and checking are used to check
 whether the SUT behaves as the specification and whether it accepts the
-execution from the trace. Unlike the previous proof of concept from
-\autoref{sec:ch4}, it tests what should be possible according to the
-specification by using the traces from the SMT solver. Even are the transition
-parameters data values generated by the SMT solver. In this proof of concept are
-the transitions in the SUT performed in three steps to identify misbehaviour in
-the SUT. Although there is a limitation in the testing of states. Within a
-trace, not every instance may contain the state of it.
+execution from the trace. In this proof of concept are the transitions in the
+SUT performed in three steps to identify misbehaviour in the SUT.
+To conclude, as expected are the same transitions from the traces performed in
+the SUT.
 
 \subsection{Coverage}
-Expected: All transitions are tested.
-\\
-As discussed before, with this proof of concept it wasn't possible to test the
+The expectation of the coverage criteria is to test all the transitions from a
+specification since the simulation is able to test single steps.
+
+With this proof of concept it isn't possible to test the
 \textit{close} transition. The the precondition of this transition isn't
-satisfied due to the current state defined for this transition. To sum up, with
-this proof of concept it is possible to test all the transitions when the
-preconditions of a given transition are satisfied by the current state. The
-theory for this proof of concept is as follows:
-$\forall e s_{1} \to s_{2}, (! s_{2} pre(e) \lor s_{2} pre(e) in s_{1} post(e))$.
+satisfied due to the current state defined for this transition. Altogether,
+with this proof of concept it is possible to test all the
+transitions when the preconditions of a given transition are satisfied by the
+current state.
 
 \section{Conclusion}
 In this proof of concept are more complex specifications used for testing.

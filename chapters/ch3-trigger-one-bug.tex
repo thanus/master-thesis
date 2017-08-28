@@ -177,10 +177,8 @@ contains afterwards a check whether the request is successful.
 \subsection{Codegen-Akka}
 
 Since we've defined the input for both systems and are able to compare it, we
-can trigger the bug and compare the results of it. As you can see in
-\autoref{fig:ch3-res-codegenakka-account}, the results of the model checker state
-that the defined state in \autoref{fig:tebl-closed-account} isn't reachable and
-that the state in the SUT is reachable.
+can trigger the bug and compare the results of it. The results of testing the
+close transition are shown in \autoref{fig:ch3-res-codegenakka-account}.
 
 \begin{table}[h!]
 \centering
@@ -196,6 +194,42 @@ close                       & \xmark{}                         & \cmark{}       
 \section{Analyse}
 
 \subsection{Codegen-Akka}
+According to the results from \autoref{fig:ch3-res-codegenakka-account}, the
+generated test for the \textit{close} transition has failed. The results of the
+model checker state that the defined state in \autoref{fig:tebl-closed-account}
+isn't reachable and that the state in the SUT is reachable.
+
+Looking at the account in the SUT, the account looks as follows
+\autoref{fig:mod-closed-account-json}. The state of the account is closed and
+the balance is the same as when it was opened. To conclude, the \textit{close} 
+transition is performed in the SUT due to the modification of the generated
+precondition.
+
+\begin{sourcecode}[h!]
+\begin{lstlisting}[]
+{
+   "state":{
+      "SpecificationState":{
+         "state":{
+            "Closed":{
+
+            }
+         }
+      }
+   },
+   "data":{
+      "Initialised":{
+         "data":{
+            "accountNumber":null,
+            "balance":"EUR 50.00"
+         }
+      }
+   }
+}
+\end{lstlisting}
+\caption{Account state after \textit{close} transition}\label{fig:mod-closed-account-json}
+\end{sourcecode}
+\FloatBarrier
 
 \section{Evaluation}\label{sec:ch3-evalution}
 

@@ -67,7 +67,7 @@ event close() {
 \end{sourcecode}
 \FloatBarrier
 
-\section{Introducing a bug}
+\section{Method}
 
 As mentioned earlier, an initial lightweight version is expected, then it will be extended with motivated improvements with evaluation and validation. The approach is to start with a lightweight version which is able to trigger a bug and test it with the SMT Solver. For the lightweight version, it is an easily reproducible bug. This lightweight version is then able to trigger and test one specific bug.
 
@@ -91,7 +91,11 @@ case Close() => {
 
 The first bug to trigger is to close an account with some balance. In order to do this, the precondition of the close event should be changed in the generated system (see \autoref{fig:mod-spec-gen}). By manually making the changes in the generated system (system under test), we know that there is definitely a bug in the generated system, assuming that the specification is correct.
 
-The modified precondition looks as follows in \autoref{fig:account-close-mod-pre}. The precondition is changed to \textit{RebelConditionCheck.success}, this means that the precondition is satisfied.
+The modified precondition looks as follows in
+\autoref{fig:account-close-mod-pre}. The precondition is changed to
+\textit{RebelConditionCheck.success}, this means that the precondition is
+satisfied. Right now we have introduced a bug in the system under test (SUT),
+so the generated system doesn't conform to the specification.
 
 \begin{figure}[h!]
   \centering
@@ -110,11 +114,27 @@ case Close() => {
 \end{sourcecode}
 \FloatBarrier
 
-Right now we have introduced a bug in the system under test (SUT), so the
-generated system doesn't conform to the specification. We discussed earlier that
-we are going to use the SMT solver to find bugs in the SUT.
+\subsection{Evaluation criteria}\label{sec:ch4-eval-criteria}
 
-Having an account with some balance in the state closed should not be possible
+\subsubsection{Bugs}
+% Since we're testing with this approach the inverse of the preconditions, thus
+% what should be not possible according to the specification, it is expected to
+% find bugs in the SUT where it is possible to perform the inverse of a
+% transition.
+
+\subsubsection{Efficiency}
+% In this approach is checking used to check what isn't possible according to the
+% specification. Therefore, the same tested transition should be tested in the
+% SUT.
+
+\subsubsection{Coverage}
+% The proof of concept is going to generate test for all transitions. Therefore,
+% it is expected to test all the transitions of a specification.
+
+\section{Approach}
+
+We discussed earlier that we are going to use the SMT solver to find bugs in the
+SUT. Having an account with some balance in the state closed should not be possible
 according to the specification. To let the SMT Solver solve this situation, it
 is necessary to generate the appropriate SMT formulas. Therefore, checking can
 be used to check whether the given state with its properties is reachable.
@@ -152,25 +172,50 @@ transitions.~\cite[p.~4]{stoel_storm_vinju_bosman_2016} To check if the state is
 reachable in the generated system, the request made for the given transition
 contains afterwards a check whether the request is successful.
 
+\section{Results}
+
+\subsection{Codegen-Akka}
+
 Since we've defined the input for both systems and are able to compare it, we
 can trigger the bug and compare the results of it. As you can see in
-\autoref{fig:result-trigger-one-bug}, the results of the model checker state
+\autoref{fig:ch3-res-codegenakka-account}, the results of the model checker state
 that the defined state in \autoref{fig:tebl-closed-account} isn't reachable and
 that the state in the SUT is reachable.
 
-\begin{sourcecode}[h!]
-\begin{lstlisting}[]
-rascal>check()
-
-Reachable state false
-Closed account true
-bool: false
-\end{lstlisting}
-\caption{Results closing account comparison}\label{fig:result-trigger-one-bug}
-\end{sourcecode}
+\begin{table}[h!]
+\centering
+\begin{tabular}{cccc}
+\toprule
+\textbf{Transition to test} & \textbf{Reachability SMT solver} & \textbf{Reachability SUT} & \textbf{Test result} \\ \midrule
+close                       & \xmark{}                         & \cmark{}                  & \xmark{}             \\ \bottomrule
+\end{tabular}
+\caption{Results: testing close transition of account specification}\label{fig:ch3-res-codegenakka-account}
+\end{table}
 \FloatBarrier
 
+\section{Analyse}
+
+\subsection{Codegen-Akka}
+
 \section{Evaluation}\label{sec:ch3-evalution}
+
+\subsubsection{Bugs}
+% Since we're testing with this approach the inverse of the preconditions, thus
+% what should be not possible according to the specification, it is expected to
+% find bugs in the SUT where it is possible to perform the inverse of a
+% transition.
+
+\subsubsection{Efficiency}
+% In this approach is checking used to check what isn't possible according to the
+% specification. Therefore, the same tested transition should be tested in the
+% SUT.
+
+\subsubsection{Coverage}
+% The proof of concept is going to generate test for all transitions. Therefore,
+% it is expected to test all the transitions of a specification.
+
+\section{Conclusion}
+
 As we have seen with this lightweight version, it is able to find one specific bug with the use of an SMT Solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As first,~\cite[p.274]{voelter2013dsl} states that a majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be bugs in the fixed code (skeleton). The second part is the template control code which is injected into the generated code. The manually introduced bug from the previous chapter belongs  to this category.
 
 \unsure{\textbf{Onduidelijkheid DSL fowler}: styles of code generation: Model-Aware Generation and Model Ignorant Generation. Styles for generating textual output: Transformer

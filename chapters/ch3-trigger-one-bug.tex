@@ -117,19 +117,19 @@ case Close() => {
 \subsection{Evaluation criteria}\label{sec:ch4-eval-criteria}
 
 \subsubsection{Bugs}
-% Since we're testing with this approach the inverse of the preconditions, thus
-% what should be not possible according to the specification, it is expected to
-% find bugs in the SUT where it is possible to perform the inverse of a
-% transition.
+Since the precondition of the \textit{close} transition is modified in the SUT,
+we know that the SUT contains the bug to close an account with some balance. It
+is expected to find this bug in the SUT.
 
 \subsubsection{Efficiency}
-% In this approach is checking used to check what isn't possible according to the
-% specification. Therefore, the same tested transition should be tested in the
-% SUT.
+The lighweight version will use checking to check whether it is possible to have
+an opened account with some balance. Therefore, it is expected to test the same
+transition in the SUT.
 
 \subsubsection{Coverage}
-% The proof of concept is going to generate test for all transitions. Therefore,
-% it is expected to test all the transitions of a specification.
+With this lightweight version we're going to trigger one single bug in the SUT,
+\textit{i.e.} finding the bug for the \textit{close} transition. Thus from the
+the account specification we're testing only the transition \textit{close}.
 
 \section{Approach}
 
@@ -201,7 +201,7 @@ isn't reachable and that the state in the SUT is reachable.
 
 Looking at the account in the SUT, the account looks as follows
 \autoref{fig:mod-closed-account-json}. The state of the account is closed and
-the balance is the same as when it was opened. To conclude, the \textit{close} 
+the balance is the same as when it was opened. To conclude, the \textit{close}
 transition is performed in the SUT due to the modification of the generated
 precondition.
 
@@ -234,19 +234,33 @@ precondition.
 \section{Evaluation}\label{sec:ch3-evalution}
 
 \subsubsection{Bugs}
-% Since we're testing with this approach the inverse of the preconditions, thus
-% what should be not possible according to the specification, it is expected to
-% find bugs in the SUT where it is possible to perform the inverse of a
-% transition.
+The expection for the bugs criteria is to find the bug in the close transition,
+\textit{i.e.}, closing an account with some balance. As expected, we did find
+the bug for the \textit{close} transition due to the
+manually modified precondition.
 
 \subsubsection{Efficiency}
-% In this approach is checking used to check what isn't possible according to the
-% specification. Therefore, the same tested transition should be tested in the
-% SUT.
+
+Checking is used in this lighweight version to check whether the it is possible
+to have an opened account with some balance. According to
+\autoref{fig:ch3-res-codegenakka-account}, this state isn't reachable. It is
+expected to test the same transition with checking in the SUT.
+
+When the model checkers returns that a given state isn't reachable,
+traces are not available. Models (traces) are not available when "unsat" is
+returned by Z3.
+In this case, traces cannot be used since they're not provided. Although, to
+reach the given state are the \textit{openAccount} and \textit{close} transition
+used.
+
+\info{add reference for no model when unsat}
 
 \subsubsection{Coverage}
-% The proof of concept is going to generate test for all transitions. Therefore,
-% it is expected to test all the transitions of a specification.
+The lightweight version is used only to trigger a single bug in the SUT. As
+expected, is only the transition \textit{close} tested. Although, to close an
+account the account needs to be first opened. Therefore, is the transition
+\textit{openAccount} performed, but this transition isn't tested whether the
+request is successful.
 
 \section{Conclusion}
 

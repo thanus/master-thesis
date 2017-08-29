@@ -131,6 +131,26 @@ transitions of a specification.
 
 \section{Approach}
 
+The process of the testing approach with the simulation is shown in
+\autoref{fig:simulation-testing}. This process starts first with the creation of
+a specification. This experiment uses the account and transaction specifications
+which are already defined.
+
+Once the specification is defined, the specifications
+are being built, \textit{i.e.}, Concrete Syntax Trees (CSTs) are produced of
+these specifications. Using these CSTs, the code generator generates the code, 
+which is then the SUT.
+
+When the SUT is generated from the CSTs, the SUT can be tested by the test
+framework. The test case generator traverses the CSTs of the specifications to
+generates test cases for all transitions. Using the information from the CSTs,
+the simulation is requested for a test case for a chosen transition. The
+simulation provides then a trace (test case) for the requested transition.
+
+The SUT can be tested using the generated test cases. To test the SUT, the data
+from these test cases is provided to the adapter. Finally, the adapter
+communicates this data to the SUT.
+
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth{}]{figures/simulation-diagram.pdf}

@@ -133,6 +133,13 @@ the account specification we're testing only the transition \textit{close}.
 
 \section{Approach}
 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\linewidth{}]{figures/test-modified-bug.pdf}
+  \caption{Testing approach for close transition}\label{fig:mod-bug-test}
+\end{figure}
+\FloatBarrier
+
 We discussed earlier that we are going to use the SMT solver to find bugs in the
 SUT. Having an account with some balance in the state closed should not be possible
 according to the specification. To let the SMT Solver solve this situation, it

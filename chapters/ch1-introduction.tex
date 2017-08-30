@@ -91,17 +91,18 @@ Solver which holds the key in testing the generated system. Theoretically, with
 this approach, it is possible to regain the benefits from the \textit{Rebel} domain, and
 again able to test and reason about \textit{Rebel} specifications and generated system.
 
-
 The hypothesis is that the SMT Solver can be used to test the implementation
 correctness of a specification against a generated system. In order to do this,
 research needs to be carried out for testing the generated system
 with the SMT Solver, mappings (traces) between these systems. With the given approach, a
 few assumptions need to be made:
+
 \begin{itemize}
-\item \textbf{The specification is always correct.} An incorrect specification
+\item \textbf{The specification is always correct.}
+The specifications are written correctly, \textit{i.e.}, the specifications are
+correctly modelled from the business point of view. An incorrect specification
 will probably not pass the checking or simulation, and testing a generated
 system derived from an incorrect specification isn't really effective.
-\info{vanuit human mind, correct opgeschreven}
 \item \textbf{The generated system is able to be compiled.} When the generated
 system cannot be compiled, it is possible that there might be a fault in the
 code generator. Although, with this approach testing a not compilable system is

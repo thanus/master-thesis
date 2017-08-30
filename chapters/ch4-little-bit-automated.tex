@@ -60,7 +60,28 @@ our approach is Negate Conditionals Mutator~\cite{pitmutators}, this operator
 belongs to the type relational operator
 replacement~\cite[p.~688]{king1991fortran}.
 
-\info{add image}
+The testing approach is illustrated in \autoref{fig:mutated-checking}. The first
+step is to start with a Rebel specification, which is in our case the already
+existing account specification. When the specifications are defined, the
+specifications are being built, \textit{i.e.}, Concrete Syntax Trees (CSTs) are
+produced of these specifications. Using these CSTs, the code generator generates
+the code, which is then the SUT.
+
+The test case generator can be used to test the SUT, when the SUT is generated
+from the CSTs. The CSTs of the specifications are traversed by the test case
+generator to generate a test for each transition. The test case generator
+generates tebl files for transitions to use checking.
+
+In order to test the SUT, the test case generator performs a similar transition
+as used within checking in the SUT. Finally, the results from checking and the
+performed transition in the SUT are compared.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\linewidth{}]{figures/mutated-checking-diagram.pdf}
+  \caption{Testing approach with checking}\label{fig:mutated-checking}
+\end{figure}
+\FloatBarrier
 
 \subsection{Checking}
 Only expressions which contain a reference to the specification fields needs to

@@ -140,11 +140,13 @@ the account specification we're testing only the transition \textit{close}.
 \end{figure}
 \FloatBarrier
 
+The testing approach is shown in \autoref{fig:mod-bug-test}.
 We discussed earlier that we are going to use the SMT solver to find bugs in the
 SUT. Having an account with some balance in the state closed should not be possible
 according to the specification. To let the SMT Solver solve this situation, it
 is necessary to generate the appropriate SMT formulas. Therefore, checking can
 be used to check whether the given state with its properties is reachable.
+First, the test framework uses checking to test whether the state is reachable.
 
 For this situation, is the following tebl file created, which is shown in
 \autoref{fig:tebl-closed-account}. It defines the state of a closed account with
@@ -170,14 +172,17 @@ check closedAccountWithBalance reachable in max 6 steps;
 
 The input for the SMT solver is now defined. Similar behaviour should be defined
 for the generated system. So an account needs to be opened and closed
-afterwards.
+afterwards. Therefore, the testing framework performs both transitions in the
+SUT.
 
 The tebl file is passed to the model checker and it returns whether the given
 SMT problem is reachable or not. A state is reachable when it can be reached
 from the initial state via valid
 transitions.~\cite[p.~4]{stoel_storm_vinju_bosman_2016} To check if the state is
 reachable in the generated system, the request made for the given transition
-contains afterwards a check whether the request is successful.
+contains afterwards a check whether the request is successful. Then the testing
+framework can compare the results from the SMT solver and the request made in
+the SUT.
 
 \section{Results}
 

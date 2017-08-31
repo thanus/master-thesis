@@ -109,9 +109,10 @@ code generator. Although, with this approach testing a not compilable system is
 impossible.
 \item \textbf{The \textit{Rebel} specifications are correctly interpreted by the SMT
 Solver.} The SMT Solver is used as an oracle/black box in the testing approach
-since it is an interpreter for \textit{Rebel} specification. However, when something goes
-wrong with the mapping of the \textit{Rebel} language to the SMT formulas, then there is
-some misbehaviour of the specification in the SMT Solver.
+since it is an interpreter for \textit{Rebel} specification. However, when
+something goes wrong with the mapping of the \textit{Rebel} language to the SMT
+formulas, this will result into misbehaviour of the specification which may lead
+to incorrect results.
 \end{itemize}
 
 At first, an initial lightweight version is expected, then it will be extended with motivated

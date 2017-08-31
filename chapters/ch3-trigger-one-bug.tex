@@ -1,6 +1,6 @@
 \chapter{Test mechanics}\label{sec:ch3}
 
-In this chapter, we explain how to implement the lightweight proof of concept. The intention of the lightweight version is to know that the test approach is able to find bugs in generated systems. Therefore, we need to understand how the existing foundations from Rebel can be reused.
+In this chapter, we explain how to implement the lightweight proof of concept. The intention of the lightweight version is to know that the test approach is able to find a bug in generated systems. Therefore, we need to understand how the existing foundations from Rebel can be reused.
 
 \info{lezen over: small world hypothesis}
 
@@ -48,7 +48,7 @@ specification Account {
 \end{sourcecode}
 \FloatBarrier
 
-The specification of account has a close event\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Library.ebl}}
+The account specification has a close event\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Library.ebl}}
 to close an account which is illustrated in \autoref{fig:account-close-event}.
 The precondition of the close event is that the balance of the account should be
 equal to zero. There are no postconditions, this means that the postconditions
@@ -69,9 +69,17 @@ event close() {
 
 \section{Method}
 
-As mentioned earlier, an initial lightweight version is expected, then it will be extended with motivated improvements with evaluation and validation. The approach is to start with a lightweight version which is able to trigger a bug and test it with the SMT Solver. For the lightweight version, it is an easily reproducible bug. This lightweight version is then able to trigger and test one specific bug.
+As mentioned earlier, an initial lightweight version is expected, then it will
+be extended with motivated improvements with evaluation and validation. The
+approach is to start with a lightweight version which is able to trigger a bug
+and test it with the SMT Solver. For the lightweight version, it is an easily
+reproducible bug. This lightweight version is then able to trigger and test one
+specific bug.
 
-\autoref{fig:account-close-pre} illustrates the code which is generated to check the precondition for the close event. From this code, we can see that the balance of an account should be zero before it is getting closed. We assume that the precondition is correctly generated.
+\autoref{fig:account-close-pre} illustrates the code which is generated to check
+the precondition for the close event. From this code, we can see that the
+balance of an account should be zero before it is getting closed. So we can
+assume that the precondition is correctly generated.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[language=scala]
@@ -95,7 +103,7 @@ The modified precondition looks as follows in
 \autoref{fig:account-close-mod-pre}. The precondition is changed to
 \textit{RebelConditionCheck.success}, this means that the precondition is
 satisfied. Right now we have introduced a bug in the system under test (SUT),
-so the generated system doesn't conform to the specification.
+so the generated system isn't conform to the specification.
 
 \begin{figure}[h!]
   \centering
@@ -118,12 +126,12 @@ case Close() => {
 
 \subsubsection{Bugs}
 Since the precondition of the \textit{close} transition is modified in the SUT,
-we know that the SUT contains the bug to close an account with some balance. It
-is expected to find this bug in the SUT.
+we know that the SUT contains the bug to close an account with some balance. For
+the lightweight version it is expected to find this bug in the SUT.
 
 \subsubsection{Efficiency}
 The lighweight version will use checking to check whether it is possible to have
-an opened account with some balance. Therefore, it is expected to test the same
+a closed account with some balance. Therefore, it is expected to test the same
 transition in the SUT.
 
 \subsubsection{Coverage}
@@ -146,9 +154,9 @@ SUT. Having an account with some balance in the state closed should not be possi
 according to the specification. To let the SMT Solver solve this situation, it
 is necessary to generate the appropriate SMT formulas. Therefore, checking can
 be used to check whether the given state with its properties is reachable.
-First, the test framework uses checking to test whether the state is reachable.
+The test framework first uses checking to test whether the state is reachable.
 
-For this situation, is the following tebl file created, which is shown in
+To check the state is a tebl file created which is shown in
 \autoref{fig:tebl-closed-account}. It defines the state of a closed account with
 the property balance, where the balance isn't equal to zero. Also, here is 6
 used as configurable time-out. The SMT solver tries to solve this problem in
@@ -209,9 +217,9 @@ close                       & \xmark{}                         & \cmark{}       
 According to the results from \autoref{fig:ch3-res-codegenakka-account}, the
 generated test for the \textit{close} transition has failed. The results of the
 model checker state that the defined state in \autoref{fig:tebl-closed-account}
-isn't reachable and that the state in the SUT is reachable.
+isn't reachable. Although, the state in the SUT is reachable.
 
-Looking at the account in the SUT, the account looks as follows
+Looking at the account in the SUT, it looks as follows
 \autoref{fig:mod-closed-account-json}. The state of the account is closed and
 the balance is the same as when it was opened. To conclude, the \textit{close}
 transition is performed in the SUT due to the modification of the generated
@@ -246,14 +254,13 @@ precondition.
 \section{Evaluation}\label{sec:ch3-evalution}
 
 \subsubsection{Bugs}
-The expection for the bugs criteria is to find the bug in the close transition,
-\textit{i.e.}, closing an account with some balance. As expected, we did find
-the bug for the \textit{close} transition due to the
-manually modified precondition.
+The expection for the bugs criteria is to find the bug in the close transition.
+As expected, we did find the bug for the \textit{close}
+transition due to the manually modified precondition.
 
 \subsubsection{Efficiency}
 
-Checking is used in this lighweight version to check whether the it is possible
+Checking is used in this lighweight version to check whether it is possible
 to have an opened account with some balance. According to
 \autoref{fig:ch3-res-codegenakka-account}, this state isn't reachable. It is
 expected to test the same transition with checking in the SUT.
@@ -269,14 +276,14 @@ used.
 
 \subsubsection{Coverage}
 The lightweight version is used only to trigger a single bug in the SUT. As
-expected, is only the transition \textit{close} tested. Although, to close an
-account the account needs to be first opened. Therefore, is the transition
+expected, only the transition \textit{close} tested. Although, to close an
+account the account needs to be first opened. Therefore, the transition
 \textit{openAccount} performed, but this transition isn't tested whether the
 request is successful.
 
 \section{Conclusion}
 
-As we have seen with this lightweight version, it is able to find one specific bug with the use of an SMT Solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As first,~\cite[p.274]{voelter2013dsl} states that a majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be bugs in the fixed code (skeleton). The second part is the template control code which is injected into the generated code. The manually introduced bug from the previous chapter belongs  to this category.
+As we have seen with this lightweight version, it is able to find one specific bug with the use of an SMT Solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As described in~\cite[p.274]{voelter2013dsl}, the majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be bugs in the fixed code. The second part is the template control code which is injected into the generated code. The manually introduced bug from the previous chapter belongs  to this category.
 
 \unsure{\textbf{Onduidelijkheid DSL fowler}: styles of code generation: Model-Aware Generation and Model Ignorant Generation. Styles for generating textual output: Transformer
 Generation and Templated Generation.}

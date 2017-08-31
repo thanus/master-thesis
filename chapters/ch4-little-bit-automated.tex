@@ -4,8 +4,8 @@
 
 \section{Method}
 
-The lightweight version from the previous chapter is only able to one specific
-bug, the bug itself is created by manually modifying the generated system. Now,
+The lightweight version from the previous chapter is only able to test one specific
+bug. The bug itself is created manually by modifying the generated system. Now,
 this lightweight version needs to be automated to automatically generate a test
 for every transition from a specification.
 
@@ -113,7 +113,7 @@ will replace conditionals according to the replacement table in
 \textless                  & \textgreater=                  \\
 \textless=                 & \textgreater                   \\ \bottomrule
 \end{tabular}
-\caption{Conditionals replacement}\label{fig:table-replacement-conditions}
+\caption{Conditionals replacement~\cite{pitmutators}}\label{fig:table-replacement-conditions}
 \end{table}
 \FloatBarrier
 
@@ -128,9 +128,10 @@ solver is able to construct its own initial state to reach a state.
 The definition of the \textit{deposit} transition is given in
 \autoref{fig:account-deposit-event} and contains the following statement in the
 preconditions \code{amount > EUR 0.00;}. First, the initial state needs to be
-constructed which is the state opened. Following is the replacement of the conditionals, so the
-following statement from the \textit{deposit} definition \code{amount > EUR 0.00;} is
-replaced. Then the \textit{deposit} transition needs to be performed in the SUT.
+constructed which is the state opened. Following is the replacement of the conditionals, the
+replaced precondition from the \textit{deposit} transition looks as follows
+\code{amount > EUR 0.00;}. The \textit{deposit} transition needs then to be
+performed in the SUT.
 
 To perform the \textit{deposit} transition, the transition parameters for this
 transition must be determined satisfying replaced conditionals. The transition
@@ -190,9 +191,9 @@ close                       & \xmark{}            \\ \bottomrule
 When this automated version of checking is executed, it produces some false
 positives. After investigating the tests for the transitions, the test for the \textit{close}
 transition seems not be successful (see \autoref{fig:result-close-account}).
-According to the model checker, it seems to be that the state isn't reachable
-(the same tebl file is generated as in \autoref{fig:tebl-closed-account}). It
-seems to be that the state is reachable in the SUT.
+The model checker states that the state isn't reachable (the same tebl file is
+generated as in \autoref{fig:tebl-closed-account}). It seems to be that the
+state is reachable in the SUT.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -208,7 +209,7 @@ Result successful transition test: false
 \end{sourcecode}
 \FloatBarrier
 
-When we take a look at the account in the SUT, the account looks as
+When we take a look at the account in the SUT, it looks as
 follows in \autoref{fig:closed-account-json}. The state of the account is in
 closed, which is correct according to the specification, but the balance of the
 account is 52 euro. In \autoref{fig:account-close-event} we already discussed
@@ -235,8 +236,8 @@ discovered a bug in the SUT.
 \end{sourcecode}
 \FloatBarrier
 
-Now we know that we have discovered a bug, we want to know where this takes
-place and whether the code isn't generated correctly from the specification. The
+Now we know that we have discovered a bug, we want to know why this behaviour
+occurs and whether it is due to the generated code from the specification. The
 method which handles the \textit{close} transition has the following check in
 \autoref{fig:java-notequal-check}. The if statement checks whether the balance
 of the account is not equal to 0 euro. The condition in the if statement isn't
@@ -255,7 +256,7 @@ if(! (isNotEqual(_entity.getBalance(), Money.of(org.joda.money.CurrencyUnit.of("
 \FloatBarrier
 
 The question right now is, how is the above code generated. After taking a look at the synthesization of
-expression, the expressions from \textit{Rebel} are not properly translated. The
+expression, the expressions from \textit{Rebel} are not properly synthesized. The
 synthesization for an equal expression for the type \textit{Money} or \textit{Percentage} looks as
 follows in \autoref{fig:rascal-datomic-synthesize-equal}. The expression is
 synthesized to the method \textit{isNotEqual} with two parameters.
@@ -271,8 +272,8 @@ private str g(e:(Expr)`<Expr lhs> == <Expr rhs>`, tmap t) = "isNotEqual(<g(lhs, 
 
 So the expression isn't properly synthesized, and it should be synthesized to
 \textit{isEqual} instead of \textit{isNotEqual}. With this modification, it
-isn't possible anymore to close an account with some balance (this also applies
-to other expressions of the type equal).
+isn't possible anymore to close an account with some balance. This also applies
+to other statements which uses the equal operator.
 
 % https://github.com/cwi-swat/ing-rebel-generators/pull/6
 \subsubsection{Bug: deposit with a maximum amount}\label{sec:bug-compile-max-deposit}
@@ -326,9 +327,10 @@ if(! ((amount < Money.of(org.joda.money.CurrencyUnit.of("EUR"), 200.00)))) {
 \end{sourcecode}
 \FloatBarrier
 
-The synthesization of the generated is shown in
+The functions for the synthesization, which generates a part of
+\autoref{fig:java-lessthan-compile-error}, are shown in
 \autoref{fig:rascal-datomic-synthesize-lessthan}. Also here are the \textit{Rebel}
-expression not properly translated. The default expression with the binary
+expression not properly synthesized. The default expression with the binary
 operator "$<$" is properly synthesized to an expression with three expressions,
 the left-hand and right-hand side expression and the binary operator "$<$".
 As discussed before, the binary operator "$<$" doesn't work with
@@ -338,9 +340,8 @@ with the binary operator "$<$" cannot be used for the type
 
 On line number 1 of \autoref{fig:rascal-datomic-synthesize-lessthan} is the
 synthesization method of the expression with the binary operator "$>$" shown.
-This method is already defined before in the corresponding file, so this is a
-typical copy paste fault. To conclude, this method should synthesize expressions
-with the binary operator "$<$".
+This method is already defined before in the corresponding file. To conclude,
+this method should synthesize expressions with the binary operator "$<$".
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]

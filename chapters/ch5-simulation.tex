@@ -105,13 +105,13 @@ approach are the traces from the SMT solver used to check whether the
 SUT accepts the execution from the trace and whether it behaves as the
 specification.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
 
-By using the traces, solves also the problems from the previous proof of
+By using the traces, it solves also the problems from the previous proof of
 concept. With the use of traces, we know exactly which possible transitions the
-SMT solver has performed and then playback these transitions in the SUT. So,
-we're going to use the traces in this approach to check the behaviour of the
+SMT solver has performed. Then these transitions can be performed in the SUT.
+So, in this approach we're going to use the traces to check the behaviour of the
 SUT.
 
-\subsection{Evaluation criteria}
+\subsection{Evaluation criteria}\label{sec:ch5-eval-criteria}
 
 \subsubsection{Bugs}
 In this approach we're using the traces from the SMT solver to test the SUT,
@@ -121,7 +121,7 @@ from the traces.
 
 \subsubsection{Efficiency}
 By using the traces, we check whether the given execution is possible in the
-SUT. Therefore, the expection is to perform the same transition from the traces
+SUT. Therefore, the expectation is to perform the same transition from the traces
 should be performed in the SUT.
 
 \subsubsection{Coverage}
@@ -147,8 +147,8 @@ generates test cases for all transitions. Using the information from the CSTs,
 the simulation is requested for a test case for a chosen transition. The
 simulation provides then a trace (test case) for the requested transition.
 
-The SUT can be tested using the generated test cases. To test the SUT, the data
-from these test cases is provided to the adapter. Finally, the adapter
+To test the SUT using the generated test cases, the data
+from these test cases are provided to the adapter. Finally, the adapter
 communicates this data to the SUT.
 
 \begin{figure}[h!]
@@ -191,9 +191,9 @@ The pre-transition checks entail the check for the current state of the SUT is
 conform to the current state from the trace. Although with the simulation it is
 only possible to reason about individual steps. For some transitions a current
 state is required, \textit{e.g.}, an account needs to be blocked first to
-unblock it. In the simulation, a current state needs to be defined to check
-whether the step can be made from the current state. This is also the case in
-the SUT since a current state needs to be initialized first before the
+unblock it. To make use of the simulation, the current state needs to be defined
+to check whether the step can be made from the current state. This is also the
+case in the SUT since a current state needs to be initialized first before the
 transition is performed.
 
 To initialize the current state in the SUT checking can be used. By defining
@@ -201,7 +201,7 @@ the current state with checking, the current state is checked and a valid trace
 is given by the model checker when the current state is satisfiable. So for
 every transition, a tebl needs to be generated for the state to reach
 (current state) to perform the transition. Although there are a number of
-caveats with the use tebl files.
+caveats with the use tebl.
 
 When a state to reach is defined for checking, the identifiers for the entities
 are only unique within that trace. For example for
@@ -224,7 +224,7 @@ properties of an entity, \textit{e.g.}, the IBAN for an account.
 
 To solve the
 problem with the collision of existing entities, a random identifier should be
-given for each entity. Therefore, for each type like Integer, is a simple random
+given for each entity. Therefore, for each type like Integer, is a random
 generator implemented. This generator generates a random identifier which is
 used as the identifier for the entities in checking. Unlike the basic types,
 IBAN is a more complex type to generate since the type should conform to the
@@ -239,7 +239,7 @@ account specification. To use checking in such specifications must be taken into
 account the references to other specifications. Which means that for every
 referencing specification in checking, imports need to be resolved and defined,
 and the entity needs to be defined with an identifier. Note that these
-identifiers should be again random, otherwise it will cause again collisions of
+identifiers should be again random, otherwise it will cause collisions of
 existing entities.
 
 Altogether, a generated tebl for checking the current state looks as follows in
@@ -248,7 +248,7 @@ Altogether, a generated tebl for checking the current state looks as follows in
 When the current state is defined, the generated tebl is given to the model
 checker. When the current state is satisfiable are the traces used to perform
 the transitions in the SUT. This is in more depth described in the section
-traces. Performing each step from a trace entails the three steps to test and
+\autoref{sec:ch5-traces}. Performing each step from a trace entails the three steps to test and
 perform the transition.
 
 \begin{sourcecode}[h!]
@@ -279,7 +279,7 @@ values.
 
 To provide transition parameters data to the simulation, is the last step taken
 with its instances. The last step is taken, because the last step is the
-transition which let to the current state, which is going to be used by the
+transition which led to the current state, which is going to be used by the
 simulation. The values from these instances of the simulated specifications are
 given to the current state $s_{1}$.
 
@@ -301,7 +301,7 @@ using the simulation.
 Manually providing the transition parameters data values
 isn't relevant for us, since our intention is to test automatically the SUT.
 Certainly, these values can be generated randomly, but it should satisfy the
-given pre- and postconditions for the chosen transition. However, it would be
+pre- and postconditions for the chosen transition. However, it would be
 better to let the SMT solver fill these values, taking into account the pre- and
 postconditions of the chosen transition. At the time of the publication of the
 study~\cite{stoel_storm_vinju_bosman_2016}, this wasn't possible in the simulation, so
@@ -314,7 +314,7 @@ expression \textit{ANY} is used, the SMT solver will fill in a value for the
 corresponding transition parameter, satisfying the pre- and postconditions for
 the chosen transition. \unsure{what about expression as iban?}
 
-\subsubsection*{Traces}
+\subsubsection*{Traces}\label{sec:ch5-traces}
 A valid trace is a chain of valid transitions from one state to the next state
 \cite[p.5]{stoel_storm_vinju_bosman_2016}. The trace may contain multiple steps,
 \textit{e.g.}, to unblock an account, an account needs first to be opened and
@@ -330,8 +330,8 @@ After everything is defined for the simulation, the simulation can test whether
 it can make the single step. The simulation then works as follows
 \cite[p.6]{stoel_storm_vinju_bosman_2016}:
 \begin{enumerate}
-\item Check whether it is possible to satisfy the contraints of the chosen
-transition given the current staten and the transition parameters data values of
+\item Check whether it is possible to satisfy the constraints of the chosen
+transition given the current state and the transition parameters data values of
 the event: $p(s_{1}, s_{2})$
 \item Check whether the invariants hold in the state after the transition:
 $P(s2)$.
@@ -366,25 +366,25 @@ and also to give it partially semantics
 \cite[p.5]{stoel_storm_vinju_bosman_2016}. Desugaring the life cycle is part of
 the normalization process. The life cycle is desugared to strengthen the pre-
 and postconditions of the transitions with the life cycle information.
-Therefore, are two fields added, \_state and \_step, to the fields of the
+Therefore, are two fields added, \textit{\_state} and \textit{\_step}, to the fields of the
 specification. To each state and event is a distinct identity assigned. The
-identity of the current state is assigned to the \_state field and the identity
+identity of the current state is assigned to the \textit{\_state} field and the identity
 of the transition which led to the current state is assigned to the field
-\_step. This results into that the original life cycle can be expressed, by
-adding constraints on the \_state and \_step fields to the transitions pre- and
+\textit{\_step}. This results into that the original life cycle can be expressed, by
+adding constraints on the \textit{\_state} and \textit{\_step} fields to the transitions pre- and
 postconditions \cite[p.5]{stoel_storm_vinju_bosman_2016}.
 
 The newly added fields
 are also present within the trace from the SMT solver. In our case, we only use
-the \_state field, because we already know which transition let to the current
-state. To compare the current state from the \_state field, it needs to be
+the \textit{\_state} field, because we already know which transition led to the current
+state. To compare the current state from the \textit{\_state} field, it needs to be
 sugared back in order to compare it to the SUT.
 % Adding Frame Conditions. To guard the fields that are not changed by the event frame conditions are added (Jack- son 2012). These frame conditions make sure that a field has the same value after the transition as before.
 
-\subsubsection{Adapter}
+\subsubsection{Test case adapter}
 As discussed in the code generation section, the request made to the API of the
 SUT are "standardized", but the response isn't. For the post-transition check,
-it is necessary to check the new state in the SUT, and therefore an adapter
+it is necessary to check the new state in the SUT. Therefore, an adapter
 needs to be defined to be able to compare the results of the SUT and the trace.
 
 The decision is made to only implement an adapter for the code generator
@@ -524,7 +524,7 @@ The result of \textit{close} transition test is shown in
 \autoref{fig:result-codegenakka-close}. As you can see on line number 28 is
 constructing the current state for the close transition successful. Then the
 simulation is asked to simulate the close transition, but according to the
-traces of the simulation, the simulation wasn't able to make the step and the
+traces of the simulation, the simulation wasn't able to make the step. The
 simulation returns only the state before the transition.
 
 \begin{sourcecode}[h!]
@@ -577,7 +577,7 @@ should be no remaining balance as shown in \autoref{fig:account-close-event}.
 On line number 15 of the test run is shown that the simulation makes the step to
 open an account with a balance of 50 euros. Afterwards are no transitions
 performed. Thus this current state does not satisfy the precondition of the
-close transition. That's why the simulation wasn't able to perform the
+close transition. That's the reason why the simulation wasn't able to perform the
 transition since the given values from the current state to $s_{1}$ weren't
 satisfying for $s_{2}$.
 
@@ -589,7 +589,8 @@ must be opened with a balance of 50 euros.
 
 To conclude, the simulation wasn't able to test the transition close since the
 precondition of this transition isn't satisfied in the postcondition of $s_{1}$.
-This holds also for testing other generators.
+This holds also for testing generated systems by other code generators. In other
+words, this limitation is the result of the test approach
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -623,7 +624,7 @@ is the state of a given specification.
 In testing single specifications, \textit{e.g.}, in
 \autoref{fig:result-codegenakka-close}, we've seen that the state is present
 from the result of the SMT solver. In this case, the model checker/simulation
-doesn't return the state when multiple instances are involved. So this also
+doesn't return the state when multiple instances are involved. This also
 happens in the \textit{start} and \textit{fail} transitions.
 
 \begin{sourcecode}[h!]
@@ -818,7 +819,7 @@ the SUT, the exception \textit{BuildCASTransactionException} is thrown when
 performing the interest transition, which is the exception from
 \autoref{fig:java-gen-interest-pre}. So the generated code seems to be good, but
 the function used for validating the interest returns an inappropriate value,
-which lets to throw the exception.
+which throws the exception.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[language=Java]
@@ -858,18 +859,18 @@ public static boolean isLessOrEqualThan(BigDecimal lhs, BigDecimal rhs) {
 % Interest squants dimensionlessdata
 
 This test run tests the SUT generated by the Scala-ES generator. Looking at the
-test run, just like the test run for the Javadatomic generator, it seems to be
+test run, like the test run for the Javadatomic generator, it seems to be
 that the transition interest fails. The results of the test run are shown in
 \autoref{fig:result-scalaes-interest}. Line number 51 shows the failing request
 for the interest transition, an error message is returned with the HTTP status
 code 400. Also, in this test run is construction the current state for the
-interest transition successful (see line number 26). In this test run has the
-simulation generated the same trace for the interest transition as for the
+interest transition successful (see line number 26). In this test run, the
+simulation has generated the same trace for the interest transition as for the
 Javadatomic generator. The state of the account in the SUT looks as follows in
-\autoref{fig:interest-opened-account-scalaes-json}. Also here is the state of the
+\autoref{fig:interest-opened-account-scalaes-json}. Also here the state of the
 account opened and the balance seems to be the same when the account was opened.
-So, the performed interest transition has failed and is the state of the account
-the same before performing the transition.
+So, the performed interest transition has failed and the state of the account
+is the same before performing the transition.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -1001,7 +1002,7 @@ def interest(@Suspended asyncResponse: AsyncResponse,
 \section{Evaluation}\label{sec:ch5-evaluation}
 
 \subsection{Bugs}
-The expection for the criteria bugs from \autoref{sec:ch5-eval-criteria} is to
+The expectation for the criteria bugs from \autoref{sec:ch5-eval-criteria} is to
 find bugs in the SUT where execution traces from the SMT solver isn't accepted
 by the SUT.
 
@@ -1028,7 +1029,7 @@ The expectation of the coverage criteria is to test all the transitions from a
 specification since the simulation is able to test single steps.
 
 With this proof of concept it isn't possible to test the
-\textit{close} transition. The the precondition of this transition isn't
+\textit{close} transition. The precondition of this transition isn't
 satisfied due to the current state defined for this transition. Altogether,
 with this proof of concept it is possible to test all the
 transitions when the preconditions of a given transition are satisfied by the
@@ -1055,7 +1056,7 @@ in the fixed code. Another bug for the same interest transition from
 the bug is found in the generated code from the specification. As discussed in
 \autoref{sec:ch3-evalution}, it is possible that there might be bugs in
 templating, in the fixed code or the injected code. With the test run of this
-proof, of concept we've found bugs for both categories.
+proof of concept, we've found bugs for both categories.
 
 As discussed before, with this proof of concept it wasn't possible to test the
 \textit{close} transition. The the precondition of this transition isn't
@@ -1073,8 +1074,8 @@ $\forall e s_{1} \to s_{2}, (! s_{2} pre(e) \lor s_{2} pre(e) in s_{1} post(e))$
 \subsection*{Limited specifications}
 In the conducted experiments are the specifications account and transaction used
 to test the generated system from these specifications. With these experiments
-and specifications, we did find faults in the code generators. Although are
-these specifications quite simple, \textit{e.g.}, for a bank these
+and specifications, we did find faults in the code generators. Although
+these specifications are quite simple, \textit{e.g.}, for a bank these
 specifications would be more complex. These experiments take into account the
 generosity of specifications, but with such a large amount of complex
 specifications, it is questionable whether these experiments still produce
@@ -1092,5 +1093,5 @@ can cause the conducted experiments give incorrect results.
 The experiment from \autoref{sec:ch5} tests only valid execution traces from
 the SMT solver, \textit{i.e.}, testing only what should be possible according to
 the specification. Testing valid execution traces is not enough, testing not
-valid execution traces can be valuable. Thus the experiment from
+valid execution traces can be valuable. The experiment from
 \autoref{sec:ch4} already does this, but as discussed it has a few limitations.

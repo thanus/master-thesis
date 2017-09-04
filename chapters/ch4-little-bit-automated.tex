@@ -63,12 +63,12 @@ replacement~\cite[p.~688]{king1991fortran}.
 The testing approach is illustrated in \autoref{fig:mutated-checking}. The first
 step is to start with a Rebel specification, which is in our case the already
 existing account specification. When the specifications are defined, the
-specifications are being built, \textit{i.e.}, Concrete Syntax Trees (CSTs) are
-produced of these specifications. Using these CSTs, the code generator generates
+specifications are being built, \textit{i.e.}, \gls{csts} are
+produced of these specifications. Using these \gls{csts}, the code generator generates
 the code, which is then the \gls{sut}.
 
 The test case generator can be used to test the \gls{sut}, when the \gls{sut} is generated
-from the CSTs. The CSTs of the specifications are traversed by the test case
+from the \gls{csts}. The \gls{csts} of the specifications are traversed by the test case
 generator to generate a test for each transition. The test case generator
 generates tebl files for transitions to use checking.
 

@@ -137,13 +137,13 @@ a specification. This experiment uses the account and transaction specifications
 which are already defined.
 
 Once the specification is defined, the specifications
-are being built, \textit{i.e.}, Concrete Syntax Trees (CSTs) are produced of
-these specifications. Using these CSTs, the code generator generates the code,
+are being built, \textit{i.e.}, \gls{csts} are produced of
+these specifications. Using these \gls{csts}, the code generator generates the code,
 which is then the \gls{sut}.
 
-When the \gls{sut} is generated from the CSTs, the \gls{sut} can be tested by the test
-framework. The test case generator traverses the CSTs of the specifications to
-generates test cases for all transitions. Using the information from the CSTs,
+When the \gls{sut} is generated from the \gls{csts}, the \gls{sut} can be tested by the test
+framework. The test case generator traverses the \gls{csts} of the specifications to
+generates test cases for all transitions. Using the information from the \gls{csts},
 the simulation is requested for a test case for a chosen transition. The
 simulation provides then a trace (test case) for the requested transition.
 

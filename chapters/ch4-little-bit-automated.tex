@@ -29,13 +29,13 @@ what should not be possible according to the specification.
 \subsubsection{Bugs}
 Since we're testing with this approach the inverse of the preconditions, thus
 what should be not possible according to the specification, it is expected to
-find bugs in the SUT where it is possible to perform the inverse of a
+find bugs in the \gls{sut} where it is possible to perform the inverse of a
 transition.
 
 \subsubsection{Efficiency}
 In this approach is checking used to check what isn't possible according to the
 specification. Therefore, the same tested transition should be tested in the
-SUT.
+\gls{sut}.
 
 \subsubsection{Coverage}
 The proof of concept is going to generate test for all transitions. Therefore,
@@ -49,9 +49,9 @@ programs are called mutants, each mutant contains a different syntactic change.
 In our case, only one mutant is generated. A test suite for a program is used to
 determine whether the faulty programs are detected. A mutant is killed when it
 is detected by the test suite. The mutant is in our case killed when the result
-from the SMT Solver and the SUT are the same. We're using the same
+from the SMT Solver and the \gls{sut} are the same. We're using the same
 approach from \autoref{sec:ch3} to compare the results of the SMT solver and
-SUT.
+\gls{sut}.
 
 Mutation testing generates a mutant based on
 mutation operator, which is a transformation rule that generates a mutant from
@@ -65,16 +65,16 @@ step is to start with a Rebel specification, which is in our case the already
 existing account specification. When the specifications are defined, the
 specifications are being built, \textit{i.e.}, Concrete Syntax Trees (CSTs) are
 produced of these specifications. Using these CSTs, the code generator generates
-the code, which is then the SUT.
+the code, which is then the \gls{sut}.
 
-The test case generator can be used to test the SUT, when the SUT is generated
+The test case generator can be used to test the \gls{sut}, when the \gls{sut} is generated
 from the CSTs. The CSTs of the specifications are traversed by the test case
 generator to generate a test for each transition. The test case generator
 generates tebl files for transitions to use checking.
 
-In order to test the SUT, the test case generator performs a similar transition
-as used within checking in the SUT. Finally, the results from checking and the
-performed transition in the SUT are compared.
+In order to test the \gls{sut}, the test case generator performs a similar transition
+as used within checking in the \gls{sut}. Finally, the results from checking and the
+performed transition in the \gls{sut} are compared.
 
 \begin{figure}[h!]
   \centering
@@ -118,7 +118,7 @@ will replace conditionals according to the replacement table in
 \FloatBarrier
 
 \subsection{Generated system}
-The conditionals for the transition in the SUT are also replaced.
+The conditionals for the transition in the \gls{sut} are also replaced.
 Although, it isn't necessary to replace always the conditionals. For some
 transitions is an initial state required, \textit{e.g.}, to execute the transition unblock
 of the account specification, the account should be in the state blocked. So an
@@ -131,7 +131,7 @@ preconditions \code{amount > EUR 0.00;}. First, the initial state needs to be
 constructed which is the state opened. Following is the replacement of the conditionals, the
 replaced precondition from the \textit{deposit} transition looks as follows
 \code{amount > EUR 0.00;}. The \textit{deposit} transition needs then to be
-performed in the SUT.
+performed in the \gls{sut}.
 
 To perform the \textit{deposit} transition, the transition parameters for this
 transition must be determined satisfying replaced conditionals. The transition
@@ -193,7 +193,7 @@ positives. After investigating the tests for the transitions, the test for the \
 transition seems not be successful (see \autoref{fig:result-close-account}).
 The model checker states that the state isn't reachable (the same tebl file is
 generated as in \autoref{fig:tebl-closed-account}). It seems to be that the
-state is reachable in the SUT.
+state is reachable in the \gls{sut}.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -209,13 +209,13 @@ Result successful transition test: false
 \end{sourcecode}
 \FloatBarrier
 
-When we take a look at the account in the SUT, it looks as
+When we take a look at the account in the \gls{sut}, it looks as
 follows in \autoref{fig:closed-account-json}. The state of the account is in
 closed, which is correct according to the specification, but the balance of the
 account is 52 euro. In \autoref{fig:account-close-event} we already discussed
 the event  definition of the \textit{close} transition, which is that the
 balance should be equal to zero. From this, we can conclude that we've
-discovered a bug in the SUT.
+discovered a bug in the \gls{sut}.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -279,7 +279,7 @@ to other statements which uses the equal operator.
 \subsubsection{Bug: deposit with a maximum amount}\label{sec:bug-compile-max-deposit}
 
 The automated checking is implemented with the ability to first start the
-SUT and then run the tests against it. For a new test run, the
+\gls{sut} and then run the tests against it. For a new test run, the
 specification has changed a little bit. It is now possible to only deposit with
 a maximum amount (see \autoref{fig:java-deposit-maxamount}). After the code is
 generated, the testing framework isn't able to start the system. There is a
@@ -357,12 +357,12 @@ private str g(e:(Expr)`<Expr lhs> \< <Expr rhs>`, tmap t) = "(<g(lhs, t)> \< <g(
 
 \subsection{Bugs}
 In \autoref{sec:ch4-eval-criteria} we discussed the expectations of the criteria
-bugs. We expected to find bugs in the SUT where it is possible to perform the
+bugs. We expected to find bugs in the \gls{sut} where it is possible to perform the
 inverse of a transition.
 
-With this proof of concept, we've found a bug in the SUT, which was
+With this proof of concept, we've found a bug in the \gls{sut}, which was
 discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
-since the SUT isn't able to compile. With the bug from
+since the \gls{sut} isn't able to compile. With the bug from
 \autoref{sec:bug-close-account} it is possible that the final state closed is
 reached where the preconditions of the \textit{close} transition don't hold.
 So as expected, we did find a bug in performing the inverse of a transition.
@@ -370,7 +370,7 @@ So as expected, we did find a bug in performing the inverse of a transition.
 \subsection{Efficiency}
 For the criteria efficiency it is expected to check what isn't possible
 according to the specification, i.e. testing the same transition in checking as
-well as the SUT.
+well as the \gls{sut}.
 
 A part of the generated test for a transition is checking, which is used to test
 the state to reach with the replaced preconditions. So, in this proof of
@@ -384,15 +384,15 @@ It is expected for this criteria to test all the transitions of the
 specification since the proof of concept generated tests for all transitions.
 
 In the proof of concept, after the checking, a transition
-is performed in the SUT. In this proof of concept, it's unknown whether the
-performed transition with its parameters in the SUT is the same as the
+is performed in the \gls{sut}. In this proof of concept, it's unknown whether the
+performed transition with its parameters in the \gls{sut} is the same as the
 transition computed by the SMT Solver. This causes some false positives in the
 test run. Also, it is difficult to play like the SMT Solver, it is unknown which
 result the SMT Solver will give. The SMT solver is also smarter/better in checking
 the satisfiability of a given constraints.
 
 \section{Conclusion}
-In this proof of concept is the account specification used to test the SUT.
+In this proof of concept is the account specification used to test the \gls{sut}.
 This proof of concept generates automatically tests for transitions.
 
 A part of
@@ -404,19 +404,19 @@ reached by the \textit{openAccount} transition or by the transition
 \textit{openAccount} and \textit{withdraw}.
 
 After the checking, a transition
-is performed in the SUT. In this proof of concept, it's unknown whether the
-performed transition with its parameters in the SUT is the same as the
+is performed in the \gls{sut}. In this proof of concept, it's unknown whether the
+performed transition with its parameters in the \gls{sut} is the same as the
 transition computed by the SMT Solver. This causes some false positives in the
 test run. Also, it is difficult to play like the SMT Solver, it is unknown which
 result the SMT Solver will give. The SMT solver is also smarter/better in checking
 the satisfiability of a given constraints.
 
 To conclude, the checking used in this proof of concept tests only the states, regardless of which transitions are
-being performed, and testing the SUT focuses more on testing transitions.
+being performed, and testing the \gls{sut} focuses more on testing transitions.
 
-With this proof of concept, we've found a bug in the SUT, which was
+With this proof of concept, we've found a bug in the \gls{sut}, which was
 discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
-since the SUT isn't able to compile. The found bug belongs to the category
+since the \gls{sut} isn't able to compile. The found bug belongs to the category
 injected code since the generated code for the precondition is wrong. In this
 case, the final state closed is reached where the preconditions of the \textit{close}
 transition don't hold. So the theory for this found bug is:
@@ -448,5 +448,5 @@ generators since the specifications are interacting with each other.
 
 \subsection*{Invalid execution trace}
 The conducted experiment test only what should be not possible according to the
-specification. It is also important to test whether the SUT is conform to the
+specification. It is also important to test whether the \gls{sut} is conform to the
 specification, \textit{i.e.}, testing the valid execution trace.

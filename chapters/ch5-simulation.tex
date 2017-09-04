@@ -39,7 +39,7 @@ These sync expressions are also translated to SMT formulas.
 The sync expressions translated to the SMT solver are just logical formulas,
 there is no logic for synchronisation in these formulas. Of course, the generated system has
 implemented synchronisation for these transitions. So it is possible to also
-test synchronisation in the SUT. There are also several studies which reports
+test synchronisation in the \gls{sut}. There are also several studies which reports
 that SMT-based approaches to model checking can be used to test distributed
 algorithms.~\cite{konnov2015you, alberti2015smt}
 
@@ -100,29 +100,29 @@ event book() {
 
 As discussed in \autoref{sec:research-method}, a model testing approach is
 already done to test existing banking systems. Although, in this approach, it
-was only possible to test the SUT interactively using the simulation. In this
+was only possible to test the \gls{sut} interactively using the simulation. In this
 approach are the traces from the SMT solver used to check whether the
-SUT accepts the execution from the trace and whether it behaves as the
+\gls{sut} accepts the execution from the trace and whether it behaves as the
 specification.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
 
 By using the traces, it solves also the problems from the previous proof of
 concept. With the use of traces, we know exactly which possible transitions the
-SMT solver has performed. Then these transitions can be performed in the SUT.
+SMT solver has performed. Then these transitions can be performed in the \gls{sut}.
 So, in this approach we're going to use the traces to check the behaviour of the
-SUT.
+\gls{sut}.
 
 \subsection{Evaluation criteria}\label{sec:ch5-eval-criteria}
 
 \subsubsection{Bugs}
-In this approach we're using the traces from the SMT solver to test the SUT,
+In this approach we're using the traces from the SMT solver to test the \gls{sut},
 thus testing what should be possible according to the specification. The
-expectation here is to find bugs in the SUT which doesn't accept the execution
+expectation here is to find bugs in the \gls{sut} which doesn't accept the execution
 from the traces.
 
 \subsubsection{Efficiency}
 By using the traces, we check whether the given execution is possible in the
-SUT. Therefore, the expectation is to perform the same transition from the traces
-should be performed in the SUT.
+\gls{sut}. Therefore, the expectation is to perform the same transition from the traces
+should be performed in the \gls{sut}.
 
 \subsubsection{Coverage}
 In this proof of concept is the simulation used to test transitions. Since
@@ -139,17 +139,17 @@ which are already defined.
 Once the specification is defined, the specifications
 are being built, \textit{i.e.}, Concrete Syntax Trees (CSTs) are produced of
 these specifications. Using these CSTs, the code generator generates the code,
-which is then the SUT.
+which is then the \gls{sut}.
 
-When the SUT is generated from the CSTs, the SUT can be tested by the test
+When the \gls{sut} is generated from the CSTs, the \gls{sut} can be tested by the test
 framework. The test case generator traverses the CSTs of the specifications to
 generates test cases for all transitions. Using the information from the CSTs,
 the simulation is requested for a test case for a chosen transition. The
 simulation provides then a trace (test case) for the requested transition.
 
-To test the SUT using the generated test cases, the data
+To test the \gls{sut} using the generated test cases, the data
 from these test cases are provided to the adapter. Finally, the adapter
-communicates this data to the SUT.
+communicates this data to the \gls{sut}.
 
 \begin{figure}[h!]
   \centering
@@ -158,15 +158,15 @@ communicates this data to the SUT.
 \end{figure}
 \FloatBarrier
 
-To playback the steps from a given trace on the SUT, we're going to split every
+To playback the steps from a given trace on the \gls{sut}, we're going to split every
 transition into three steps as in the
 study~\cite[p.~6]{stoel_storm_vinju_bosman_2016}:
 \begin{enumerate}
-\item \textbf{pre-transition check} Check whether the current state from the SUT
+\item \textbf{pre-transition check} Check whether the current state from the \gls{sut}
 is conform to the current state from the trace
 \item \textbf{transition check} Execute the given transition from the trace on
-the SUT
-\item \textbf{post-transition check} Check whether the new state from the SUT is
+the \gls{sut}
+\item \textbf{post-transition check} Check whether the new state from the \gls{sut} is
 conform to the new state from the trace
 \end{enumerate}
 \unsure{paper: what is state? also the values of the instances?}
@@ -187,16 +187,16 @@ data values. These challenges are discussed in the paragraphs below.
 \subsubsection*{Current state}
 \label{sec:ch5-current-state}
 
-The pre-transition checks entail the check for the current state of the SUT is
+The pre-transition checks entail the check for the current state of the \gls{sut} is
 conform to the current state from the trace. Although with the simulation it is
 only possible to reason about individual steps. For some transitions a current
 state is required, \textit{e.g.}, an account needs to be blocked first to
 unblock it. To make use of the simulation, the current state needs to be defined
 to check whether the step can be made from the current state. This is also the
-case in the SUT since a current state needs to be initialised first before the
+case in the \gls{sut} since a current state needs to be initialised first before the
 transition is performed.
 
-To initialise the current state in the SUT checking can be used. By defining
+To initialise the current state in the \gls{sut} checking can be used. By defining
 the current state with checking, the current state is checked and a valid trace
 is given by the model checker when the current state is satisfiable. So for
 every transition, a tebl needs to be generated for the state to reach
@@ -218,7 +218,7 @@ also not valid.
 
 The invalid IBAN numbers isn't a problem for the
 checking since checking is only used to reason about possible traces. However,
-this doesn't hold in the SUT since SUT is a banking system and here it must
+this doesn't hold in the \gls{sut} since \gls{sut} is a banking system and here it must
 conform to the IBAN standards. It is possible with checking to define the
 properties of an entity, \textit{e.g.}, the IBAN for an account.
 
@@ -247,7 +247,7 @@ Altogether, a generated tebl for checking the current state looks as follows in
 
 When the current state is defined, the generated tebl is given to the model
 checker. When the current state is satisfiable are the traces used to perform
-the transitions in the SUT. This is in more depth described in the section
+the transitions in the \gls{sut}. This is in more depth described in the section
 \autoref{sec:ch5-traces}. Performing each step from a trace entails the three steps to test and
 perform the transition.
 
@@ -299,7 +299,7 @@ of the study \cite[p.6]{stoel_storm_vinju_bosman_2016} chosen for interactively
 using the simulation.
 
 Manually providing the transition parameters data values
-isn't relevant for us, since our intention is to test automatically the SUT.
+isn't relevant for us, since our intention is to test automatically the \gls{sut}.
 Certainly, these values can be generated randomly, but it should satisfy the
 pre- and postconditions for the chosen transition. However, it would be
 better to let the SMT solver fill these values, taking into account the pre- and
@@ -338,7 +338,7 @@ $P(s2)$.
 \end{enumerate}
 
 When this step can be made, with the use of traces, the step can be played in
-the SUT. Therefore, \textit{JSON} should be generated for the chosen transition.
+the \gls{sut}. Therefore, \textit{JSON} should be generated for the chosen transition.
 To generate this \textit{JSON} are the transition parameters data values and
 the transition name read from the trace step. At last, the endpoint is
 determined for the given step and is the generated JSON sent to the endpoint.
@@ -347,15 +347,15 @@ determined for the given step and is the generated JSON sent to the endpoint.
 % Check whether the new state from the SUT is conform to the new state from the trace
 
 Since a trace contains the instances before and after the step, this can be used
-in the post-transition check to test the SUT. As a result, we can check after or
-before performing the step, whether the SUT behaves similarly as the
+in the post-transition check to test the \gls{sut}. As a result, we can check after or
+before performing the step, whether the \gls{sut} behaves similarly as the
 simulated/checked specification.
 
-To check whether the new state from the SUT is
+To check whether the new state from the \gls{sut} is
 conform to the trace, the state and values from the instances are read after
 performing the transition. The endpoint is then determined to retrieve the state
-of these instances in the SUT. Then, the results of these instances from the SUT
-and trace are compared to find any misbehaviour in the SUT.
+of these instances in the \gls{sut}. Then, the results of these instances from the \gls{sut}
+and trace are compared to find any misbehaviour in the \gls{sut}.
 \improvement{check all instances}
 
 \subsubsection{Normalisation}
@@ -378,14 +378,14 @@ The newly added fields
 are also present within the trace from the SMT solver. In our case, we only use
 the \textit{\_state} field, because we already know which transition led to the current
 state. To compare the current state from the \textit{\_state} field, it needs to be
-sugared back in order to compare it to the SUT.
+sugared back in order to compare it to the \gls{sut}.
 % Adding Frame Conditions. To guard the fields that are not changed by the event frame conditions are added (Jack- son 2012). These frame conditions make sure that a field has the same value after the transition as before.
 
 \subsubsection{Test case adapter}
 As discussed in the code generation section, the request made to the API of the
-SUT are "standardized", but the response isn't. For the post-transition check,
-it is necessary to check the new state in the SUT. Therefore, an adapter
-needs to be defined to be able to compare the results of the SUT and the trace.
+\gls{sut} are "standardized", but the response isn't. For the post-transition check,
+it is necessary to check the new state in the \gls{sut}. Therefore, an adapter
+needs to be defined to be able to compare the results of the \gls{sut} and the trace.
 
 The decision is made to only implement an adapter for the code generator
 Codegen-Akka, since this is a more mature code generator and frequently used for
@@ -616,7 +616,7 @@ see on line 42 is the \textit{openAccount} transition performed. On the line
 below is shown that the request is successful. On line 44 is an error message
 shown which tells that it isn't able to find the state of the opened account.
 Note the question mark in this message. This error message is part of the
-post-transition check where the new state of the SUT is tested. On line number
+post-transition check where the new state of the \gls{sut} is tested. On line number
 35 is the instance account shown after the transition and on the line below you
 can see the same question mark. Both question mark relates to each other, which
 is the state of a given specification.
@@ -694,11 +694,11 @@ balance. To conclude, the transition interest is possible according to the
 simulation.
 
 Although, the request made for the transition interest isn't
-successful, and when we take a look at the account in the SUT, the account looks
+successful, and when we take a look at the account in the \gls{sut}, the account looks
 as follows in \autoref{fig:interest-opened-account-json}. The state of the
 account is still opened and the balance seems to be the same when the account
 was opened. From looking at the state of the account, the interest transition
-isn't performed in the SUT and the state of the account is the same as before
+isn't performed in the \gls{sut} and the state of the account is the same as before
 performing the transition.
 
 % less than percentage
@@ -780,7 +780,7 @@ Response: ("body":"","isSuccessful":"false","message":"Bad Request","errorBody":
 	}
 }
 \end{lstlisting}
-\caption{Account state in the SUT after performing the interest transition}
+\caption{Account state in the \gls{sut} after performing the interest transition}
 \label{fig:interest-opened-account-json}\end{sourcecode}
 \FloatBarrier
 
@@ -815,7 +815,7 @@ definition from \autoref{fig:account-interest-event} contains the following
 check in \autoref{fig:java-gen-interest-pre}. The generated code for the
 preconditions seems to be good since it uses a \textit{isLessOrEqualThan}
 function with the given interest percentage. Looking at the log file created by
-the SUT, the exception \textit{BuildCASTransactionException} is thrown when
+the \gls{sut}, the exception \textit{BuildCASTransactionException} is thrown when
 performing the interest transition, which is the exception from
 \autoref{fig:java-gen-interest-pre}. So the generated code seems to be good, but
 the function used for validating the interest returns an inappropriate value,
@@ -839,7 +839,7 @@ isn't correctly defined, since this is the definition for the function
 \textit{isGreaterOrEqualThan}. This code isn't generated but is part of the
 fixed code.
 
-Clearly, we've discovered a bug in the SUT for the transition
+Clearly, we've discovered a bug in the \gls{sut} for the transition
 interest. As discussed in \autoref{sec:ch3-evalution}, it is possible to have
 bugs in the fixed code. With this proof of concept and testing the Javadatomic
 generator, we can conclude that we've found a bug in the fixed code.
@@ -858,7 +858,7 @@ public static boolean isLessOrEqualThan(BigDecimal lhs, BigDecimal rhs) {
 \label{sec:bug-interest-scalaes}
 % Interest squants dimensionlessdata
 
-This test run tests the SUT generated by the Scala-ES generator. Looking at the
+This test run tests the \gls{sut} generated by the Scala-ES generator. Looking at the
 test run, like the test run for the Javadatomic generator, it seems to be
 that the transition interest fails. The results of the test run are shown in
 \autoref{fig:result-scalaes-interest}. Line number 51 shows the failing request
@@ -866,7 +866,7 @@ for the interest transition, an error message is returned with the HTTP status
 code 400. Also, in this test run is construction the current state for the
 interest transition successful (see line number 26). In this test run, the
 simulation has generated the same trace for the interest transition as for the
-Javadatomic generator. The state of the account in the SUT looks as follows in
+Javadatomic generator. The state of the account in the \gls{sut} looks as follows in
 \autoref{fig:interest-opened-account-scalaes-json}. Also here the state of the
 account opened and the balance seems to be the same when the account was opened.
 So, the performed interest transition has failed and the state of the account
@@ -947,15 +947,15 @@ account.Interest[&quot;currentInterest&quot;])","code":"400")
    "balance":"50.00 EUR"
 }
 \end{lstlisting}
-\caption{Account state in the SUT after performing the interest transition}\label{fig:interest-opened-account-scalaes-json}
+\caption{Account state in the \gls{sut} after performing the interest transition}\label{fig:interest-opened-account-scalaes-json}
 \end{sourcecode}
 \FloatBarrier
 
-Likewise, the Javadatomic generator, we've discovered a bug in the SUT, since
+Likewise, the Javadatomic generator, we've discovered a bug in the \gls{sut}, since
 the simulated transition isn't conform to the specification. To know where this
 bug occurs and which code isn't properly generated, the response from the
 interest transition request gives an error message. According to the error
-message, the SUT isn't able to construct the instance of \textit{Dimensionless}
+message, the \gls{sut} isn't able to construct the instance of \textit{Dimensionless}
 for the transition parameter \textit{currentInterest}. This error seems to occur
 in the class \textit{Interest}, which is shown in
 \autoref{fig:scala-gen-interest-json}. The parameter \textit{currentInterest}
@@ -977,7 +977,7 @@ the interest transition and as you can see is the class \textit{Interest} used
 as the second parameter. This class is used to bind the interest parameter as a
 type of the \textit{Interest} class.
 
-In short, we've discovered a bug in the SUT
+In short, we've discovered a bug in the \gls{sut}
 for the interest transition. The interest transition bug in the Javadatomic
 generator belongs to the fixed code category, but in this case, for the Scala-ES
 generator, the bug belongs to the injected code category, since the
@@ -1003,26 +1003,26 @@ def interest(@Suspended asyncResponse: AsyncResponse,
 
 \subsection{Bugs}
 The expectation for the criteria bugs from \autoref{sec:ch5-eval-criteria} is to
-find bugs in the SUT where execution traces from the SMT solver isn't accepted
-by the SUT.
+find bugs in the \gls{sut} where execution traces from the SMT solver isn't accepted
+by the \gls{sut}.
 
 In this proof of concept we've found bugs in the code generators. For both bugs,
 \autoref{sec:bug-interest-javadatomic} and \autoref{sec:bug-interest-scalaes},
 it wasn't possible to perform the execution from the traces returned by the
-SMT solver. To conclude, we did find bugs as expected where the SUT wasn't
+SMT solver. To conclude, we did find bugs as expected where the \gls{sut} wasn't
 conform to the specification.
 
 \subsection{Efficiency}
 With the use of traces it is expected to perform the same transition from the
-traces in the SUT.
+traces in the \gls{sut}.
 
 Checking and simulation are used to generate tests for transitions in this proof
 of concept. The traces given by the simulation and checking are used to check
-whether the SUT behaves as the specification and whether it accepts the
+whether the \gls{sut} behaves as the specification and whether it accepts the
 execution from the trace. In this proof of concept are the transitions in the
-SUT performed in three steps to identify misbehaviour in the SUT.
+\gls{sut} performed in three steps to identify misbehaviour in the \gls{sut}.
 To conclude, as expected are the same transitions from the traces performed in
-the SUT.
+the \gls{sut}.
 
 \subsection{Coverage}
 The expectation of the coverage criteria is to test all the transitions from a
@@ -1039,13 +1039,13 @@ current state.
 In this proof of concept are more complex specifications used for testing.
 Checking and simulation are used to generate tests for transitions in this proof
 of concept. The traces given by the simulation and checking are used to check
-whether the SUT behaves as the specification and whether it accepts the
+whether the \gls{sut} behaves as the specification and whether it accepts the
 execution from the trace. Unlike the previous proof of concept from
 \autoref{sec:ch4}, it tests what should be possible according to the
 specification by using the traces from the SMT solver. Even are the transition
 parameters data values generated by the SMT solver. In this proof of concept are
-the transitions in the SUT performed in three steps to identify misbehaviour in
-the SUT. Although there is a limitation in the testing of states. Within a
+the transitions in the \gls{sut} performed in three steps to identify misbehaviour in
+the \gls{sut}. Although there is a limitation in the testing of states. Within a
 trace, not every instance may contain the state of it.
 \improvement{add results for this in codegen akka}
 

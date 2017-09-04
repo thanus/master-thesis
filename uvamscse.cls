@@ -32,6 +32,7 @@
 \usepackage{placeins}
 \usepackage{amscd}
 \usepackage[nottoc,notlot,notlof]{tocbibind}
+\usepackage[acronym]{glossaries}
 \usepackage{multirow}
 \usepackage{booktabs}
 \usepackage{epigraph}

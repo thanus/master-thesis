@@ -102,7 +102,7 @@ The first bug to trigger is to close an account with some balance. In order to d
 The modified precondition looks as follows in
 \autoref{fig:account-close-mod-pre}. The precondition is changed to
 \textit{RebelConditionCheck.success}, this means that the precondition is
-satisfied. Right now we have introduced a bug in the system under test (SUT),
+satisfied. Right now we have introduced a bug in the \gls{sut},
 so the generated system isn't conform to the specification.
 
 \begin{figure}[h!]
@@ -125,17 +125,17 @@ case Close() => {
 \subsection{Evaluation criteria}\label{sec:ch4-eval-criteria}
 
 \subsubsection{Bugs}
-Since the precondition of the \textit{close} transition is modified in the SUT,
-we know that the SUT contains the bug to close an account with some balance. For
-the lightweight version it is expected to find this bug in the SUT.
+Since the precondition of the \textit{close} transition is modified in the \gls{sut},
+we know that the \gls{sut} contains the bug to close an account with some balance. For
+the lightweight version it is expected to find this bug in the \gls{sut}.
 
 \subsubsection{Efficiency}
 The lightweight version will use checking to check whether it is possible to have
 a closed account with some balance. Therefore, it is expected to test the same
-transition in the SUT.
+transition in the \gls{sut}.
 
 \subsubsection{Coverage}
-With this lightweight version we're going to trigger one single bug in the SUT,
+With this lightweight version we're going to trigger one single bug in the \gls{sut},
 \textit{i.e.} finding the bug for the \textit{close} transition. Thus from the
 the account specification we're testing only the transition \textit{close}.
 
@@ -150,7 +150,7 @@ the account specification we're testing only the transition \textit{close}.
 
 The testing approach is shown in \autoref{fig:mod-bug-test}.
 We discussed earlier that we are going to use the SMT solver to find bugs in the
-SUT. Having an account with some balance in the state closed should not be possible
+\gls{sut}. Having an account with some balance in the state closed should not be possible
 according to the specification. To let the SMT Solver solve this situation, it
 is necessary to generate the appropriate SMT formulas. Therefore, checking can
 be used to check whether the given state with its properties is reachable.
@@ -181,7 +181,7 @@ check closedAccountWithBalance reachable in max 6 steps;
 The input for the SMT solver is now defined. Similar behaviour should be defined
 for the generated system. So an account needs to be opened and closed
 afterwards. Therefore, the testing framework performs both transitions in the
-SUT.
+\gls{sut}.
 
 The tebl file is passed to the model checker and it returns whether the given
 SMT problem is reachable or not. A state is reachable when it can be reached
@@ -190,7 +190,7 @@ transitions.~\cite[p.~4]{stoel_storm_vinju_bosman_2016} To check if the state is
 reachable in the generated system, the request made for the given transition
 contains afterwards a check whether the request is successful. Then the testing
 framework can compare the results from the SMT solver and the request made in
-the SUT.
+the \gls{sut}.
 
 \section{Results}
 
@@ -204,7 +204,7 @@ close transition are shown in \autoref{fig:ch3-res-codegenakka-account}.
 \centering
 \begin{tabular}{cccc}
 \toprule
-\textbf{Transition to test} & \textbf{Reachability SMT solver} & \textbf{Reachability SUT} & \textbf{Test result} \\ \midrule
+\textbf{Transition to test} & \textbf{Reachability SMT solver} & \textbf{Reachability \gls{sut}} & \textbf{Test result} \\ \midrule
 close                       & \xmark{}                         & \cmark{}                  & \xmark{}             \\ \bottomrule
 \end{tabular}
 \caption{Results: testing close transition of account specification}\label{fig:ch3-res-codegenakka-account}
@@ -217,12 +217,12 @@ close                       & \xmark{}                         & \cmark{}       
 According to the results from \autoref{fig:ch3-res-codegenakka-account}, the
 generated test for the \textit{close} transition has failed. The results of the
 model checker state that the defined state in \autoref{fig:tebl-closed-account}
-isn't reachable. Although, the state in the SUT is reachable.
+isn't reachable. Although, the state in the \gls{sut} is reachable.
 
-Looking at the account in the SUT, it looks as follows
+Looking at the account in the \gls{sut}, it looks as follows
 \autoref{fig:mod-closed-account-json}. The state of the account is closed and
 the balance is the same as when it was opened. To conclude, the \textit{close}
-transition is performed in the SUT due to the modification of the generated
+transition is performed in the \gls{sut} due to the modification of the generated
 precondition.
 
 \begin{sourcecode}[h!]
@@ -263,7 +263,7 @@ transition due to the manually modified precondition.
 Checking is used in this lightweight version to check whether it is possible
 to have an opened account with some balance. According to
 \autoref{fig:ch3-res-codegenakka-account}, this state isn't reachable. It is
-expected to test the same transition with checking in the SUT.
+expected to test the same transition with checking in the \gls{sut}.
 
 When the model checkers returns that a given state isn't reachable,
 traces are not available. Models (traces) are not available when "unsat" is
@@ -275,7 +275,7 @@ used.
 \info{add reference for no model when unsat}
 
 \subsubsection{Coverage}
-The lightweight version is used only to trigger a single bug in the SUT. As
+The lightweight version is used only to trigger a single bug in the \gls{sut}. As
 expected, only the transition \textit{close} tested. Although, to close an
 account the account needs to be first opened. Therefore, the transition
 \textit{openAccount} performed, but this transition isn't tested whether the

@@ -19,7 +19,7 @@ process within large systems can be challenging, it entails not only defining
 and executing a lot of test cases, solving thousands of errors, handling
 thousands of modules, but also enormous project management. To facilitate this
 process \textit{Rebel} offers automated simulation and checking of specifications with
-the use of a Satisfiability Modulo Theories (SMT) solver. This solves to some
+the use of a \gls{smt} solver. This solves to some
 extent the testing and reasoning of \textit{Rebel} specifications, but this is only
 within in the \textit{Rebel} domain.
 
@@ -73,10 +73,10 @@ The following questions are defined to achieve the research goal:
 The research is about testing the implementation correctness of specifications.
 For the problems in \autoref{sec:problem-statement}, the
 study~\cite[p.3]{stoelcase} proposed a possible solution for these problems,
-which is to use SMT Solvers. As before mentioned, the mapping of the \textit{Rebel}
-language to the SMT formulas makes it possible to check and simulate
+which is to use \gls{smt} Solvers. As before mentioned, the mapping of the \textit{Rebel}
+language to the \gls{smt} formulas makes it possible to check and simulate
 specifications. Hereby, there is an interpreter for \textit{Rebel} specifications, which
-is the SMT Solver.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
+is the \gls{smt} Solver.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
 
 In the same study,
 an attempt of model based testing is done to test real banking systems.
@@ -86,15 +86,15 @@ differences in behaviour are displayed in the simulator. The future work of this
 approach is to expand the functionality to work automatically with a given
 trace.
 
-Due to all these reasons, it seems to be a good solution to use the SMT
+Due to all these reasons, it seems to be a good solution to use the \gls{smt}
 Solver which holds the key in testing the generated system. Theoretically, with
 this approach, it is possible to regain the benefits from the \textit{Rebel} domain, and
 again able to test and reason about \textit{Rebel} specifications and generated system.
 
-The hypothesis is that the SMT Solver can be used to test the implementation
+The hypothesis is that the \gls{smt} Solver can be used to test the implementation
 correctness of a specification against a generated system. In order to do this,
 research needs to be carried out for testing the generated system
-with the SMT Solver, mappings (traces) between these systems. With the given approach, a
+with the \gls{smt} Solver, mappings (traces) between these systems. With the given approach, a
 few assumptions need to be made:
 
 \begin{itemize}
@@ -107,10 +107,10 @@ system derived from an incorrect specification isn't really effective.
 system cannot be compiled, it is possible that there might be a fault in the
 code generator. Although, with this approach testing a not compilable system is
 impossible.
-\item \textbf{The \textit{Rebel} specifications are correctly interpreted by the SMT
-Solver.} The SMT Solver is used as an oracle/black box in the testing approach
+\item \textbf{The \textit{Rebel} specifications are correctly interpreted by the \gls{smt}
+Solver.} The \gls{smt} Solver is used as an oracle/black box in the testing approach
 since it is an interpreter for \textit{Rebel} specification. However, when
-something goes wrong with the mapping of the \textit{Rebel} language to the SMT
+something goes wrong with the mapping of the \textit{Rebel} language to the \gls{smt}
 formulas, this will result into misbehaviour of the specification which may lead
 to incorrect results.
 \end{itemize}
@@ -121,7 +121,7 @@ tool for testing the implementation correctness of a specification of \gls{sut}.
 
 The
 approach is to start with the lightweight version which can trigger a bug and
-test it with the SMT Solver. For the lightweight version, it is an easily
+test it with the \gls{smt} Solver. For the lightweight version, it is an easily
 reproducible bug. Then the lightweight version can be improved to a smarter
 testing technique to automatically generate tests, these improvements are done
 with evaluation and validation. For example, by using existing software testing

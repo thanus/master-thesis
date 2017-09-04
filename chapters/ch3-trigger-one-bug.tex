@@ -72,7 +72,7 @@ event close() {
 As mentioned earlier, an initial lightweight version is expected, then it will
 be extended with motivated improvements with evaluation and validation. The
 approach is to start with a lightweight version which is able to trigger a bug
-and test it with the SMT Solver. For the lightweight version, it is an easily
+and test it with the \gls{smt} Solver. For the lightweight version, it is an easily
 reproducible bug. This lightweight version is then able to trigger and test one
 specific bug.
 
@@ -149,17 +149,17 @@ the account specification we're testing only the transition \textit{close}.
 \FloatBarrier
 
 The testing approach is shown in \autoref{fig:mod-bug-test}.
-We discussed earlier that we are going to use the SMT solver to find bugs in the
+We discussed earlier that we are going to use the \gls{smt} solver to find bugs in the
 \gls{sut}. Having an account with some balance in the state closed should not be possible
-according to the specification. To let the SMT Solver solve this situation, it
-is necessary to generate the appropriate SMT formulas. Therefore, checking can
+according to the specification. To let the \gls{smt} Solver solve this situation, it
+is necessary to generate the appropriate \gls{smt} formulas. Therefore, checking can
 be used to check whether the given state with its properties is reachable.
 The test framework first uses checking to test whether the state is reachable.
 
 To check the state is a tebl file created which is shown in
 \autoref{fig:tebl-closed-account}. It defines the state of a closed account with
 the property balance, where the balance isn't equal to zero. Also, here is 6
-used as configurable time-out. The SMT solver tries to solve this problem in
+used as configurable time-out. The \gls{smt} solver tries to solve this problem in
 max 6 steps.
 
 \begin{sourcecode}[h!]
@@ -178,18 +178,18 @@ check closedAccountWithBalance reachable in max 6 steps;
 \end{sourcecode}
 \FloatBarrier
 
-The input for the SMT solver is now defined. Similar behaviour should be defined
+The input for the \gls{smt} solver is now defined. Similar behaviour should be defined
 for the generated system. So an account needs to be opened and closed
 afterwards. Therefore, the testing framework performs both transitions in the
 \gls{sut}.
 
 The tebl file is passed to the model checker and it returns whether the given
-SMT problem is reachable or not. A state is reachable when it can be reached
+\gls{smt} problem is reachable or not. A state is reachable when it can be reached
 from the initial state via valid
 transitions.~\cite[p.~4]{stoel_storm_vinju_bosman_2016} To check if the state is
 reachable in the generated system, the request made for the given transition
 contains afterwards a check whether the request is successful. Then the testing
-framework can compare the results from the SMT solver and the request made in
+framework can compare the results from the \gls{smt} solver and the request made in
 the \gls{sut}.
 
 \section{Results}
@@ -204,7 +204,7 @@ close transition are shown in \autoref{fig:ch3-res-codegenakka-account}.
 \centering
 \begin{tabular}{cccc}
 \toprule
-\textbf{Transition to test} & \textbf{Reachability SMT solver} & \textbf{Reachability \gls{sut}} & \textbf{Test result} \\ \midrule
+\textbf{Transition to test} & \textbf{Reachability \gls{smt} solver} & \textbf{Reachability \gls{sut}} & \textbf{Test result} \\ \midrule
 close                       & \xmark{}                         & \cmark{}                  & \xmark{}             \\ \bottomrule
 \end{tabular}
 \caption{Results: testing close transition of account specification}\label{fig:ch3-res-codegenakka-account}
@@ -283,7 +283,7 @@ request is successful.
 
 \section{Conclusion}
 
-As we have seen with this lightweight version, it is able to find one specific bug with the use of an SMT Solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As described in~\cite[p.274]{voelter2013dsl}, the majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be bugs in the fixed code. The second part is the template control code which is injected into the generated code. The manually introduced bug from the previous chapter belongs  to this category.
+As we have seen with this lightweight version, it is able to find one specific bug with the use of an \gls{smt} Solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As described in~\cite[p.274]{voelter2013dsl}, the majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be bugs in the fixed code. The second part is the template control code which is injected into the generated code. The manually introduced bug from the previous chapter belongs  to this category.
 
 \unsure{\textbf{Onduidelijkheid DSL fowler}: styles of code generation: Model-Aware Generation and Model Ignorant Generation. Styles for generating textual output: Transformer
 Generation and Templated Generation.}

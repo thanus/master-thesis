@@ -34,13 +34,13 @@ Note that the transaction specification doesn't have an invariant.
 Another difference in the transaction specification is that event definitions
 can contain sync expressions. From the previous event definitions, we've only
 seen pre- and postconditions. Sync expressions are used for synchronisation.
-These sync expressions are also translated to SMT formulas.
+These sync expressions are also translated to \gls{smt} formulas.
 
-The sync expressions translated to the SMT solver are just logical formulas,
+The sync expressions translated to the \gls{smt} solver are just logical formulas,
 there is no logic for synchronisation in these formulas. Of course, the generated system has
 implemented synchronisation for these transitions. So it is possible to also
 test synchronisation in the \gls{sut}. There are also several studies which reports
-that SMT-based approaches to model checking can be used to test distributed
+that \gls{smt}-based approaches to model checking can be used to test distributed
 algorithms.~\cite{konnov2015you, alberti2015smt}
 
 % Sync expressions are used to synchronously execute a blocking transition without the interference of other related transitions which may change the state of the instances used within the sync expressions. \unsure{which is better? or a paper ref?}
@@ -101,20 +101,20 @@ event book() {
 As discussed in \autoref{sec:research-method}, a model testing approach is
 already done to test existing banking systems. Although, in this approach, it
 was only possible to test the \gls{sut} interactively using the simulation. In this
-approach are the traces from the SMT solver used to check whether the
+approach are the traces from the \gls{smt} solver used to check whether the
 \gls{sut} accepts the execution from the trace and whether it behaves as the
 specification.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
 
 By using the traces, it solves also the problems from the previous proof of
 concept. With the use of traces, we know exactly which possible transitions the
-SMT solver has performed. Then these transitions can be performed in the \gls{sut}.
+\gls{smt} solver has performed. Then these transitions can be performed in the \gls{sut}.
 So, in this approach we're going to use the traces to check the behaviour of the
 \gls{sut}.
 
 \subsection{Evaluation criteria}\label{sec:ch5-eval-criteria}
 
 \subsubsection{Bugs}
-In this approach we're using the traces from the SMT solver to test the \gls{sut},
+In this approach we're using the traces from the \gls{smt} solver to test the \gls{sut},
 thus testing what should be possible according to the specification. The
 expectation here is to find bugs in the \gls{sut} which doesn't accept the execution
 from the traces.
@@ -213,7 +213,7 @@ is specified in \autoref{fig:tebl-opened-simple-account} the identifier is then
 with Integer, String, etc. This isn't a problem when a single transition is
 tested. When multiple transitions are tested and even when there are multiple
 entities, this will result in collisions of existing entities with the same
-identifiers. Note also that the generated IBAN numbers by the SMT solver are
+identifiers. Note also that the generated IBAN numbers by the \gls{smt} solver are
 also not valid.
 
 The invalid IBAN numbers isn't a problem for the
@@ -273,7 +273,7 @@ check doCheck reachable in max 6 steps;
 
 \subsubsection*{Current state values}
 After the current state is defined, the same approach from the previous chapter
-can be used to check whether it satisfiable. The SMT solver returns whether the
+can be used to check whether it satisfiable. The \gls{smt} solver returns whether the
 current state is satisfiable with the traces, including the instances with its
 values.
 
@@ -302,7 +302,7 @@ Manually providing the transition parameters data values
 isn't relevant for us, since our intention is to test automatically the \gls{sut}.
 Certainly, these values can be generated randomly, but it should satisfy the
 pre- and postconditions for the chosen transition. However, it would be
-better to let the SMT solver fill these values, taking into account the pre- and
+better to let the \gls{smt} solver fill these values, taking into account the pre- and
 postconditions of the chosen transition. At the time of the publication of the
 study~\cite{stoel_storm_vinju_bosman_2016}, this wasn't possible in the simulation, so
 the simulation should be slightly modified.
@@ -310,7 +310,7 @@ the simulation should be slightly modified.
 In cooperation with the author of the study~\cite{stoel_storm_vinju_bosman_2016} is this feature added to the simulation.~\footnote{\url{https://github.com/cwi-swat/rebel/commit/0d29eb30a82cc5dd6d8be750daa4a24e4e2786be}}
 The simulation is now able that both state variables and transition variables
 can be left open, in the sense of using the expression \textit{ANY}. When the
-expression \textit{ANY} is used, the SMT solver will fill in a value for the
+expression \textit{ANY} is used, the \gls{smt} solver will fill in a value for the
 corresponding transition parameter, satisfying the pre- and postconditions for
 the chosen transition. \unsure{what about expression as iban?}
 
@@ -361,7 +361,7 @@ and trace are compared to find any misbehaviour in the \gls{sut}.
 \subsubsection{Normalisation}
 
 Before a Rebel specification is checked or simulated is the specification
-normalised. This normalisation process is done to make the SMT formulas easier
+normalised. This normalisation process is done to make the \gls{smt} formulas easier
 and also to give it partially semantics
 \cite[p.5]{stoel_storm_vinju_bosman_2016}. Desugaring the life cycle is part of
 the normalisation process. The life cycle is desugared to strengthen the pre-
@@ -375,7 +375,7 @@ adding constraints on the \textit{\_state} and \textit{\_step} fields to the tra
 postconditions \cite[p.5]{stoel_storm_vinju_bosman_2016}.
 
 The newly added fields
-are also present within the trace from the SMT solver. In our case, we only use
+are also present within the trace from the \gls{smt} solver. In our case, we only use
 the \textit{\_state} field, because we already know which transition led to the current
 state. To compare the current state from the \textit{\_state} field, it needs to be
 sugared back in order to compare it to the \gls{sut}.
@@ -623,7 +623,7 @@ is the state of a given specification.
 
 In testing single specifications, \textit{e.g.}, in
 \autoref{fig:result-codegenakka-close}, we've seen that the state is present
-from the result of the SMT solver. In this case, the model checker/simulation
+from the result of the \gls{smt} solver. In this case, the model checker/simulation
 doesn't return the state when multiple instances are involved. This also
 happens in the \textit{start} and \textit{fail} transitions.
 
@@ -1003,13 +1003,13 @@ def interest(@Suspended asyncResponse: AsyncResponse,
 
 \subsection{Bugs}
 The expectation for the criteria bugs from \autoref{sec:ch5-eval-criteria} is to
-find bugs in the \gls{sut} where execution traces from the SMT solver isn't accepted
+find bugs in the \gls{sut} where execution traces from the \gls{smt} solver isn't accepted
 by the \gls{sut}.
 
 In this proof of concept we've found bugs in the code generators. For both bugs,
 \autoref{sec:bug-interest-javadatomic} and \autoref{sec:bug-interest-scalaes},
 it wasn't possible to perform the execution from the traces returned by the
-SMT solver. To conclude, we did find bugs as expected where the \gls{sut} wasn't
+\gls{smt} solver. To conclude, we did find bugs as expected where the \gls{sut} wasn't
 conform to the specification.
 
 \subsection{Efficiency}
@@ -1042,8 +1042,8 @@ of concept. The traces given by the simulation and checking are used to check
 whether the \gls{sut} behaves as the specification and whether it accepts the
 execution from the trace. Unlike the previous proof of concept from
 \autoref{sec:ch4}, it tests what should be possible according to the
-specification by using the traces from the SMT solver. Even are the transition
-parameters data values generated by the SMT solver. In this proof of concept are
+specification by using the traces from the \gls{smt} solver. Even are the transition
+parameters data values generated by the \gls{smt} solver. In this proof of concept are
 the transitions in the \gls{sut} performed in three steps to identify misbehaviour in
 the \gls{sut}. Although there is a limitation in the testing of states. Within a
 trace, not every instance may contain the state of it.
@@ -1081,9 +1081,9 @@ generosity of specifications, but with such a large amount of complex
 specifications, it is questionable whether these experiments still produce
 valuable results.
 
-\subsection*{Rebel interpretation in SMT solver}
-The SMT solver can be seen as an interpreter for Rebel specifications. The
-conducted experiments use the SMT solver to test the generated systems from the
+\subsection*{Rebel interpretation in \gls{smt} solver}
+The \gls{smt} solver can be seen as an interpreter for Rebel specifications. The
+conducted experiments use the \gls{smt} solver to test the generated systems from the
 specifications. We already discussed before the limitation of interpretation of
 Rebel specifications, and in some cases, workarounds have been used. There may
 be more unknown limitations of the interpretation of Rebel specifications, which
@@ -1091,7 +1091,7 @@ can cause the conducted experiments give incorrect results.
 
 \subsection*{Valid execution trace}
 The experiment from \autoref{sec:ch5} tests only valid execution traces from
-the SMT solver, \textit{i.e.}, testing only what should be possible according to
+the \gls{smt} solver, \textit{i.e.}, testing only what should be possible according to
 the specification. Testing valid execution traces is not enough, testing not
 valid execution traces can be valuable. The experiment from
 \autoref{sec:ch4} already does this, but as discussed it has a few limitations.

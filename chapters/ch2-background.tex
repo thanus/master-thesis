@@ -10,7 +10,7 @@ The language is used for controlling the intrinsic complexity of software for fi
 The formal specification language makes product descriptions more precise, it removes the ambiguity. The simulation in the language is used as an early prototyping mechanism to verify the product with the user.
 \textit{Rebel} is able to specify banking products like saving accounts.
 
-The mapping of the \textit{Rebel} language to the SMT formulas makes it possible to simulate and check these specifications. Simulation and checking specifications can be used for early fault detection.
+The mapping of the \textit{Rebel} language to the \gls{smt} formulas makes it possible to simulate and check these specifications. Simulation and checking specifications can be used for early fault detection.
 
 \subsection{Example specification}
 An example of a \textit{Rebel} specification is given in \autoref{fig:simple-account-spec}. The specification specifies a simple account where it is only possible to open an account with some balance. After opening an account, the state of the account goes to the opened state which is also the final state. When the account is in its final state, no further action is allowed. Notice also the fields of the specification, these are the account number of type \textit{IBAN} and balance of type \textit{Money}.
@@ -80,17 +80,17 @@ The API's of the generated system from the code generators are not standardised.
 The semantics of \textit{Rebel} is defined as labelled transition systems.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} Thus the current state of a specification holds the state name with the current fields assignments and the event parameters which causes the current state. The labelled transitions map to the events and their preconditions and postconditions. \textit{Rebel} has also support to specify invariants for a given specification, these are predicates which should be always true. These predicates are defined as external specifications of expected behaviour, that's why they are converted to additional formulas. \unsure{SMT van nu doet dit niet?}
 
 
-Bounded model checking can be used for \textit{Rebel} specifications. Therefore, \textit{Rebel} is defined as an SMT problem by encoding it to symbolic bounded model checking (with data). The goal of model checking is to find a state which is reachable with some properties which don't hold.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} For example, for the specification from \autoref{fig:simple-account-spec}, an account within the state opened with a negative balance. \textit{Rebel} uses SMT Solver Z3~\cite{moura_bjorner_2008} for simulation and checking.
+Bounded model checking can be used for \textit{Rebel} specifications. Therefore, \textit{Rebel} is defined as an \gls{smt} problem by encoding it to symbolic bounded model checking (with data). The goal of model checking is to find a state which is reachable with some properties which don't hold.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} For example, for the specification from \autoref{fig:simple-account-spec}, an account within the state opened with a negative balance. \textit{Rebel} uses \gls{smt} Solver Z3~\cite{moura_bjorner_2008} for simulation and checking.
 
 \subsection{Bounded checking}
 \unsure{paper is niet consistent met nu?}
 
 Checking of \textit{Rebel} specifications is used to check the consistency of a given specification.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} A specification is consistent when invariants hold in all reachable states. A state is reachable when it can be reached from the initial state via valid transitions.
 
-The bounded analysis tries to find the smallest (the least possible steps) possible counter example, this is fully automatic and incremental. Thus the given computations by the SMT Solver satisfies the route from pre-condition to post-condition for every transition.
+The bounded analysis tries to find the smallest (the least possible steps) possible counter example, this is fully automatic and incremental. Thus the given computations by the \gls{smt} Solver satisfies the route from pre-condition to post-condition for every transition.
 First, it tries to reach an invalid state in one step. If that did not succeed, then it tries to reach the invalid state in two steps. This process continues until a counter example is found or configurable time-out is met. The bounded analysis tries to prove the following: $\theta (s_{0}) \land P(s_{0}) \land p(s_{0}, s_{1}) \land P(s_{1}) \land \dots p(s_{k-1}, s_{k}) \land \neg P(s_{k})$.
 
-An example of checking \textit{Rebel} specifications is given in \autoref{fig:tebl-opened-simple-account}. These checks can be defined in so called tebl files. The SMT Solver tries to reach the state opened of account with the balance above 0 euro. As configurable time-out is 6 used.
+An example of checking \textit{Rebel} specifications is given in \autoref{fig:tebl-opened-simple-account}. These checks can be defined in so called tebl files. The \gls{smt} Solver tries to reach the state opened of account with the balance above 0 euro. As configurable time-out is 6 used.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -110,4 +110,4 @@ check openAccountCheck reachable in max 6 steps;
 \FloatBarrier
 
 \subsection{Simulation}
-The purpose of simulation and checking differs. The purpose of the simulation is to check the external consistency, checking is used for the internal consistency.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} As explained in the previous paragraph, checking is used to reason about all possible traces. Simulation focuses on individual steps to reason about. So with the simulator, the user is able to quickly check the specification behaves as expected. As checking, the same strategy is used in the simulation, \textit{i.e.}, using SMT solver and encoding for \textit{Rebel} Specifications.
+The purpose of simulation and checking differs. The purpose of the simulation is to check the external consistency, checking is used for the internal consistency.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} As explained in the previous paragraph, checking is used to reason about all possible traces. Simulation focuses on individual steps to reason about. So with the simulator, the user is able to quickly check the specification behaves as expected. As checking, the same strategy is used in the simulation, \textit{i.e.}, using \gls{smt} solver and encoding for \textit{Rebel} Specifications.

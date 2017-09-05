@@ -65,9 +65,19 @@ Writing programs that write programs is called code generation.~\cite[p.~3]{herr
 
 The code generators of ING Bank are capable of generating source code from a \textit{Rebel} specification. These generators are a template-based generator which uses a Rascal (which has a page-template feature)\cite{RascalGTTSE} to build code. The following generators exist right now for \textit{Rebel}:
 \begin{itemize}
-\item Codegen-Akka: Scala, Akka, Cassandra
-\item Codegen-datomic: Java, Datomic
-\item Codegen-Scala-ES: Scala, CQRS / event sourcing
+
+\item Codegen-Akka: The Codegen-Akka generator generates a Scala system from
+\textit{Rebel} specifications. The generated system uses Akka~\cite{akka} as
+Actor Model and Cassandra~\cite{lakshman2010cassandra} is used for storage.
+
+\item Codegen-datomic: This generator generates a Java system based on the
+\textit{Rebel} specifications. The generated system uses Datomic~\cite{datomic}
+for storage.
+
+\item Codegen-Scala-ES: The Codegen-Scala-ES generator generates also a Scala
+system. The implementation of the generated system uses
+\gls{cqrs}~\cite{fowler2011cqrs} and Event Sourcing~\cite{fowler2005event}.
+
 \end{itemize}
 
 The API's of the generated system from the code generators are not standardised. The request which is made for transitions are all implemented in the same way between the code generators. However, the response returned by the generated system may differ. For example a request for the transition given in \autoref{fig:account-openaccount-event} looks as follows: \code{\{ "OpenAccount": \{ "initialDeposit": "EUR 50.00" \} \}}. Since the interactions for transitions within the generated systems are the same, all three code generators can be used to test the implementation of \textit{Rebel} specifications.

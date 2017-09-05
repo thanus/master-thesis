@@ -41,7 +41,7 @@ there is no logic for synchronisation in these formulas. Of course, the generate
 implemented synchronisation for these transitions. So it is possible to also
 test synchronisation in the \gls{sut}. There are also several studies which reports
 that \gls{smt}-based approaches to model checking can be used to test distributed
-algorithms.~\cite{konnov2015you, alberti2015smt}
+algorithms.~\cite{konnov2015you, alberti2015smt, mccaffrey2016verification}
 
 % Sync expressions are used to synchronously execute a blocking transition without the interference of other related transitions which may change the state of the instances used within the sync expressions. \unsure{which is better? or a paper ref?}
 
@@ -114,10 +114,47 @@ So, in this approach we're going to use the traces to check the behaviour of the
 \subsection{Evaluation criteria}\label{sec:ch5-eval-criteria}
 
 \subsubsection{Bugs}
-In this approach we're using the traces from the \gls{smt} solver to test the \gls{sut},
-thus testing what should be possible according to the specification. The
-expectation here is to find bugs in the \gls{sut} which doesn't accept the execution
-from the traces.
+In this approach we're using the traces from the \gls{smt} solver to test the
+\gls{sut}, thus testing what should be possible according to the specification.
+The expectation here is to find bugs in the \gls{sut} which doesn't accept the
+execution from the traces. For instance, the generated pre- or postconditions
+aren't satisfied by the transition from the traces or the generated
+postcondition which leads to different results. An example of this is the bug
+that we've found in \autoref{sec:bug-close-account}.
+
+In \autoref{sec:ch5-complex-spec} we discussed that we're going to use more
+complex specification which implements synchronisation. As discussed, it is
+possible to test synchronisation in the \gls{sut}. Thus the expectation is to
+find faults in the implementation of the synchronisation in the \gls{sut}.
+
+% actor systems -> goed messages doorvoeren, retry schema? distributed, resilient.
+% Asynchronous non-blocking stream processing with backpressure.
+
+In \autoref{sec:ch2-codegen} we discussed the Codegen-Akka generator. The
+generated system from the generator uses Akka as Actor Model. Akka is a toolkit
+which is used for building highly concurrent, distributed and resilient
+message-driven systems.~\cite{akka}
+
+It is difficult to build and test distributed systems, according to the
+study~\cite[p.~1]{mccaffrey2016verification}, this has two main reasons: partial
+failure and asynchrony. When components fail along the way that results into
+incomplete results or data is called partial failure. Within a system,
+asynchrony is the nondeterminism of ordering and timing. That is to say, the
+expectation is to find faults in partial failure and asynchrony. Not only is the
+expectation to find these faults in the Codegen-Akka, but also in the other code
+generators since these code generators implements also synchronisation. For
+instance, the Codegen-Javadatomic uses \gls{cqrs} where the commands are
+executed asynchronously.
+\unsure{javadatomic?}
+
+At the time of conducting the experiment, a new version of the Codegen-Akka is
+released. The new version implements \gls{2pc}, which is a synchronisation
+protocol~\cite[p.~3204]{al2009two}. A protocol like \gls{2pc} is also referred
+to as an \gls{acp}. The essence of \gls{acp} is to achieve global atomicity. The
+protocol ensures a unanimous final outcome of a distributed transaction,
+regardless of the failures that may occur.~\cite[p.~3204]{al2009two} In our
+case, the expectation is to find bugs in synchronisation where the \gls{sut}
+doesn't produce a unanimous final outcome.
 
 \subsubsection{Efficiency}
 By using the traces, we check whether the given execution is possible in the

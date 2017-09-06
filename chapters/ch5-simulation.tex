@@ -198,8 +198,8 @@ the simulation is requested for a test case for a chosen transition. The
 simulation provides then a trace (test case) for the requested transition.
 
 To test the \gls{sut} using the generated test cases, the data
-from these test cases are provided to the adapter. Finally, the adapter
-communicates this data to the \gls{sut}.
+from these test cases are provided to the test case adapter. Finally, the test
+case adapter communicates this data to the \gls{sut}.
 
 \begin{figure}[h!]
   \centering
@@ -433,17 +433,32 @@ sugared back in order to compare it to the \gls{sut}.
 
 \subsubsection{Test case adapter}
 As discussed in the code generation section, the request made to the API of the
-\gls{sut} are "standardized", but the response isn't. For the post-transition check,
-it is necessary to check the new state in the \gls{sut}. Therefore, an adapter
-needs to be defined to be able to compare the results of the \gls{sut} and the trace.
+\gls{sut} are "standardized", but the response from the \gls{sut} isn't. For the
+post-transition check, it is necessary to check the new state in the \gls{sut}.
+Therefore, an adapter needs to be defined to communicate the results of the
+traces with the \gls{sut}.
 
-The decision is made to only implement an adapter for the code generator
+An adaptor is often used in model-based testing
+approaches.~\cite{utting2012taxonomy, tretmans2003torx}
+The adapter is a component that concretises the test inputs and abstraction of
+test outputs, \textit{i.e.}, the adapter adapts the abstract test data to the
+concrete \gls{sut} interface.~\cite[p.~4]{utting2012taxonomy}
+On request of the test case generator, the adaptor provides inputs to, and
+receives outputs from the \gls{sut}. The adapter encodes and decodes the
+abstract actions from the test case adapter to concrete actions for the
+\gls{sut}.~\cite[p.~5]{tretmans2003torx} This leads to that the adapter is
+dependent on the specification and the \gls{sut}.
+
+According to the study~\cite[p.~4]{utting2012taxonomy}, an adaptor is a concept
+and that doesn't mean that an adapter needs to be a separate software component.
+The adapter may be integrated within the test scripts. The test script is code
+which executes a test case, abstracts the response from the \gls{sut} and
+creates the verdict. In our case, the test case adapter is integrated within the
+test script, which is test case generator.
+
+The decision is made to only implement a test case adapter for the code generator
 Codegen-Akka, since this is a more mature code generator and frequently used for
 experiments within ING Bank.
-
-\info{add model checking paper for adapter}
-
-% Using the generated test cases, we can then test the system. Usually, an adapter is used to decouple knowledge of the SUT’s external interfaces from the test generation tool. The test cases provide the inputs and expected outputs to the adapter. The adapter forwards the inputs to the SUT. When the SUT sends a response, the adapter observes it and evaluates it using the expected outputs
 
 % as discussed with current state, all transitions contains the tree steps. It is possible that a trace can contain multiple steps, e.g. to unblock an account, an account needs first to be opened and blocked. This requires after executing each step, the step needs to be tested, in the sense of automatically repeating the process.
 

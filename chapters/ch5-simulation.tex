@@ -1090,15 +1090,27 @@ To conclude, as expected are the same transitions from the traces performed in
 the \gls{sut}.
 
 \subsection{Coverage}
-The expectation of the coverage criteria is to test all the transitions from a
-specification since the simulation is able to test single steps.
 
-With this proof of concept it isn't possible to test the
-\textit{close} transition. The precondition of this transition isn't
-satisfied due to the current state defined for this transition. Altogether,
-with this proof of concept it is possible to test all the
-transitions when the preconditions of a given transition are satisfied by the
-current state.
+The expectation of the coverage criteria is to test all the transitions from a
+specification since the simulation is able to test single steps. This holds also
+for the complex specifications.
+
+With this experiment, it is possible to test all the transitions, except the
+\textit{close} transition. Even it is possible to test transitions from the
+complex specifications. The reason for not able to test the \textit{close}
+transition is that the precondition of this transition isn't satisfied due to
+the current state defined for this transition. Altogether, with this experiment,
+it is possible to test all the transitions when the preconditions of a given
+transition are satisfied by the current state.
+
+In this experiment is a fixed configurable time-out used. Just as it isn't
+possible to test the \textit{close} transition, it is also possible not to test
+transitions due to the chosen configurable time-out.
+The reason for this is, for example, a high configurable time-out that makes it
+impossible to test the chosen transition, because of the precondition of the
+chosen transition isn't satisfied by the current state, like the \textit{close}
+transition; or a low configurable time-out that makes it impossible to reach a
+state to test the chosen transition.
 
 \section{Conclusion}
 In this proof of concept are more complex specifications used for testing.

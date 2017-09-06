@@ -368,7 +368,9 @@ the chosen transition. \unsure{what about expression as iban?}
 A valid trace is a chain of valid transitions from one state to the next state
 \cite[p.5]{stoel_storm_vinju_bosman_2016}. The trace may contain multiple steps,
 \textit{e.g.}, to unblock an account, an account needs first to be opened and
-blocked. Each step from the traces has instances with its state and values.
+blocked. This requires after executing each step, the step needs to be tested,
+in the sense of automatically repeating the testing process. Each step from the
+traces has instances with its state and values.
 
 The instances are specific
 for that step, the results after performing the step are given in the state and
@@ -387,11 +389,13 @@ the event: $p(s_{1}, s_{2})$
 $P(s2)$.
 \end{enumerate}
 
-When this step can be made, with the use of traces, the step can be played in
-the \gls{sut}. Therefore, \textit{JSON} should be generated for the chosen transition.
-To generate this \textit{JSON} are the transition parameters data values and
-the transition name read from the trace step. At last, the endpoint is
-determined for the given step and is the generated JSON sent to the endpoint.
+When this step can be made, with the use of traces, the step can be played on
+the \gls{sut}. Therefore, \textit{JSON} should be generated for the chosen
+transition. This is the responsibility of the test case adapter, which is
+explained more in depth in \autoref{sec:ch5-adapter}. To generate the
+\textit{JSON}, the transition parameters data values and
+the transition name are read from the trace step. At last, the endpoint is
+determined for the given step and the generated JSON is sent to the endpoint.
 
 \subsection{Post-transition check}
 % Check whether the new state from the SUT is conform to the new state from the trace
@@ -431,7 +435,7 @@ state. To compare the current state from the \textit{\_state} field, it needs to
 sugared back in order to compare it to the \gls{sut}.
 % Adding Frame Conditions. To guard the fields that are not changed by the event frame conditions are added (Jack- son 2012). These frame conditions make sure that a field has the same value after the transition as before.
 
-\subsubsection{Test case adapter}
+\subsubsection{Test case adapter}\label{sec:ch5-adapter}
 As discussed in the code generation section, the request made to the API of the
 \gls{sut} are "standardized", but the response from the \gls{sut} isn't. For the
 post-transition check, it is necessary to check the new state in the \gls{sut}.
@@ -459,8 +463,6 @@ test script, which is test case generator.
 The decision is made to only implement a test case adapter for the code generator
 Codegen-Akka, since this is a more mature code generator and frequently used for
 experiments within ING Bank.
-
-% as discussed with current state, all transitions contains the tree steps. It is possible that a trace can contain multiple steps, e.g. to unblock an account, an account needs first to be opened and blocked. This requires after executing each step, the step needs to be tested, in the sense of automatically repeating the process.
 
 \section{Results}
 

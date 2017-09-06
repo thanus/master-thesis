@@ -1078,8 +1078,11 @@ it wasn't possible to perform the execution from the traces returned by the
 conform to the specification.
 
 \subsection{Efficiency}
-With the use of traces it is expected to perform the same transition from the
-traces in the \gls{sut}.
+
+By using the traces, we can check whether the given execution is possible in the
+\gls{sut}. Also, it solves the limitation of the experiment from
+\autoref{sec:ch5}. Therefore, the expectation is to perform the same computed
+path by the \gls{smt} solver should be performed in the \gls{sut}.
 
 Checking and simulation are used to generate tests for transitions in this proof
 of concept. The traces given by the simulation and checking are used to check
@@ -1088,6 +1091,18 @@ execution from the trace. In this proof of concept are the transitions in the
 \gls{sut} performed in three steps to identify misbehaviour in the \gls{sut}.
 To conclude, as expected are the same transitions from the traces performed in
 the \gls{sut}.
+
+What remarkable is that in this experiment the same trace from the \gls{smt}
+solver is used to test a transition in two different test runs, namely
+\autoref{sec:bug-interest-javadatomic} and \autoref{sec:bug-interest-scalaes}.
+By performing the test runs more often, it can be said that the \gls{smt} solver
+regularly generates the same traces for transitions. In our case, this is not
+bad, as long as every transition is tested despite the randomness of the traces.
+However, testing unique traces may result in finding more bugs in the
+\gls{sut}. The \gls{smt} solver can be configured to use random seeds in order
+to control the propositional variable selection heuristic in the \gls{smt} core.
+\unsure{ref? stackoverflow}
+% https://stackoverflow.com/questions/24219509/use-of-random-seeds-in-z3
 
 \subsection{Coverage}
 

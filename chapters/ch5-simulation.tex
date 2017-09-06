@@ -138,7 +138,7 @@ It is difficult to build and test distributed systems, according to the
 study~\cite[p.~1]{mccaffrey2016verification}, this has two main reasons: partial
 failure and asynchrony. When components fail along the way that results into
 incomplete results or data is called partial failure. Within a system,
-asynchrony is the nondeterminism of ordering and timing. That is to say, the
+asynchrony is the non-determinism of ordering and timing. That is to say, the
 expectation is to find faults in partial failure and asynchrony. Not only is the
 expectation to find these faults in the Codegen-Akka, but also in the other code
 generators since these code generators implements also synchronisation. For
@@ -156,14 +156,28 @@ case, the expectation is to find bugs in synchronisation where the \gls{sut}
 doesn't produce a unanimous final outcome.
 
 \subsubsection{Efficiency}
-By using the traces, we check whether the given execution is possible in the
-\gls{sut}. Therefore, the expectation is to perform the same transition from the traces
-should be performed in the \gls{sut}.
+In the experiment from \autoref{sec:ch5}, we've seen that with the use of
+checking, the result from the \gls{smt} solver varies. For the testing
+framework, it's unknown whether the performed transition is the same as the
+computed transition by the \gls{smt} solver. The \gls{smt} solver is
+smarter/better in checking the satisfiability of a given constraints. This,
+limitation from the previous experiment can be solved by using the traces from
+the \gls{smt} solver.
+
+By using the traces for testing, the same path computed by the \gls{smt} solver
+are performed in the \gls{sut} and we're able to check whether the given
+execution is possible in the \gls{sut}. Thus the expectation is to perform the
+same transition from the traces should be performed in the \gls{sut}.
 
 \subsubsection{Coverage}
 In this proof of concept is the simulation used to test transitions. Since
 the simulation is able to test single steps, it is expected to test all
 transitions of a specification.
+
+As discussed, this experiment is going to use more complex specifications,
+\textit{e.g.}, specifications which depend and interact with each other. With
+the use of the simulation, it is expected to test transitions which depend and
+interact with other specifications.
 
 \section{Approach}
 

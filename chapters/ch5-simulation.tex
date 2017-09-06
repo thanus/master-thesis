@@ -291,13 +291,16 @@ identifiers should be again random, otherwise it will cause collisions of
 existing entities.
 
 Altogether, a generated tebl for checking the current state looks as follows in
-\autoref{fig:tebl-gen-validated-transaction}.
+\autoref{fig:tebl-gen-validated-transaction}. Note that the configurable
+time-out is set to 4 since the states from the account and transaction
+specification are reachable within 4 steps. The determination of the
+configurable time-out per specification is left as future work.
 
 When the current state is defined, the generated tebl is given to the model
 checker. When the current state is satisfiable are the traces used to perform
 the transitions in the \gls{sut}. This is in more depth described in the section
-\autoref{sec:ch5-traces}. Performing each step from a trace entails the three steps to test and
-perform the transition.
+\autoref{sec:ch5-traces}. Performing each step from a trace entails the three
+steps to test and perform the transition.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -313,7 +316,7 @@ state doCheck {
   Account with accountNumber == LB404150J311SB1FJV5KL1MKYAY4;
 }
 
-check doCheck reachable in max 6 steps;
+check doCheck reachable in max 4 steps;
 \end{lstlisting}
 \caption{Generated tebl for the transition book}\label{fig:tebl-gen-validated-transaction}
 \end{sourcecode}
@@ -667,7 +670,7 @@ state doCheck {
   opened Account with accountNumber == AD3517248539N3OTXZIDF13H;
 }
 
-check doCheck reachable in max 6 steps;
+check doCheck reachable in max 4 steps;
 \end{lstlisting}
 \caption{Generated tebl for the transition book}\label{fig:tebl-gen-validated-transaction}
 \end{sourcecode}

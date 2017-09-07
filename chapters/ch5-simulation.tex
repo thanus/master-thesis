@@ -459,7 +459,7 @@ and that doesn't mean that an adapter needs to be a separate software component.
 The adapter may be integrated within the test scripts. The test script is code
 which executes a test case, abstracts the response from the \gls{sut} and
 creates the verdict. In our case, the test case adapter is integrated within the
-test script, which is test case generator.
+test script, which is the test case generator.
 
 The decision is made to only implement a test case adapter for the code generator
 Codegen-Akka, since this is a more mature code generator and frequently used for
@@ -1078,7 +1078,7 @@ it wasn't possible to perform the execution from the traces returned by the
 conform to the specification.
 
 \info{add information about testing synchronisation.
-Why it's not possible to find faults? e.g. the setup of the sut}
+Why it's not possible to find faults? e.g. the setup of the sut, use more complex}
 
 \subsection{Efficiency}
 
@@ -1107,6 +1107,8 @@ to control the propositional variable selection heuristic in the \gls{smt} core.
 \unsure{ref? stackoverflow}
 % https://stackoverflow.com/questions/24219509/use-of-random-seeds-in-z3
 
+\info{covering all transitions takes long}
+
 \subsection{Coverage}
 
 The expectation of the coverage criteria is to test all the transitions from a
@@ -1129,6 +1131,8 @@ impossible to test the chosen transition, because of the precondition of the
 chosen transition isn't satisfied by the current state, like the \textit{close}
 transition; or a low configurable time-out that makes it impossible to reach a
 state to test the chosen transition.
+
+\info{ordering and timing}
 
 \section{Conclusion}
 In this proof of concept are more complex specifications used for testing.

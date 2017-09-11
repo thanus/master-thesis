@@ -15,7 +15,7 @@ specification money can be transferred between two accounts.
 The Rebel implementation of the transaction \footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Transaction.ebl}} is shown in \autoref{fig:transaction-spec}.
 As you can see the transaction specification contains more fields than the
 account specification. The two remarkable fields are from and to, both are the
-type of \textit{IBAN}. \textit{IBAN} is a built-in \textit{Rebel}
+type of \textit{IBAN}. The type \textit{IBAN} is a built-in \textit{Rebel}
 type.~\cite[p.~3]{stoel_storm_vinju_bosman_2016} Note that after the type
 definition an annotation is given to specify a reference to another
 specification, in this case, account specification. The fields to and from are
@@ -35,8 +35,8 @@ can contain sync expressions. From the previous event definitions, we've only
 seen pre- and postconditions. Sync expressions are used for synchronisation.
 These sync expressions are also translated to \gls{smt} formulas.
 
-The sync expressions translated to the \gls{smt} solver are just logical formulas,
-there is no logic for synchronisation in these formulas. Of course, the generated system has
+The sync expressions translated to the \gls{smt} solver are also logical formulas.
+These formulas don't have logic about synchronisation. Of course, the generated system has
 implemented synchronisation for these transitions. So it is possible to also
 test synchronisation in the \gls{sut}. There are also several studies which reports
 that \gls{smt}-based approaches to model checking can be used to test distributed

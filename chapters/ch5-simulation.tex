@@ -509,7 +509,7 @@ The results of the test run is shown in
 \autoref{fig:ch5-res-codegendatomic-account} and
 \autoref{fig:ch5-res-codegendatomic-transaction}. From this result, we can
 conclude again that the test for the \textit{close} transition has failed. Remarkable is
-that also the interest transition has failed.
+that also the \textit{interest} transition has failed.
 
 \begin{table}[h!]
 \centering
@@ -749,22 +749,22 @@ Could not find state ?, expected  "state":{"?":{}}
 \subsection{Codegen-Datomic}\label{sec:bug-interest-javadatomic}
 
 In this test run is the Javadatomic generator used. After investigating the test
-run, it seems to be that testing the transition interest fails. As you can see
+run, it seems to be that testing the transition \textit{interest} fails. As you can see
 in \autoref{fig:result-javadatomic-interest} on line number 55, the request made
-for interest transition isn't successful and the HTTP status code returned 400
-is returned. Constructing the current state for the interest transition seems to
+for \textit{interest} transition isn't successful and the HTTP status code returned 400
+is returned. Constructing the current state for the \textit{interest} transition seems to
 be successful (see line number 28). According to the simulation, on line number
 40, the step interest is made with a negative percentage (- 7709). On line
 number 47, you can see the instance after performing the interest step, which
 resulted into an account entity with the state opened and with a negative
-balance. To conclude, the transition interest is possible according to the
+balance. To conclude, the transition \textit{interest} is possible according to the
 simulation.
 
-Although, the request made for the transition interest isn't
+Although, the request made for the transition \textit{interest} isn't
 successful, and when we take a look at the account in the \gls{sut}, the account looks
 as follows in \autoref{fig:interest-opened-account-json}. The state of the
 account is still opened and the balance seems to be the same when the account
-was opened. From looking at the state of the account, the interest transition
+was opened. From looking at the state of the account, the \textit{interest} transition
 isn't performed in the \gls{sut} and the state of the account is the same as before
 performing the transition.
 
@@ -828,7 +828,7 @@ Endpoint: /Account/MD14FLBLJOYGVJMDUZVKLU4C/Interest
 JSON payload: { "Interest": { "currentInterest":"-77.09" } }
 Response: ("body":"","isSuccessful":"false","message":"Bad Request","errorBody":"","code":"400")
 \end{lstlisting}
-\caption{Failing test on interest transition with the use of javadatomic generator}\label{fig:result-javadatomic-interest}
+\caption{Failing test on \textit{interest} transition with the use of javadatomic generator}\label{fig:result-javadatomic-interest}
 \end{sourcecode}
 \FloatBarrier
 
@@ -847,10 +847,10 @@ Response: ("body":"","isSuccessful":"false","message":"Bad Request","errorBody":
 	}
 }
 \end{lstlisting}
-\caption{Account state in the \gls{sut} after performing the interest transition}\label{fig:interest-opened-account-json}\end{sourcecode}
+\caption{Account state in the \gls{sut} after performing the \textit{interest} transition}\label{fig:interest-opened-account-json}\end{sourcecode}
 \FloatBarrier
 
-The event definition for the interest transition is given in
+The event definition for the \textit{interest} transition is given in
 \autoref{fig:account-interest-event}. This event definition states that the
 precondition is that the \textit{currentInterest} must be less than or equal
 10\%, and the postcondition is that the balance must be changed after applying
@@ -870,19 +870,19 @@ event interest[maxInterest: Percentage = 10%](currentInterest: Percentage) {
   }
 }
 \end{lstlisting}
-\caption{interest event definition from account specification}\label{fig:account-interest-event}
+\caption{\textit{Interest} event definition from account specification}\label{fig:account-interest-event}
 \end{sourcecode}
 \FloatBarrier
 
 Now we know that we've discovered a bug, since the simulated transition is
 conform to the specification, we want to know where this misbehaviour occurs and
-which code isn't correctly generated. The generated code for the interest event
+which code isn't correctly generated. The generated code for the \textit{interest} event
 definition from \autoref{fig:account-interest-event} contains the following
 check in \autoref{fig:java-gen-interest-pre}. The generated code for the
 preconditions seems to be good since it uses a \textit{isLessOrEqualThan}
 function with the given interest percentage. Looking at the log file created by
 the \gls{sut}, the exception \textit{BuildCASTransactionException} is thrown when
-performing the interest transition, which is the exception from
+performing the \textit{interest} transition, which is the exception from
 \autoref{fig:java-gen-interest-pre}. So the generated code seems to be good, but
 the function used for validating the interest returns an inappropriate value,
 which throws the exception.
@@ -925,16 +925,16 @@ public static boolean isLessOrEqualThan(BigDecimal lhs, BigDecimal rhs) {
 
 This test run tests the \gls{sut} generated by the Scala-ES generator. Looking at the
 test run, like the test run for the Javadatomic generator, it seems to be
-that the transition interest fails. The results of the test run are shown in
+that the transition \textit{interest} fails. The results of the test run are shown in
 \autoref{fig:result-scalaes-interest}. Line number 51 shows the failing request
-for the interest transition, an error message is returned with the HTTP status
+for the \textit{interest} transition, an error message is returned with the HTTP status
 code 400. Also, in this test run is construction the current state for the
-interest transition successful (see line number 26). In this test run, the
-simulation has generated the same trace for the interest transition as for the
+\textit{interest} transition successful (see line number 26). In this test run, the
+simulation has generated the same trace for the \textit{interest} transition as for the
 Javadatomic generator. The state of the account in the \gls{sut} looks as follows in
 \autoref{fig:interest-opened-account-scalaes-json}. Also here the state of the
 account opened and the balance seems to be the same when the account was opened.
-So, the performed interest transition has failed and the state of the account
+So, the performed \textit{interest} transition has failed and the state of the account
 is the same before performing the transition.
 
 \begin{sourcecode}[h!]
@@ -996,7 +996,7 @@ value (&#x27;-77.09&#x27;)\n at [Source: io.undertow.servlet.spec.ServletInputSt
 line: 1, column: 35] (through reference chain: nl.ing.corebank.dto.
 account.Interest[&quot;currentInterest&quot;])","code":"400")
 \end{lstlisting}
-\caption{Failing test on interest transition with the use of Scala-ES generator}\label{fig:result-scalaes-interest}
+\caption{Failing test on \textit{interest} transition with the use of Scala-ES generator}\label{fig:result-scalaes-interest}
 \end{sourcecode}
 \FloatBarrier
 
@@ -1012,14 +1012,14 @@ account.Interest[&quot;currentInterest&quot;])","code":"400")
    "balance":"50.00 EUR"
 }
 \end{lstlisting}
-\caption{Account state in the \gls{sut} after performing the interest transition}\label{fig:interest-opened-account-scalaes-json}
+\caption{Account state in the \gls{sut} after performing the \textit{interest} transition}\label{fig:interest-opened-account-scalaes-json}
 \end{sourcecode}
 \FloatBarrier
 
 Likewise, the Javadatomic generator, we've discovered a bug in the \gls{sut}, since
 the simulated transition isn't conform to the specification. To know where this
 bug occurs and which code isn't properly generated, the response from the
-interest transition request gives an error message. According to the error
+\textit{interest} transition request gives an error message. According to the error
 message, the \gls{sut} isn't able to construct the instance of \textit{Dimensionless}
 for the transition parameter \textit{currentInterest}. This error seems to occur
 in the class \textit{Interest}, which is shown in
@@ -1038,12 +1038,12 @@ case class Interest(@JsonProperty("currentInterest") currentInterest: Dimensionl
 
 The class from \autoref{fig:scala-gen-interest-json} is used in
 \autoref{fig:scala-gen-interest-request}. The \textit{interest} method handles
-the interest transition and as you can see is the class \textit{Interest} used
+the \textit{interest} transition and as you can see is the class \textit{Interest} used
 as the second parameter. This class is used to bind the interest parameter as a
 type of the \textit{Interest} class.
 
 In short, we've discovered a bug in the \gls{sut}
-for the interest transition. The interest transition bug in the Javadatomic
+for the \textit{interest} transition. The \textit{interest} transition bug in the Javadatomic
 generator belongs to the fixed code category, but in this case, for the Scala-ES
 generator, the bug belongs to the injected code category, since the
 \textit{Interest} class is generated and injected in the generated code.
@@ -1149,8 +1149,8 @@ trace, not every instance may contain the state of it.
 \improvement{add results for this in codegen akka}
 
 Also with this proof of concept we've found bugs in the code generators. The bug
-in the interest transition from \autoref{sec:bug-interest-javadatomic} is found
-in the fixed code. Another bug for the same interest transition from
+in the \textit{interest} transition from \autoref{sec:bug-interest-javadatomic} is found
+in the fixed code. Another bug for the same \textit{interest} transition from
 \autoref{sec:bug-interest-scalaes} belongs to the category injected code since
 the bug is found in the generated code from the specification. As discussed in
 \autoref{sec:ch3-evalution}, it is possible that there might be bugs in

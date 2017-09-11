@@ -5,7 +5,7 @@
 \section{Method}
 
 The lightweight version from the previous chapter is only able to test one specific
-bug. The bug itself is created manually by modifying the generated system. Now,
+bug. The bug itself is created manually by modifying the \gls{sut}. Now,
 this lightweight version needs to be automated to automatically generate a test
 for every transition from a specification.
 
@@ -117,7 +117,7 @@ will replace conditionals according to the replacement table in
 \end{table}
 \FloatBarrier
 
-\subsection{Generated system}
+\subsection{\gls{sut}}
 The conditionals for the transition in the \gls{sut} are also replaced.
 Although, it isn't necessary to replace always the conditionals. For some
 transitions is an initial state required, \textit{e.g.}, to execute the transition unblock
@@ -439,7 +439,7 @@ $\forall e s_{1} \to s_{2}, s_{2} \gets s_{1}, pre(e)$.
 
 \subsection*{Limited specifications}
 In the conducted experiment is the account specification account used
-to test the generated system. With this experiment and specification,
+to test the \gls{sut}. With this experiment and specification,
 we did find a bug in the code generators.
 
 The used account specification in this experiment is quite simple. With the use

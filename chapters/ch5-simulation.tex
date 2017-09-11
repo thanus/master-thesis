@@ -36,7 +36,7 @@ seen pre- and postconditions. Sync expressions are used for synchronisation.
 These sync expressions are also translated to \gls{smt} formulas.
 
 The sync expressions translated to the \gls{smt} solver are also logical formulas.
-These formulas don't have logic about synchronisation. Of course, the generated system has
+These formulas don't have logic about synchronisation. Of course, the \gls{sut} has
 implemented synchronisation for these transitions. So it is possible to also
 test synchronisation in the \gls{sut}. There are also several studies which reports
 that \gls{smt}-based approaches to model checking can be used to test distributed
@@ -130,7 +130,7 @@ find faults in the implementation of the synchronisation in the \gls{sut}.
 % Asynchronous non-blocking stream processing with backpressure.
 
 In \autoref{sec:ch2-codegen} we discussed the Codegen-Akka generator. The
-generated system from the generator uses Akka as Actor Model. Akka is a toolkit
+\gls{sut} from the generator uses Akka as Actor Model. Akka is a toolkit
 which is used for building concurrent, distributed and resilient
 message-driven systems.~\cite[p.~4]{roestenburg2016akka}
 
@@ -656,7 +656,7 @@ must be opened with a balance of 50 euros.
 
 To conclude, the simulation wasn't able to test the transition close since the
 precondition of this transition isn't satisfied in the postcondition of $s_{1}$.
-This holds also for testing generated systems by other code generators. In other
+This holds also for testing \gls{sut}s by other code generators. In other
 words, this limitation is the result of the test approach
 
 \begin{sourcecode}[h!]
@@ -1172,7 +1172,7 @@ $\forall e s_{1} \to s_{2}, (! s_{2} pre(e) \lor s_{2} pre(e) in s_{1} post(e))$
 
 \subsection*{Limited specifications}
 In the conducted experiments are the specifications account and transaction used
-to test the generated system from these specifications. With these experiments
+to test the \gls{sut} from these specifications. With these experiments
 and specifications, we did find faults in the code generators. Although
 these specifications are quite simple, \textit{e.g.}, for a bank these
 specifications would be more complex. These experiments take into account the
@@ -1182,7 +1182,7 @@ valuable results.
 
 \subsection*{\textit{Rebel} interpretation in \gls{smt} solver}
 The \gls{smt} solver can be seen as an interpreter for \textit{Rebel} specifications. The
-conducted experiments use the \gls{smt} solver to test the generated systems from the
+conducted experiments use the \gls{smt} solver to test the \gls{sut}s from the
 specifications. We already discussed before the limitation of interpretation of
 \textit{Rebel} specifications, and in some cases, workarounds have been used. There may
 be more unknown limitations of the interpretation of \textit{Rebel} specifications, which

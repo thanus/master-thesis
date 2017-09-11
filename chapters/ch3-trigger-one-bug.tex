@@ -97,13 +97,13 @@ case Close() => {
 \end{sourcecode}
 \FloatBarrier
 
-The first bug to trigger is to close an account with some balance. In order to do this, the precondition of the close event should be changed in the generated system (see \autoref{fig:mod-spec-gen}). By manually making the changes in the generated system (system under test), we know that there is definitely a bug in the generated system, assuming that the specification is correct.
+The first bug to trigger is to close an account with some balance. In order to do this, the precondition of the close event should be changed in the generated system (see \autoref{fig:mod-spec-gen}). By manually making the changes in the generated system, the \gls{sut}, we know that there is definitely a bug in the generated system, assuming that the specification is correct.
 
 The modified precondition looks as follows in
 \autoref{fig:account-close-mod-pre}. The precondition is changed to
 \textit{RebelConditionCheck.success}, this means that the precondition is
 satisfied. Right now we have introduced a bug in the \gls{sut},
-so the generated system isn't conform to the specification.
+thus the \gls{sut} isn't conform to the specification.
 
 \begin{figure}[h!]
   \centering
@@ -179,7 +179,7 @@ check closedAccountWithBalance reachable in max 6 steps;
 \FloatBarrier
 
 The input for the \gls{smt} solver is now defined. Similar behaviour should be defined
-for the generated system. So an account needs to be opened and closed
+for the \gls{sut}. So an account needs to be opened and closed
 afterwards. Therefore, the testing framework performs both transitions in the
 \gls{sut}.
 
@@ -187,7 +187,7 @@ The tebl file is passed to the model checker and it returns whether the given
 \gls{smt} problem is reachable or not. A state is reachable when it can be reached
 from the initial state via valid
 transitions.~\cite[p.~4]{stoel_storm_vinju_bosman_2016} To check if the state is
-reachable in the generated system, the request made for the given transition
+reachable in the \gls{sut}, the request made for the given transition
 contains afterwards a check whether the request is successful. Then the testing
 framework can compare the results from the \gls{smt} solver and the request made in
 the \gls{sut}.

@@ -48,9 +48,9 @@ specification Account {
 \end{sourcecode}
 \FloatBarrier
 
-The account specification has a close event\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Library.ebl}}
+The account specification has a \textit{close} event\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Library.ebl}}
 to close an account which is illustrated in \autoref{fig:account-close-event}.
-The precondition of the close event is that the balance of the account should be
+The precondition of the \textit{close} event is that the balance of the account should be
 equal to zero. There are no postconditions, this means that the postconditions
 are satisfied. So there are no properties changed of the account, but only the state
 is changed to closed.
@@ -63,7 +63,7 @@ event close() {
 	}
 }
 \end{lstlisting}
-\caption{close event definition from account specification}\label{fig:account-close-event}
+\caption{\textit{close} event definition from account specification}\label{fig:account-close-event}
 \end{sourcecode}
 \FloatBarrier
 
@@ -77,7 +77,7 @@ reproducible bug. This lightweight version is then able to trigger and test one
 specific bug.
 
 \autoref{fig:account-close-pre} illustrates the code which is generated to check
-the precondition for the close event. From this code, we can see that the
+the precondition for the \textit{close} event. From this code, we can see that the
 balance of an account should be zero before it is getting closed. So we can
 assume that the precondition is correctly generated.
 
@@ -93,11 +93,11 @@ case Close() => {
 
 }
 \end{lstlisting}
-\caption{Generated Precondition for close event}\label{fig:account-close-pre}
+\caption{Generated Precondition for \textit{close} event}\label{fig:account-close-pre}
 \end{sourcecode}
 \FloatBarrier
 
-The first bug to trigger is to close an account with some balance. In order to do this, the precondition of the close event should be changed in the generated system (see \autoref{fig:mod-spec-gen}). By manually making the changes in the generated system, the \gls{sut}, we know that there is definitely a bug in the generated system, assuming that the specification is correct.
+The first bug to trigger is to close an account with some balance. In order to do this, the precondition of the \textit{close} event should be changed in the generated system (see \autoref{fig:mod-spec-gen}). By manually making the changes in the generated system, the \gls{sut}, we know that there is definitely a bug in the generated system, assuming that the specification is correct.
 
 The modified precondition looks as follows in
 \autoref{fig:account-close-mod-pre}. The precondition is changed to
@@ -118,7 +118,7 @@ case Close() => {
   RebelConditionCheck.success
 }
 \end{lstlisting}
-\caption{Modified Precondition for close event}\label{fig:account-close-mod-pre}
+\caption{Modified Precondition for \textit{close} event}\label{fig:account-close-mod-pre}
 \end{sourcecode}
 \FloatBarrier
 
@@ -144,7 +144,7 @@ account specification we're testing only the transition \textit{close}.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth{}]{figures/test-modified-bug.pdf}
-  \caption{Testing approach for close transition}\label{fig:mod-bug-test}
+  \caption{Testing approach for \textit{close} transition}\label{fig:mod-bug-test}
 \end{figure}
 \FloatBarrier
 
@@ -198,7 +198,7 @@ the \gls{sut}.
 
 Since we've defined the input for both systems and are able to compare it, we
 can trigger the bug and compare the results of it. The results of testing the
-close transition are shown in \autoref{fig:ch3-res-codegenakka-account}.
+\textit{close} transition are shown in \autoref{fig:ch3-res-codegenakka-account}.
 
 \begin{table}[h!]
 \centering
@@ -207,7 +207,7 @@ close transition are shown in \autoref{fig:ch3-res-codegenakka-account}.
 \textbf{Transition to test} & \textbf{Reachability \gls{smt} solver} & \textbf{Reachability \gls{sut}} & \textbf{Test result} \\ \midrule
 close                       & \xmark{}                         & \cmark{}                  & \xmark{}             \\ \bottomrule
 \end{tabular}
-\caption{Results: testing close transition of account specification}\label{fig:ch3-res-codegenakka-account}
+\caption{Results: testing \textit{close} transition of account specification}\label{fig:ch3-res-codegenakka-account}
 \end{table}
 \FloatBarrier
 
@@ -254,7 +254,7 @@ precondition.
 \section{Evaluation}\label{sec:ch3-evalution}
 
 \subsubsection{Bugs}
-The expection for the bugs criteria is to find the bug in the close transition.
+The expection for the bugs criteria is to find the bug in the \textit{close} transition.
 As expected, we did find the bug for the \textit{close}
 transition due to the manually modified precondition.
 

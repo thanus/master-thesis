@@ -472,7 +472,7 @@ experiments within ING Bank.
 The results of the test run is shown in
 \autoref{fig:ch5-res-codegenakka-account} and
 \autoref{fig:ch5-res-codegenakka-transaction}. From this result, we can conclude
-that the test for the close transition has failed.
+that the test for the \textit{close} transition has failed.
 
 \begin{table}[h!]
 \centering
@@ -508,7 +508,7 @@ fail                        & \cmark{}               & \cmark{}            \\ \b
 The results of the test run is shown in
 \autoref{fig:ch5-res-codegendatomic-account} and
 \autoref{fig:ch5-res-codegendatomic-transaction}. From this result, we can
-conclude again that the test for the close transition has failed. Remarkable is
+conclude again that the test for the \textit{close} transition has failed. Remarkable is
 that also the interest transition has failed.
 
 \begin{table}[h!]
@@ -545,7 +545,7 @@ fail                        & \cmark{}               & \cmark{}            \\ \b
 The results of the test run is shown in
 \autoref{fig:ch5-res-codegendatomic-account} and
 \autoref{fig:ch5-res-codegendatomic-transaction}. Again the test for the
-transition close has failed, but also for the transition interest.
+transition \textit{close} has failed, but also for the transition interest.
 
 \begin{table}[h!]
 \centering
@@ -585,12 +585,12 @@ Investigating the test run, it seems to be that all transitions are tested
 successfully, except the transition \textit{close}. Also, there seems to be a
 limitation in testing the state of a specification.
 
-\subsubsection{Close transition}\label{sec:close-no-test-codegenakka}
+\subsubsection{\textit{close} transition}\label{sec:close-no-test-codegenakka}
 
 The result of \textit{close} transition test is shown in
 \autoref{fig:result-codegenakka-close}. As you can see on line number 28 is
-constructing the current state for the close transition successful. Then the
-simulation is asked to simulate the close transition, but according to the
+constructing the current state for the \textit{close} transition successful. Then the
+simulation is asked to simulate the \textit{close} transition, but according to the
 traces of the simulation, the simulation wasn't able to make the step. The
 simulation returns only the state before the transition.
 
@@ -635,16 +635,16 @@ Response: ("body":"CommandSuccess(OpenAccount(50.00 EUR))","isSuccessful":"true"
     var accountNumber (type: IBAN) = FO9402337176862639
     var balance (type: Money) = EUR50.00
 \end{lstlisting}
-\caption{No test generated for close transition}\label{fig:result-codegenakka-close}
+\caption{No test generated for \textit{close} transition}\label{fig:result-codegenakka-close}
 \end{sourcecode}
 \FloatBarrier
 
-As discussed earlier, the precondition of the close transition is that there
+As discussed earlier, the precondition of the \textit{close} transition is that there
 should be no remaining balance as shown in \autoref{fig:account-close-event}.
 On line number 15 of the test run is shown that the simulation makes the step to
 open an account with a balance of 50 euros. Afterwards are no transitions
 performed. Thus this current state does not satisfy the precondition of the
-close transition. That's the reason why the simulation wasn't able to perform the
+\textit{close} transition. That's the reason why the simulation wasn't able to perform the
 transition since the given values from the current state to $s_{1}$ weren't
 satisfying for $s_{2}$.
 
@@ -654,7 +654,7 @@ specified with the identifier of the account. As we've seen the event definition
 of \textit{openAccount} in \autoref{fig:account-openaccount-event}, the account
 must be opened with a balance of 50 euros.
 
-To conclude, the simulation wasn't able to test the transition close since the
+To conclude, the simulation wasn't able to test the transition \textit{close} since the
 precondition of this transition isn't satisfied in the postcondition of $s_{1}$.
 This holds also for testing \gls{sut}s by other code generators. In other
 words, this limitation is the result of the test approach

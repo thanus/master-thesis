@@ -90,17 +90,17 @@ The API's of the generated system from the code generators are not standardised.
 The semantics of \textit{Rebel} is defined as labelled transition systems.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} Thus the current state of a specification holds the state name with the current fields assignments and the event parameters which causes the current state. The labelled transitions map to the events and their preconditions and postconditions. \textit{Rebel} has also support to specify invariants for a given specification, these are predicates which should be always true. These predicates are defined as external specifications of expected behaviour, that's why they are converted to additional formulas. \unsure{SMT van nu doet dit niet?}
 
 
-Bounded model checking can be used for \textit{Rebel} specifications. Therefore, \textit{Rebel} is defined as an \gls{smt} problem by encoding it to symbolic bounded model checking (with data). The goal of model checking is to find a state which is reachable with some properties which don't hold.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} For example, for the specification from \autoref{fig:simple-account-spec}, an account within the state opened with a negative balance. \textit{Rebel} uses \gls{smt} Solver Z3~\cite{moura_bjorner_2008} for simulation and checking.
+Bounded model checking can be used for \textit{Rebel} specifications. Therefore, \textit{Rebel} is defined as an \gls{smt} problem by encoding it to symbolic bounded model checking (with data). The goal of model checking is to find a state which is reachable with some properties which don't hold.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} For example, for the specification from \autoref{fig:simple-account-spec}, an account within the state opened with a negative balance. \textit{Rebel} uses \gls{smt} solver Z3~\cite{moura_bjorner_2008} for simulation and checking.
 
 \subsection{Bounded checking}
 \unsure{paper is niet consistent met nu?}
 
 Checking of \textit{Rebel} specifications is used to check the consistency of a given specification.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} A specification is consistent when invariants hold in all reachable states. A state is reachable when it can be reached from the initial state via valid transitions.
 
-The bounded analysis tries to find the smallest (the least possible steps) possible counter example, this is fully automatic and incremental. Thus the given computations by the \gls{smt} Solver satisfies the route from pre-condition to post-condition for every transition.
+The bounded analysis tries to find the smallest (the least possible steps) possible counter example, this is fully automatic and incremental. Thus the given computations by the \gls{smt} solver satisfies the route from pre-condition to post-condition for every transition.
 First, it tries to reach an invalid state in one step. If that did not succeed, then it tries to reach the invalid state in two steps. This process continues until a counter example is found or configurable time-out is met. The bounded analysis tries to prove the following: $\theta (s_{0}) \land P(s_{0}) \land p(s_{0}, s_{1}) \land P(s_{1}) \land \dots p(s_{k-1}, s_{k}) \land \neg P(s_{k})$.
 
-An example of checking \textit{Rebel} specifications is given in \autoref{fig:tebl-opened-simple-account}. These checks can be defined in so called tebl files. The \gls{smt} Solver tries to reach the state opened of account with the balance above 0 euro. As configurable time-out is 6 used.
+An example of checking \textit{Rebel} specifications is given in \autoref{fig:tebl-opened-simple-account}. These checks can be defined in so called tebl files. The \gls{smt} solver tries to reach the state opened of account with the balance above 0 euro. As configurable time-out is 6 used.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]

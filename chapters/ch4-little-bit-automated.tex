@@ -49,7 +49,7 @@ programs are called mutants, each mutant contains a different syntactic change.
 In our case, only one mutant is generated. A test suite for a program is used to
 determine whether the faulty programs are detected. A mutant is killed when it
 is detected by the test suite. The mutant is in our case killed when the result
-from the \gls{smt} Solver and the \gls{sut} are the same. We're using the same
+from the \gls{smt} solver and the \gls{sut} are the same. We're using the same
 approach from \autoref{sec:ch3} to compare the results of the \gls{smt} solver and
 \gls{sut}.
 
@@ -375,7 +375,7 @@ well as the \gls{sut}.
 A part of the generated test for a transition is checking, which is used to test
 the state to reach with the replaced preconditions. So, in this proof of
 concept, we're testing what should be not possible according to the
-specification. The result of the checking from the \gls{smt} Solver varies,
+specification. The result of the checking from the \gls{smt} solver varies,
 \textit{e.g.}, an opened account can be reached by the \textit{openAccount}
 transition or by the transition \textit{openAccount} and \textit{withdraw}.
 
@@ -386,9 +386,9 @@ specification since the proof of concept generated tests for all transitions.
 In the proof of concept, after the checking, a transition
 is performed in the \gls{sut}. In this proof of concept, it's unknown whether the
 performed transition with its parameters in the \gls{sut} is the same as the
-transition computed by the \gls{smt} Solver. This causes some false positives in the
-test run. Also, it is difficult to play like the \gls{smt} Solver, it is unknown which
-result the \gls{smt} Solver will give. The \gls{smt} solver is also smarter/better in checking
+transition computed by the \gls{smt} solver. This causes some false positives in the
+test run. Also, it is difficult to play like the \gls{smt} solver, it is unknown which
+result the \gls{smt} solver will give. The \gls{smt} solver is also smarter/better in checking
 the satisfiability of a given constraints.
 
 \section{Conclusion}
@@ -399,16 +399,16 @@ A part of
 the generated test for a transition is checking, which is used to test the state to
 reach with the replaced preconditions. So, in this proof of concept, we're
 testing what should be not possible according to the specification. The result
-of the checking from the \gls{smt} Solver varies, \textit{e.g.}, an opened account can be
+of the checking from the \gls{smt} solver varies, \textit{e.g.}, an opened account can be
 reached by the \textit{openAccount} transition or by the transition
 \textit{openAccount} and \textit{withdraw}.
 
 After the checking, a transition
 is performed in the \gls{sut}. In this proof of concept, it's unknown whether the
 performed transition with its parameters in the \gls{sut} is the same as the
-transition computed by the \gls{smt} Solver. This causes some false positives in the
-test run. Also, it is difficult to play like the \gls{smt} Solver, it is unknown which
-result the \gls{smt} Solver will give. The \gls{smt} solver is also smarter/better in checking
+transition computed by the \gls{smt} solver. This causes some false positives in the
+test run. Also, it is difficult to play like the \gls{smt} solver, it is unknown which
+result the \gls{smt} solver will give. The \gls{smt} solver is also smarter/better in checking
 the satisfiability of a given constraints.
 
 To conclude, the checking used in this proof of concept tests only the states, regardless of which transitions are

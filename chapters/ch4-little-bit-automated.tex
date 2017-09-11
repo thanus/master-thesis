@@ -38,7 +38,7 @@ specification. Therefore, the same tested transition should be tested in the
 \gls{sut}.
 
 \subsubsection{Coverage}
-The proof of concept is going to generate test for all transitions. Therefore,
+The experiment is going to generate test for all transitions. Therefore,
 it is expected to test all the transitions of a specification.
 
 \section{Approach}
@@ -160,7 +160,7 @@ event deposit(amount: Money) {
 
 \subsection{Codegen-Akka}
 
-For this proof of concept we're testing the generator Codegen-Akka. The results
+For this experiment we're testing the generator Codegen-Akka. The results
 of this test run is shown in \autoref{fig:ch5-res-codegenakka-account}. As shown
 in this table, the tests for four transitions are successful and the tests for
 the other three transitions are failed.
@@ -360,7 +360,7 @@ In \autoref{sec:ch4-eval-criteria} we discussed the expectations of the criteria
 bugs. We expected to find bugs in the \gls{sut} where it is possible to perform the
 inverse of a transition.
 
-With this proof of concept, we've found a bug in the \gls{sut}, which was
+With this experiment, we've found a bug in the \gls{sut}, which was
 discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
 since the \gls{sut} isn't able to compile. With the bug from
 \autoref{sec:bug-close-account} it is possible that the final state closed is
@@ -381,10 +381,10 @@ transition or by the transition \textit{openAccount} and \textit{withdraw}.
 
 \subsection{Coverage}
 It is expected for this criteria to test all the transitions of the
-specification since the proof of concept generated tests for all transitions.
+specification since the experiment generated tests for all transitions.
 
-In the proof of concept, after the checking, a transition
-is performed in the \gls{sut}. In this proof of concept, it's unknown whether the
+In the experiment, after the checking, a transition
+is performed in the \gls{sut}. In this experiment, it's unknown whether the
 performed transition with its parameters in the \gls{sut} is the same as the
 transition computed by the \gls{smt} solver. This causes some false positives in the
 test run. Also, it is difficult to play like the \gls{smt} solver, it is unknown which
@@ -392,29 +392,29 @@ result the \gls{smt} solver will give. The \gls{smt} solver is also smarter/bett
 the satisfiability of a given constraints.
 
 \section{Conclusion}
-In this proof of concept is the account specification used to test the \gls{sut}.
-This proof of concept generates automatically tests for transitions.
+In this experiment is the account specification used to test the \gls{sut}.
+This experiment generates automatically tests for transitions.
 
 A part of
 the generated test for a transition is checking, which is used to test the state to
-reach with the replaced preconditions. So, in this proof of concept, we're
+reach with the replaced preconditions. So, in this experiment, we're
 testing what should be not possible according to the specification. The result
 of the checking from the \gls{smt} solver varies, \textit{e.g.}, an opened account can be
 reached by the \textit{openAccount} transition or by the transition
 \textit{openAccount} and \textit{withdraw}.
 
 After the checking, a transition
-is performed in the \gls{sut}. In this proof of concept, it's unknown whether the
+is performed in the \gls{sut}. In this experiment, it's unknown whether the
 performed transition with its parameters in the \gls{sut} is the same as the
 transition computed by the \gls{smt} solver. This causes some false positives in the
 test run. Also, it is difficult to play like the \gls{smt} solver, it is unknown which
 result the \gls{smt} solver will give. The \gls{smt} solver is also smarter/better in checking
 the satisfiability of a given constraints.
 
-To conclude, the checking used in this proof of concept tests only the states, regardless of which transitions are
+To conclude, the checking used in this experiment tests only the states, regardless of which transitions are
 being performed, and testing the \gls{sut} focuses more on testing transitions.
 
-With this proof of concept, we've found a bug in the \gls{sut}, which was
+With this experiment, we've found a bug in the \gls{sut}, which was
 discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
 since the \gls{sut} isn't able to compile. The found bug belongs to the category
 injected code since the generated code for the precondition is wrong. In this

@@ -12,7 +12,7 @@ We're going to use the
 same account specification from \autoref{fig:account-spec}. As an addition to
 account specification, we use a transaction specification. Via this
 specification money can be transferred between two accounts.
-The Rebel implementation of the transaction \footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Transaction.ebl}} is shown in \autoref{fig:transaction-spec}.
+The \textit{Rebel} implementation of the transaction \footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Transaction.ebl}} is shown in \autoref{fig:transaction-spec}.
 As you can see the transaction specification contains more fields than the
 account specification. The two remarkable fields are from and to, both are the
 type of \textit{IBAN}. The type \textit{IBAN} is a built-in \textit{Rebel}
@@ -415,7 +415,7 @@ and trace are compared to find any misbehaviour in the \gls{sut}.
 
 \subsubsection{Normalisation}
 
-Before a Rebel specification is checked or simulated is the specification
+Before a \textit{Rebel} specification is checked or simulated is the specification
 normalised. This normalisation process is done to make the \gls{smt} formulas easier
 and also to give it partially semantics
 \cite[p.5]{stoel_storm_vinju_bosman_2016}. Desugaring the life cycle is part of
@@ -1180,12 +1180,12 @@ generosity of specifications, but with such a large amount of complex
 specifications, it is questionable whether these experiments still produce
 valuable results.
 
-\subsection*{Rebel interpretation in \gls{smt} solver}
-The \gls{smt} solver can be seen as an interpreter for Rebel specifications. The
+\subsection*{\textit{Rebel} interpretation in \gls{smt} solver}
+The \gls{smt} solver can be seen as an interpreter for \textit{Rebel} specifications. The
 conducted experiments use the \gls{smt} solver to test the generated systems from the
 specifications. We already discussed before the limitation of interpretation of
-Rebel specifications, and in some cases, workarounds have been used. There may
-be more unknown limitations of the interpretation of Rebel specifications, which
+\textit{Rebel} specifications, and in some cases, workarounds have been used. There may
+be more unknown limitations of the interpretation of \textit{Rebel} specifications, which
 can cause the conducted experiments give incorrect results.
 
 \subsection*{Valid execution trace}

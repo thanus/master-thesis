@@ -144,7 +144,6 @@ expectation to find these faults in the Codegen-Akka, but also in the other code
 generators since these code generators implements also synchronisation. For
 instance, the Codegen-Javadatomic uses \gls{cqrs} where the commands are
 executed asynchronously.
-\unsure{javadatomic?}
 
 At the time of conducting the experiment, a new version of the Codegen-Akka is
 released. The new version implements \gls{2pc}, which is a synchronisation
@@ -168,9 +167,12 @@ By using the traces for testing, the same path computed by the \gls{smt} solver
 are performed in the \gls{sut} and we're able to check whether the given
 execution is possible in the \gls{sut}. Thus the expectation is to perform the
 same transition from the traces should be performed in the \gls{sut}.
+However, it may take longer to test all transitions from specifications as each
+transition needs to be tested and some transitions require an initial state for
+which transitions need to be performed to reach this state.
 
 \subsubsection{Coverage}
-In this experiment is the simulation used to test transitions. Since
+In this experiment, the simulation is used to test transitions. Since
 the simulation is able to test single steps, it is expected to test all
 transitions of a specification.
 
@@ -178,6 +180,14 @@ As discussed, this experiment is going to use more complex specifications,
 \textit{e.g.}, specifications which depend and interact with each other. With
 the use of the simulation, it is expected to test transitions which depend and
 interact with other specifications.
+
+With the criteria bugs, we discussed that it is expected to find faults in
+partial failure and asynchrony. These characteristics may lead to not testing
+transitions. To illustrate what is meant, let us look at the case of partial
+failure within the \textit{book} transition. When components fail along the way
+during the transitions to reach the initial state for the \textit{book}
+transition, it may result in incomplete results or data. This leads to the
+inability to test the \textit{book} transition.
 
 \section{Approach}
 

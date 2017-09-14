@@ -1079,14 +1079,14 @@ find bugs in the \gls{sut} where execution traces from the \gls{smt} solver
 isn't accepted by the \gls{sut}. For example, a generated pre- or postconditions
 aren't satisfied by the execution from the traces.
 
-In this experiment we've found bugs in the code generators. For both bugs,
+In this experiment, we've found bugs in the code generators. For both bugs,
 \autoref{sec:bug-interest-javadatomic} and \autoref{sec:bug-interest-scalaes},
 it wasn't possible to perform the execution from the traces returned by the
 \gls{smt} solver. The preconditions aren't satisfied for both bugs. To conclude,
 we did find bugs as expected where the \gls{sut} wasn't conform to the
 specification.
 
-This experiment is using more complex specifications which implements
+This experiment is using more complex specifications which implement
 synchronisation. As discussed, it should be possible to test synchronisation in
 the \gls{sut}. According to the results from \autoref{sec:ch5-results}, the
 \textit{book} transition which implements synchronisation has been successfully
@@ -1101,7 +1101,7 @@ Not being able to find bugs does not mean that there are no faults in the
 synchronisation. This can be due to the way of testing or the setup how the
 \gls{sut} runs. The \gls{sut} is run as single nodes, both the Scala system and
 Cassandra. By running multiple nodes, it is possible to focus more on the
-testing of unanimous final outcome of the \gls{sut}s. Unfortunately, this is
+testing of the unanimous final outcome of the \gls{sut}s. Unfortunately, this is
 currently not possible because the \gls{sut} cannot run distributed and the test
 approach needs to be changed.
 

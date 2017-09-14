@@ -1075,9 +1075,9 @@ def interest(@Suspended asyncResponse: AsyncResponse,
 
 \subsection{Bugs}
 The expectation for the criteria bugs from \autoref{sec:ch5-eval-criteria} is to
-find bugs in the \gls{sut} where execution traces from the \gls{smt} solver isn't accepted
-by the \gls{sut}. For example, a generated pre- or postconditions aren't
-satisfied by the execution from the traces.
+find bugs in the \gls{sut} where execution traces from the \gls{smt} solver
+isn't accepted by the \gls{sut}. For example, a generated pre- or postconditions
+aren't satisfied by the execution from the traces.
 
 In this experiment we've found bugs in the code generators. For both bugs,
 \autoref{sec:bug-interest-javadatomic} and \autoref{sec:bug-interest-scalaes},
@@ -1097,7 +1097,18 @@ synchronisation where the \gls{sut} doesn't produce a unanimous final outcome.
 In the case of the expectation of the \gls{sut} producing not unanimous final
 outcome, no faults were found here either.
 
-\info{Why it's not possible to find faults? e.g. the setup of the sut, use more complex}
+Not being able to find bugs does not mean that there are no faults in the
+synchronisation. This can be due to the way of testing or the setup how the
+\gls{sut} runs. The \gls{sut} is run as single nodes, both the Scala system and
+Cassandra.
+
+\info{e.g. the setup of the sut}
+
+The \textit{book} transition in this experiment is the only transition which
+implements synchronisation. With the use of more complex specifications, in the
+sense of synchronised transitions, it is possible to test better
+synchronisation. Parallel execution of transitions can also give valuable
+results, as partial failure or asynchrony is more tested.
 
 \subsection{Efficiency}
 

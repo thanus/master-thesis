@@ -12,44 +12,44 @@ for every transition from a specification.
 With every transition, it is possible to reach a state or stay in the current
 state. To check \textit{Rebel} specifications, the state to reach with a transition needs
 to be defined. As mentioned before, the goal of model checking is to find a
-state which is reachable with some properties which don't hold
+state which is reachable with some properties which do not hold
 ~\cite[p.5]{stoel_storm_vinju_bosman_2016}. Thus defining only the reachable
-state isn't enough, the properties of interest for a transition needs to be
+state is not enough, the properties of interest for a transition needs to be
 specified. Each property is different per transition, so these properties should
 be different for the defined state. For example for the \textit{close}
-transition, we want to check whether it is possible to have an closed account
-where the balance isn't equal to zero, for the transition \textit{withdraw} we
+transition, we want to check whether it is possible to have a closed account
+where the balance is not equal to zero, for the transition \textit{withdraw} we
 want to check whether a negative balance can be achieved with the transition.
 
-To conclude, with this approach we're testing the inverse of the preconditions. Thus we're testing
-what should not be possible according to the specification.
+To conclude, with this approach we are testing the inverse of the preconditions.
+Thus what is not possible according to the specification is tested.
 
 \subsection{Evaluation criteria}\label{sec:ch4-eval-criteria}
 
 \subsubsection{Bugs}
-Since we're testing with this approach the inverse of the preconditions, thus
+Since we are testing with this approach the inverse of the preconditions, thus
 what should be not possible according to the specification, it is expected to
 find bugs in the \gls{sut} where it is possible to perform the inverse of a
 transition.
 
 \subsubsection{Efficiency}
-In this approach is checking used to check what isn't possible according to the
+In this approach is checking used to check what is not possible according to the
 specification. Therefore, the same tested transition should be tested in the
 \gls{sut}.
 
 \subsubsection{Coverage}
-The experiment is going to generate test for all transitions. Therefore,
+The experiment is going to generate a test for all transitions. Therefore,
 it is expected to test all the transitions of a specification.
 
 \section{Approach}
-The testing approach is a well known approach in mutation testing. Mutation testing is
-fault-based testing technique, which generates faulty programs by syntactic
+The testing approach is a well-known approach in mutation testing. Mutation testing is
+a fault-based testing technique, which generates faulty programs by syntactic
 changes to the original program.~\cite[p.~1]{jia2011analysis} The set of faulty
 programs are called mutants, each mutant contains a different syntactic change.
 In our case, only one mutant is generated. A test suite for a program is used to
 determine whether the faulty programs are detected. A mutant is killed when it
 is detected by the test suite. The mutant is in our case killed when the result
-from the \gls{smt} solver and the \gls{sut} are the same. We're using the same
+from the \gls{smt} solver and the \gls{sut} are the same. we are using the same
 approach from \autoref{sec:ch3} to compare the results of the \gls{smt} solver and
 \gls{sut}.
 
@@ -67,12 +67,12 @@ specifications are being built, \textit{i.e.}, \gls{csts} are
 produced of these specifications. Using these \gls{csts}, the code generator generates
 the code, which is then the \gls{sut}.
 
-The test case generator can be used to test the \gls{sut}, when the \gls{sut} is generated
+The test case generator can be used to test the \gls{sut} when the \gls{sut} is generated
 from the \gls{csts}. The \gls{csts} of the specifications are traversed by the test case
 generator to generate a test for each transition. The test case generator
 generates tebl files for transitions to use checking.
 
-In order to test the \gls{sut}, the test case generator performs a similar transition
+To test the \gls{sut}, the test case generator performs a similar transition
 as used within checking in the \gls{sut}. Finally, the results from checking and the
 performed transition in the \gls{sut} are compared.
 
@@ -119,11 +119,11 @@ will replace conditionals according to the replacement table in
 
 \subsection{\gls{sut}}
 The conditionals for the transition in the \gls{sut} are also replaced.
-Although, it isn't necessary to replace always the conditionals. For some
+Although, it is not necessary to replace always the conditionals. For some
 transitions is an initial state required, \textit{e.g.}, to execute the transition unblock
 of the account specification, the account should be in the state blocked. So an
 initial state needs to be constructed for some transitions. Of course, the \gls{smt}
-solver is able to construct its own initial state to reach a state.
+solver can construct its initial state to reach a state.
 
 The definition of the \textit{deposit} transition is given in
 \autoref{fig:account-deposit-event} and contains the following statement in the
@@ -135,7 +135,7 @@ performed in the \gls{sut}.
 
 To perform the \textit{deposit} transition, the transition parameters for this
 transition must be determined satisfying replaced conditionals. The transition
-parameter for the \textit{deposit} transition, amount, should should be less
+parameter for the \textit{deposit} transition, amount, should be less
 than or equal to 0 euro. Therefore, are generators implemented to generate
 values satisfying the negated conditionals. For example, the following
 transition parameter is generated to be used in the \textit{deposit} transition
@@ -160,8 +160,8 @@ event deposit(amount: Money) {
 
 \subsection{Codegen-Akka}
 
-For this experiment we're testing the generator Codegen-Akka. The results
-of this test run is shown in \autoref{fig:ch5-res-codegenakka-account}. As shown
+For this experiment, we are testing the generator Codegen-Akka. The results
+of this test run are shown in \autoref{fig:ch5-res-codegenakka-account}. As shown
 in this table, the tests for four transitions are successful and the tests for
 the other three transitions are failed.
 
@@ -191,7 +191,7 @@ close                       & \xmark{}            \\ \bottomrule
 When this automated version of checking is executed, it produces some false
 positives. After investigating the tests for the transitions, the test for the \textit{close}
 transition seems not be successful (see \autoref{fig:result-close-account}).
-The model checker states that the state isn't reachable (the same tebl file is
+The model checker states that the state is not reachable (the same tebl file is
 generated as in \autoref{fig:tebl-closed-account}). It seems to be that the
 state is reachable in the \gls{sut}.
 
@@ -214,7 +214,7 @@ follows in \autoref{fig:closed-account-json}. The state of the account is in
 closed, which is correct according to the specification, but the balance of the
 account is 52 euro. In \autoref{fig:account-close-event} we already discussed
 the event  definition of the \textit{close} transition, which is that the
-balance should be equal to zero. From this, we can conclude that we've
+balance should be equal to zero. From this, we can conclude that we have
 discovered a bug in the \gls{sut}.
 
 \begin{sourcecode}[h!]
@@ -240,9 +240,9 @@ Now we know that we have discovered a bug, we want to know why this behaviour
 occurs and whether it is due to the generated code from the specification. The
 method which handles the \textit{close} transition has the following check in
 \autoref{fig:java-notequal-check}. The if statement checks whether the balance
-of the account is not equal to 0 euro. The condition in the if statement isn't
-satisfied with the balance of 52 euro. That's why the exception
-\textit{BuildCASTransactionException} isn't thrown.
+of the account is not equal to 0 euro. The condition in the if statement is not
+satisfied with the balance of 52 euro. That is why the exception
+\textit{BuildCASTransactionException} is not thrown.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[language=Java]
@@ -270,10 +270,10 @@ private str g(e:(Expr)`<Expr lhs> == <Expr rhs>`, tmap t) = "isNotEqual(<g(lhs, 
 \end{sourcecode}
 \FloatBarrier
 
-So the expression isn't properly synthesized, and it should be synthesized to
+So the expression is not properly synthesized, and it should be synthesized to
 \textit{isEqual} instead of \textit{isNotEqual}. With this modification, it
-isn't possible anymore to close an account with some balance. This also applies
-to other statements which uses the equal operator.
+is not possible anymore to close an account with some balance. This also applies
+to other statements which use the equal operator.
 
 % https://github.com/cwi-swat/ing-rebel-generators/pull/6
 \subsubsection{Bug: deposit with a maximum amount}\label{sec:bug-compile-max-deposit}
@@ -282,10 +282,10 @@ The automated checking is implemented with the ability to first start the
 \gls{sut} and then run the tests against it. For a new test run, the
 specification has changed a little bit. It is now possible to only deposit with
 a maximum amount (see \autoref{fig:java-deposit-maxamount}). After the code is
-generated, the testing framework isn't able to start the system. There is a
+generated, the testing framework is not able to start the system. There is a
 compile error as you can see in
 \autoref{fig:java-result-lessthan-compile-error}, the binary operator "$<$"
-isn't applicable on the type \textit{org.joda.money.Money}. The compile error
+is not applicable on the type \textit{org.joda.money.Money}. The compile error
 is thrown by the source code from \autoref{fig:java-lessthan-compile-error},
 which is part of the method which handles the \textit{deposit} transition.
 
@@ -360,21 +360,21 @@ In \autoref{sec:ch4-eval-criteria} we discussed the expectations of the criteria
 bugs. We expected to find bugs in the \gls{sut} where it is possible to perform the
 inverse of a transition.
 
-With this experiment, we've found a bug in the \gls{sut}, which was
+With this experiment, we have found a bug in the \gls{sut}, which was
 discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
-since the \gls{sut} isn't able to compile. With the bug from
-\autoref{sec:bug-close-account} it is possible that the final state closed is
-reached where the preconditions of the \textit{close} transition don't hold.
+since the \gls{sut} is not able to compile. With the bug from
+\autoref{sec:bug-close-account}, it is possible that the final state closed is
+reached where the preconditions of the \textit{close} transition do not hold.
 So as expected, we did find a bug in performing the inverse of a transition.
 
 \subsection{Efficiency}
-For the criteria efficiency it is expected to check what isn't possible
+For the criteria efficiency, it is expected to check what is not possible
 according to the specification, i.e. testing the same transition in checking as
 well as the \gls{sut}.
 
 A part of the generated test for a transition is checking, which is used to test
 the state to reach with the replaced preconditions. So, in this proof of
-concept, we're testing what should be not possible according to the
+concept, we are testing what should be not possible according to the
 specification. The result of the checking from the \gls{smt} solver varies,
 \textit{e.g.}, an opened account can be reached by the \textit{openAccount}
 transition or by the transition \textit{openAccount} and \textit{withdraw}.
@@ -384,10 +384,10 @@ It is expected for this criteria to test all the transitions of the
 specification since the experiment generated tests for all transitions.
 
 In the experiment, after the checking, a transition
-is performed in the \gls{sut}. In this experiment, it's unknown whether the
+is performed in the \gls{sut}. In this experiment, it is unknown whether the
 performed transition with its parameters in the \gls{sut} is the same as the
 transition computed by the \gls{smt} solver. This causes some false positives in the
-test run. Also, it is difficult to play like the \gls{smt} solver, it is unknown which
+test run. Also, it is difficult to play like the \gls{smt} solver; it is unknown which
 result the \gls{smt} solver will give. The \gls{smt} solver is also smarter/better in checking
 the satisfiability of a given constraints.
 
@@ -397,29 +397,29 @@ This experiment generates automatically tests for transitions.
 
 A part of
 the generated test for a transition is checking, which is used to test the state to
-reach with the replaced preconditions. So, in this experiment, we're
+reach with the replaced preconditions. So, in this experiment, we are
 testing what should be not possible according to the specification. The result
 of the checking from the \gls{smt} solver varies, \textit{e.g.}, an opened account can be
 reached by the \textit{openAccount} transition or by the transition
 \textit{openAccount} and \textit{withdraw}.
 
 After the checking, a transition
-is performed in the \gls{sut}. In this experiment, it's unknown whether the
+is performed in the \gls{sut}. In this experiment, it is unknown whether the
 performed transition with its parameters in the \gls{sut} is the same as the
 transition computed by the \gls{smt} solver. This causes some false positives in the
-test run. Also, it is difficult to play like the \gls{smt} solver, it is unknown which
+test run. Also, it is difficult to play like the \gls{smt} solver; it is unknown which
 result the \gls{smt} solver will give. The \gls{smt} solver is also smarter/better in checking
 the satisfiability of a given constraints.
 
 To conclude, the checking used in this experiment tests only the states, regardless of which transitions are
 being performed, and testing the \gls{sut} focuses more on testing transitions.
 
-With this experiment, we've found a bug in the \gls{sut}, which was
+With this experiment, we have found a bug in the \gls{sut}, which was
 discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
-since the \gls{sut} isn't able to compile. The found bug belongs to the category
+since the \gls{sut} is not able to compile. The found bug belongs to the category
 injected code since the generated code for the precondition is wrong. In this
 case, the final state closed is reached where the preconditions of the \textit{close}
-transition don't hold. So the theory for this found bug is:
+transition do not hold. So the theory for this found bug is
 $\forall e s_{1} \to s_{2}, s_{2} \gets s_{1}, pre(e)$.
 
 % claims from finding the bugs.

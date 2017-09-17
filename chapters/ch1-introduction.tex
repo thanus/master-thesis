@@ -14,17 +14,16 @@ it to the running systems. \textit{Rebel} is a formal specification language to
 control the intrinsic complexity of software for financial
 enterprise systems.~\cite[p.~1]{stoel_storm_vinju_bosman_2016}
 
-Software testing is an important part in software projects.~\cite[p.~4]{myers2011art} The testing
+Software testing is an important part of software projects.~\cite[p.~4]{myers2011art} The testing
 process within large systems can be challenging, it entails not only defining
-and executing a lot of test cases, solving thousands of errors, handling
+and executing many test cases, solving thousands of errors, handling
 thousands of modules, but also enormous project management. To facilitate this
 process \textit{Rebel} offers automated simulation and checking of specifications with
-the use of a \gls{smt} solver. This solves to some
+the use of an \gls{smt} solver. This solves to some
 extent the testing and reasoning of \textit{Rebel} specifications, but this is only
 within in the \textit{Rebel} domain.
 
-Code is generated from the \textit{Rebel} specifications with the use of code
-generators. The problem with code generation is that the resulting
+Code generators generate code from the \textit{Rebel} specifications. The problem with code generation is that the resulting
 product is leaving the \textit{Rebel} domain, causing loss of testing and reasoning with
 the use of formal methods. The challenge is to regain the benefits from the
 \textit{Rebel} domain to be able to test and reason about running systems.
@@ -34,9 +33,9 @@ the use of formal methods. The challenge is to regain the benefits from the
 
 % Ultimately, running systems should be generated from \textit{Rebel} specifications. Since \textit{Rebel} is a declarative language it will not always be straightforward to generate a correct system from this. Again SMT solvers might hold the key as shown in other work like [9].
 
-According to the study~\cite[p.~3]{stoelcase} it should be possible to generate
-running systems from \textit{Rebel} specifications. Right now this is possible and
-running systems are generated from \textit{Rebel} specifications. It isn't always straightforward to generate a correct system from \textit{Rebel}
+According to the study~\cite[p.~3]{stoelcase}, it should be possible to generate
+running systems from \textit{Rebel} specifications. Right now this is possible, and
+running systems are generated from \textit{Rebel} specifications. It is not always straightforward to generate a correct system from \textit{Rebel}
 specifications since \textit{Rebel} is a declarative language.~\cite[p.~3]{stoelcase}
 As mentioned before, the simulation and checking for the correctness of
 specifications is only in the \textit{Rebel} domain.
@@ -51,7 +50,7 @@ The language \textit{Rebel} promised to be deterministic, this also holds
 for the generated system. Thus, non-deterministic behaviour in the generated
 system should be identified.
 
-Especially for ING Bank it is important that there is no corrupted data within
+Especially for ING Bank, it is important that there is no corrupted data within
 the runtime systems.
 
 \subsection{Research questions}\label{sec:research-questions}
@@ -76,8 +75,9 @@ For the problems in \autoref{sec:problem-statement}, the
 study~\cite[p.3]{stoelcase} proposed a possible solution for these problems,
 which is to use \gls{smt} solvers. As before mentioned, the mapping of the \textit{Rebel}
 language to the \gls{smt} formulas makes it possible to check and simulate
-specifications. Hereby, there is an interpreter for \textit{Rebel} specifications, which
-is the \gls{smt} solver.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
+specifications. As a result of this, there is an interpreter for \textit{Rebel}
+specifications, which is the \gls{smt}
+solver.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
 
 In the same study,
 an attempt of model-based testing is done to test real banking systems.
@@ -93,7 +93,7 @@ this approach, it is possible to regain the benefits from the \textit{Rebel} dom
 again able to test and reason about \textit{Rebel} specifications and generated system.
 
 The hypothesis is that the \gls{smt} solver can be used to test the implementation
-correctness of a specification against a generated system. In order to do this,
+correctness of a specification against a generated system. To do this,
 research needs to be carried out for testing the generated system
 with the \gls{smt} solver, mappings (traces) between these systems. With the given approach, a
 few assumptions need to be made:
@@ -103,8 +103,8 @@ few assumptions need to be made:
 The specifications are written correctly, \textit{i.e.}, the specifications are
 correctly modelled from the business point of view. An incorrect specification
 will probably not pass the checking or simulation, and testing a generated
-system derived from an incorrect specification isn't really effective.
-\item \textbf{The generated system is able to be compiled.} When the generated
+system derived from an incorrect specification is not really effective.
+\item \textbf{The generated system can be compiled.} When the generated
 system cannot be compiled, it is possible that there might be a fault in the
 code generator. Although, with this approach testing a not compilable system is
 impossible.
@@ -124,7 +124,7 @@ The
 approach is to start with the lightweight version which can trigger a bug and
 test it with the \gls{smt} solver. For the lightweight version, it is an easily
 reproducible bug. Then the lightweight version is improved with smarter
-testing techniques to automatically generate tests, these improvements are done
+testing techniques to generate tests automatically, and these improvements are done
 with evaluation and validation. For example, by using existing software testing
 techniques like Concolic testing~\cite{sen2007concolic}, Fuzz testing~\cite{godefroid2008automated} and Mutation testing~\cite{jia2011analysis}.
 

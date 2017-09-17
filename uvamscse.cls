@@ -16,7 +16,7 @@
 % \renewcommand{\chapter}[1]{\newpage{\large\bfseries \thechapter. #1}}
 \newcommand{\chapterautorefname}{Chapter}
 \newcommand{\sectionautorefname}{Section}
-\newcommand{\subsectionautorefname}{Sub section}
+\newcommand{\subsectionautorefname}{Subsection}
 \newcommand{\subsubsectionautorefname}{Sub sub section}
 
 % \def\chapterautorefname{Chapter} % "Chapter X" instead of "SS X" when referring to chapters

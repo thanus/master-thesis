@@ -5,40 +5,40 @@ approach and how to solve them by using the simulator.
 
 \section{More complex specifications}\label{sec:ch5-complex-spec}
 In the previous approaches is only the account specification used. In this proof
-of concept, we're going to use more complex specifications, complex in the sense
+of concept, we are going to use more complex specifications, complex in the sense
 that they depend and interact with each other.
 
-We're going to use the
+We are going to use the
 same account specification from \autoref{fig:account-spec}. As an addition to
 account specification, we use a transaction specification. Via this
 specification money can be transferred between two accounts.
-The \textit{Rebel} implementation of the transaction \footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Transaction.ebl}} is shown in \autoref{fig:transaction-spec}.
-As you can see the transaction specification contains more fields than the
-account specification. The two remarkable fields are from and to, both are the
-type of \textit{IBAN}. The type \textit{IBAN} is a built-in \textit{Rebel}
+The \textit{Rebel} implementation of the transaction specification \footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Transaction.ebl}} is shown in \autoref{fig:transaction-spec}.
+As shown in the transaction specification, it contains more fields than the
+account specification. The two remarkable fields are from and to, both are of
+the \textit{IBAN} type. The type \textit{IBAN} is a built-in \textit{Rebel}
 type.~\cite[p.~3]{stoel_storm_vinju_bosman_2016} Note that after the type
 definition an annotation is given to specify a reference to another
 specification, in this case, account specification. The fields to and from are
-used to indicate between whom the transaction takes place.
+being used to indicate between whom the transaction takes place.
 
 According to the transaction specification, the transaction first
-needs to be started. When a transaction is in the state validated and a booking
+needs to be started. When a transaction is in the state validated, and a booking
 cannot be made, the transition \textit{fail} can be used to put the transaction in its
 final state failed. To successfully complete a transaction is the transition
 \textit{book} used. In comparison to the account specification, does the transaction
 specification two final states, which are booked and failed. When the final
 state booked or failed is reached, then there is no further action allowed.
-Note that the transaction specification doesn't have an invariant.
+Note that the transaction specification does not have an invariant.
 
 Another difference in the transaction specification is that event definitions
-can contain sync expressions. From the previous event definitions, we've only
+can contain sync expressions. From the previous event definitions, we have only
 seen pre- and postconditions. Sync expressions are used for synchronisation.
 These sync expressions are also translated to \gls{smt} formulas.
 
 The sync expressions translated to the \gls{smt} solver are also logical formulas.
-These formulas don't have logic about synchronisation. Of course, the \gls{sut} has
+These formulas do not have logic about synchronisation. Of course, the \gls{sut} has
 implemented synchronisation for these transitions. So it is possible to also
-test synchronisation in the \gls{sut}. There are also several studies which reports
+test synchronisation in the \gls{sut}. There are also several studies which report
 that \gls{smt}-based approaches to model checking can be used to test distributed
 algorithms.~\cite{konnov2015you, alberti2015smt, mccaffrey2016verification}
 
@@ -104,24 +104,24 @@ approach are the traces from the \gls{smt} solver used to check whether the
 \gls{sut} accepts the execution from the trace and whether it behaves as the
 specification.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
 
-By using the traces, it solves also the problems from the previous proof of
+By using the traces, it also solves the problems from the previous proof of
 concept. With the use of traces, we know exactly which possible transitions the
 \gls{smt} solver has performed. Then these transitions can be performed in the \gls{sut}.
-So, in this approach we're going to use the traces to check the behaviour of the
+So, in this approach, we are going to use the traces to check the behaviour of the
 \gls{sut}.
 
 \subsection{Evaluation criteria}\label{sec:ch5-eval-criteria}
 
 \subsubsection{Bugs}
-In this approach we're using the traces from the \gls{smt} solver to test the
+In this approach we are using the traces from the \gls{smt} solver to test the
 \gls{sut}, thus testing what should be possible according to the specification.
-The expectation here is to find bugs in the \gls{sut} which doesn't accept the
+The expectation here is to find bugs in the \gls{sut} which does not accept the
 execution from the traces. For instance, the generated pre- or postconditions
-aren't satisfied by the transition from the traces or the generated
+are not satisfied by the transition from the traces or the generated
 postcondition which leads to different results. An example of this is the bug
-that we've found in \autoref{sec:bug-close-account}.
+that we have found in \autoref{sec:bug-close-account}.
 
-In \autoref{sec:ch5-complex-spec} we discussed that we're going to use more
+In \autoref{sec:ch5-complex-spec} we discussed that we are going to use more
 complex specification which implements synchronisation. As discussed, it is
 possible to test synchronisation in the \gls{sut}. Thus the expectation is to
 find faults in the implementation of the synchronisation in the \gls{sut}.
@@ -135,24 +135,24 @@ It is difficult to build and test distributed systems, according to the
 study~\cite[p.~1]{mccaffrey2016verification}, this has two main reasons: partial
 failure and asynchrony. When components fail along the way that results into
 incomplete results or data is called partial failure. Within a system,
-asynchrony is the non-determinism of ordering and timing. That is to say, the
+asynchrony is the non-determinism of ordering and timing. That is to say; the
 expectation is to find faults in partial failure and asynchrony. Not only is the
 expectation to find these faults in the Codegen-Akka, but also in the other code
 generators since these code generators implements also synchronisation. For
 instance, the Codegen-Javadatomic uses \gls{cqrs} where the commands are
 executed asynchronously.
 
-At the time of conducting the experiment, a new version of the Codegen-Akka is
+At the time of experimenting, a new version of the Codegen-Akka is
 released. The new version implements \gls{2pc}, which is a synchronisation
 protocol~\cite[p.~3204]{al2009two}. A protocol like \gls{2pc} is also referred
 to as an \gls{acp}. The essence of \gls{acp} is to achieve global atomicity. The
 protocol ensures a unanimous final outcome of a distributed transaction,
 regardless of the failures that may occur.~\cite[p.~3204]{al2009two} In our
 case, the expectation is to find bugs in synchronisation where the \gls{sut}
-doesn't produce a unanimous final outcome.
+does not produce a unanimous final outcome.
 
 \subsubsection{Efficiency}
-In the experiment from \autoref{sec:ch5}, we've seen that with the use of
+In the experiment from \autoref{sec:ch5}, we have seen that with the use of
 checking, the result from the \gls{smt} solver varies. For the testing
 framework, it's unknown whether the performed transition is the same as the
 computed transition by the \gls{smt} solver. The \gls{smt} solver is
@@ -161,7 +161,7 @@ limitation from the previous experiment can be solved by using the traces from
 the \gls{smt} solver.
 
 By using the traces for testing, the same path computed by the \gls{smt} solver
-are performed in the \gls{sut} and we're able to check whether the given
+are performed in the \gls{sut} and we can check whether the given
 execution is possible in the \gls{sut}. Thus the expectation is to perform the
 same transition from the traces should be performed in the \gls{sut}.
 However, it may take longer to test all transitions from specifications as each
@@ -170,7 +170,7 @@ which transitions need to be performed to reach this state.
 
 \subsubsection{Coverage}
 In this experiment, the simulation is used to test transitions. Since
-the simulation is able to test single steps, it is expected to test all
+the simulation can test single steps, it is expected to test all
 transitions of a specification.
 
 As discussed, this experiment is going to use more complex specifications,
@@ -215,7 +215,7 @@ case adapter communicates this data to the \gls{sut}.
 \end{figure}
 \FloatBarrier
 
-To playback the steps from a given trace on the \gls{sut}, we're going to split every
+To playback the steps from a given trace on the \gls{sut}, we are going to split every
 transition into three steps as in the
 study~\cite[p.~6]{stoel_storm_vinju_bosman_2016}:
 \begin{enumerate}
@@ -231,10 +231,10 @@ The transition function for the simulation looks as follows: $p(s_{1}, s_{2})$,
 which has the pre- and postcondition of the to be executed transition
 \cite[p.6]{stoel_storm_vinju_bosman_2016}. The current state $s_{1}$ holds the
 constraints of the current values of the simulated specification. Hereafter, to
-execute the transition the user is asked to provide the data for the transition
+execute the transition, the user is asked to provide the data for the transition
 parameters.
 
-Before using the simulation, two challenges needs to be solved: defining the
+Before using the simulation, two challenges need to be solved: defining the
 current state for a given transition and providing the transition parameters
 data values. These challenges are discussed in the paragraphs below.
 
@@ -252,28 +252,28 @@ case in the \gls{sut} since a current state needs to be initialised first before
 transition is performed.
 
 To initialise the current state in the \gls{sut} checking can be used. By defining
-the current state with checking, the current state is checked and a valid trace
+the current state with checking, the current state is checked, and a valid trace
 is given by the model checker when the current state is satisfiable. So for
 every transition, a tebl needs to be generated for the state to reach
-(current state) to perform the transition. Although there are a number of
-caveats with the use tebl.
+(current state) to perform the transition. Although there are some caveats with
+the use tebl.
 
 When a state to reach is defined for checking, the identifiers for the entities
-are only unique within that trace. For example for
+are unique within that trace. For example for
 \autoref{fig:tebl-opened-simple-account}, the identifier for the opened account
 from the traces is \textit{NL10INGB0000001}. The identifiers for similar
 entities are auto-incremented, \textit{e.g.}, when an additional account entity
 is specified in \autoref{fig:tebl-opened-simple-account} the identifier is then
-\textit{NL10INGB0000002}. This is not only the case with IBAN numbers, but also
-with Integer, String, etc. This isn't a problem when a single transition is
+\textit{NL10INGB0000002}. This is not only the case with IBAN numbers but also
+with Integer, String, etc. This is not a problem when a single transition is
 tested. When multiple transitions are tested and even when there are multiple
 entities, this will result in collisions of existing entities with the same
 identifiers. Note also that the generated IBAN numbers by the \gls{smt} solver are
 also not valid.
 
-The invalid IBAN numbers isn't a problem for the
+The invalid IBAN numbers is not a problem for the
 checking since checking is only used to reason about possible traces. However,
-this doesn't hold in the \gls{sut} since \gls{sut} is a banking system and here it must
+this does not hold in the \gls{sut} since \gls{sut} is a banking system and here it must
 conform to the IBAN standards. It is possible with checking to define the
 properties of an entity, \textit{e.g.}, the IBAN for an account.
 
@@ -294,13 +294,13 @@ account specification. To use checking in such specifications must be taken into
 account the references to other specifications. Which means that for every
 referencing specification in checking, imports need to be resolved and defined,
 and the entity needs to be defined with an identifier. Note that these
-identifiers should be again random, otherwise it will cause collisions of
+identifiers should be again random. Otherwise, it will cause collisions of
 existing entities.
 
 Altogether, a generated tebl for checking the current state looks as follows in
 \autoref{fig:tebl-gen-validated-transaction}. Note that the configurable
-time-out is set to 4 since the states from the account and transaction
-specification are reachable within 4 steps. The determination of the
+time-out is set to four since the states from the account and transaction
+specification are reachable within four steps. The determination of the
 configurable time-out per specification is left as future work.
 
 When the current state is defined, the generated tebl is given to the model
@@ -331,18 +331,18 @@ check doCheck reachable in max 4 steps;
 
 \subsubsection*{Current state values}
 After the current state is defined, the same approach from the previous chapter
-can be used to check whether it satisfiable. The \gls{smt} solver returns whether the
+can be used to check whether it is satisfiable. The \gls{smt} solver returns whether the
 current state is satisfiable with the traces, including the instances with its
 values.
 
-To provide transition parameters data to the simulation, is the last step taken
-with its instances. The last step is taken, because the last step is the
+To provide transition parameters data to the simulation is the last step taken
+with its instances. The last step is taken because the last step is the
 transition which led to the current state, which is going to be used by the
 simulation. The values from these instances of the simulated specifications are
 given to the current state $s_{1}$.
 
 The simulation checks only whether the step can be made from the given current
-state, it doesn't check whether the current state is reachable. With the use of
+state, it does not check whether the current state is reachable. With the use of
 checking for the current state is the current state checked whether this is
 satisfiable.
 
@@ -357,18 +357,18 @@ of the study \cite[p.6]{stoel_storm_vinju_bosman_2016} chosen for interactively
 using the simulation.
 
 Manually providing the transition parameters data values
-isn't relevant for us, since our intention is to test automatically the \gls{sut}.
+is not relevant for us, since we intend to test automatically the \gls{sut}.
 Certainly, these values can be generated randomly, but it should satisfy the
 pre- and postconditions for the chosen transition. However, it would be
 better to let the \gls{smt} solver fill these values, taking into account the pre- and
 postconditions of the chosen transition. At the time of the publication of the
-study~\cite{stoel_storm_vinju_bosman_2016}, this wasn't possible in the simulation, so
+study~\cite{stoel_storm_vinju_bosman_2016}, this was not possible in the simulation, so
 the simulation should be slightly modified.
 
 In cooperation with the author of the study~\cite{stoel_storm_vinju_bosman_2016} is this feature added to the simulation.~\footnote{\url{https://github.com/cwi-swat/rebel/commit/0d29eb30a82cc5dd6d8be750daa4a24e4e2786be}}
 The simulation is now able that both state variables and transition variables
 can be left open, in the sense of using the expression \textit{ANY}. When the
-expression \textit{ANY} is used, the \gls{smt} solver will fill in a value for the
+expression \textit{ANY} is used, the \gls{smt} solver will fill a value for the
 corresponding transition parameter, satisfying the pre- and postconditions for
 the chosen transition. \unsure{what about expression as iban?}
 
@@ -376,13 +376,13 @@ the chosen transition. \unsure{what about expression as iban?}
 A valid trace is a chain of valid transitions from one state to the next state
 \cite[p.5]{stoel_storm_vinju_bosman_2016}. The trace may contain multiple steps,
 \textit{e.g.}, to unblock an account, an account needs first to be opened and
-blocked. This requires after executing each step, the step needs to be tested,
+blocked. This requires after executing each step; the step needs to be tested,
 in the sense of automatically repeating the testing process. Each step from the
 traces has instances with its state and values.
 
 The instances are specific
 for that step, the results after performing the step are given in the state and
-values for an instance. A trace for simulation contains the state before
+values for instance. A trace for simulation contains the state before
 performing the transition, the step (transition), and then the state after
 performing the step.
 
@@ -403,7 +403,7 @@ transition. This is the responsibility of the test case adapter, which is
 explained more in depth in \autoref{sec:ch5-adapter}. To generate the
 \textit{JSON}, the transition parameters data values and
 the transition name are read from the trace step. At last, the endpoint is
-determined for the given step and the generated JSON is sent to the endpoint.
+determined for the given step, and the generated JSON is sent to the endpoint.
 
 \subsection{Post-transition check}
 % Check whether the new state from the SUT is conform to the new state from the trace
@@ -430,7 +430,7 @@ the normalisation process. The life cycle is desugared to strengthen the pre-
 and postconditions of the transitions with the life cycle information.
 Therefore, are two fields added, \textit{\_state} and \textit{\_step}, to the fields of the
 specification. To each state and event is a distinct identity assigned. The
-identity of the current state is assigned to the \textit{\_state} field and the identity
+identity of the current state is assigned to the \textit{\_state} field, and the identity
 of the transition which led to the current state is assigned to the field
 \textit{\_step}. This results into that the original life cycle can be expressed, by
 adding constraints on the \textit{\_state} and \textit{\_step} fields to the transitions pre- and
@@ -440,12 +440,12 @@ The newly added fields
 are also present within the trace from the \gls{smt} solver. In our case, we only use
 the \textit{\_state} field, because we already know which transition led to the current
 state. To compare the current state from the \textit{\_state} field, it needs to be
-sugared back in order to compare it to the \gls{sut}.
+sugared back to compare it to the \gls{sut}.
 % Adding Frame Conditions. To guard the fields that are not changed by the event frame conditions are added (Jack- son 2012). These frame conditions make sure that a field has the same value after the transition as before.
 
 \subsubsection{Test case adapter}\label{sec:ch5-adapter}
 As discussed in the code generation section, the request made to the API of the
-\gls{sut} are "standardized", but the response from the \gls{sut} isn't. For the
+\gls{sut} are "standardized", but the response from the \gls{sut} is not. For the
 post-transition check, it is necessary to check the new state in the \gls{sut}.
 Therefore, an adapter needs to be defined to communicate the results of the
 traces with the \gls{sut}.
@@ -461,22 +461,22 @@ abstract actions from the test case adapter to concrete actions for the
 \gls{sut}.~\cite[p.~5]{tretmans2003torx} This leads to that the adapter is
 dependent on the specification and the \gls{sut}.
 
-According to the study~\cite[p.~4]{utting2012taxonomy}, an adaptor is a concept
-and that doesn't mean that an adapter needs to be a separate software component.
+According to the study~\cite[p.~4]{utting2012taxonomy}, an adaptor is a concept,
+and that does not mean that an adapter needs to be a separate software component.
 The adapter may be integrated within the test scripts. The test script is code
 which executes a test case, abstracts the response from the \gls{sut} and
-creates the verdict. In our case, the test case adapter is integrated within the
+creates the verdict. In our case, the test case adapter is integrated into the
 test script, which is the test case generator.
 
 The decision is made to only implement a test case adapter for the code generator
-Codegen-Akka, since this is a more mature code generator and frequently used for
+Codegen-Akka since this is a more mature code generator and frequently used for
 experiments within ING Bank.
 
 \section{Results}\label{sec:ch5-results}
 
 \subsection{Codegen-Akka}
 
-The results of the test run is shown in
+The results of the test run are shown in
 \autoref{fig:ch5-res-codegenakka-account} and
 \autoref{fig:ch5-res-codegenakka-transaction}. From this result, we can conclude
 that the test for the \textit{close} transition has failed.
@@ -512,7 +512,7 @@ fail                        & \cmark{}               & \cmark{}            \\ \b
 \FloatBarrier
 
 \subsection{Codegen-Datomic}
-The results of the test run is shown in
+The results of the test run are shown in
 \autoref{fig:ch5-res-codegendatomic-account} and
 \autoref{fig:ch5-res-codegendatomic-transaction}. From this result, we can
 conclude again that the test for the \textit{close} transition has failed. Remarkable is
@@ -549,7 +549,7 @@ fail                        & \cmark{}               & \cmark{}            \\ \b
 \FloatBarrier
 
 \subsection{Codegen-Scala-ES}
-The results of the test run is shown in
+The results of the test run are shown in
 \autoref{fig:ch5-res-codegendatomic-account} and
 \autoref{fig:ch5-res-codegendatomic-transaction}. Again the test for the
 transition \textit{close} has failed, but also for the transition interest.
@@ -595,10 +595,10 @@ limitation in testing the state of a specification.
 \subsubsection{\textit{close} transition}\label{sec:close-no-test-codegenakka}
 
 The result of \textit{close} transition test is shown in
-\autoref{fig:result-codegenakka-close}. As you can see on line number 28 is
+\autoref{fig:result-codegenakka-close}. As shown on line number 28 is
 constructing the current state for the \textit{close} transition successful. Then the
 simulation is asked to simulate the \textit{close} transition, but according to the
-traces of the simulation, the simulation wasn't able to make the step. The
+traces of the simulation, the simulation was not able to make the step. The
 simulation returns only the state before the transition.
 
 \begin{sourcecode}[h!]
@@ -651,19 +651,19 @@ should be no remaining balance as shown in \autoref{fig:account-close-event}.
 On line number 15 of the test run is shown that the simulation makes the step to
 open an account with a balance of 50 euros. Afterwards are no transitions
 performed. Thus this current state does not satisfy the precondition of the
-\textit{close} transition. That's the reason why the simulation wasn't able to perform the
-transition since the given values from the current state to $s_{1}$ weren't
+\textit{close} transition. That is the reason why the simulation was not able to perform the
+transition since the given values from the current state to $s_{1}$ were not
 satisfying for $s_{2}$.
 
 The generated tebl for the current state is shown in
 \autoref{fig:tebl-gen-validated-transaction}. Only the state to reach is
-specified with the identifier of the account. As we've seen the event definition
+specified with the identifier of the account. As we have seen the event definition
 of \textit{openAccount} in \autoref{fig:account-openaccount-event}, the account
 must be opened with a balance of 50 euros.
 
-To conclude, the simulation wasn't able to test the transition \textit{close} since the
-precondition of this transition isn't satisfied in the postcondition of $s_{1}$.
-This holds also for testing \gls{sut}s by other code generators. In other
+To conclude, the simulation was not able to test the transition \textit{close} since the
+precondition of this transition is not satisfied in the postcondition of $s_{1}$.
+This also holds for testing \gls{sut}s by other code generators. In other
 words, this limitation is the result of the test approach
 
 \begin{sourcecode}[h!]
@@ -688,7 +688,7 @@ In \autoref{fig:result-not-found-state} is the test run shown of the transition
 \textit{book}. Only the first transition is shown in this figure. As you can
 see on line 42 is the \textit{openAccount} transition performed. On the line
 below is shown that the request is successful. On line 44 is an error message
-shown which tells that it isn't able to find the state of the opened account.
+shown which tells that it is not able to find the state of the opened account.
 Note the question mark in this message. This error message is part of the
 post-transition check where the new state of the \gls{sut} is tested. On line number
 35 is the instance account shown after the transition and on the line below you
@@ -696,9 +696,9 @@ can see the same question mark. Both question mark relates to each other, which
 is the state of a given specification.
 
 In testing single specifications, \textit{e.g.}, in
-\autoref{fig:result-codegenakka-close}, we've seen that the state is present
+\autoref{fig:result-codegenakka-close}, we have seen that the state is present
 from the result of the \gls{smt} solver. In this case, the model checker/simulation
-doesn't return the state when multiple instances are involved. This also
+does not return the state when multiple instances are involved. This also
 happens in the \textit{start} and \textit{fail} transitions.
 
 \begin{sourcecode}[h!]
@@ -758,7 +758,7 @@ Could not find state ?, expected  "state":{"?":{}}
 In this test run is the Javadatomic generator used. After investigating the test
 run, it seems to be that testing the transition \textit{interest} fails. As you can see
 in \autoref{fig:result-javadatomic-interest} on line number 55, the request made
-for \textit{interest} transition isn't successful and the HTTP status code returned 400
+for \textit{interest} transition is not successful, and the HTTP status code returned 400
 is returned. Constructing the current state for the \textit{interest} transition seems to
 be successful (see line number 28). According to the simulation, on line number
 40, the step interest is made with a negative percentage (- 7709). On line
@@ -767,12 +767,12 @@ resulted into an account entity with the state opened and with a negative
 balance. To conclude, the transition \textit{interest} is possible according to the
 simulation.
 
-Although, the request made for the transition \textit{interest} isn't
+Although, the request made for the transition \textit{interest} is not
 successful, and when we take a look at the account in the \gls{sut}, the account looks
 as follows in \autoref{fig:interest-opened-account-json}. The state of the
-account is still opened and the balance seems to be the same when the account
+account is still opened, and the balance seems to be the same when the account
 was opened. From looking at the state of the account, the \textit{interest} transition
-isn't performed in the \gls{sut} and the state of the account is the same as before
+is not performed in the \gls{sut} and the state of the account is the same as before
 performing the transition.
 
 % less than percentage
@@ -881,9 +881,9 @@ event interest[maxInterest: Percentage = 10%](currentInterest: Percentage) {
 \end{sourcecode}
 \FloatBarrier
 
-Now we know that we've discovered a bug, since the simulated transition is
+Now we know that we have discovered a bug since the simulated transition is
 conform to the specification, we want to know where this misbehaviour occurs and
-which code isn't correctly generated. The generated code for the \textit{interest} event
+which code is not correctly generated. The generated code for the \textit{interest} event
 definition from \autoref{fig:account-interest-event} contains the following
 check in \autoref{fig:java-gen-interest-pre}. The generated code for the
 preconditions seems to be good since it uses a \textit{isLessOrEqualThan}
@@ -907,15 +907,15 @@ if(! (isLessOrEqualThan(currentInterest, 10 /* % */))) {
 The function \textit{isLessOrEqualThan} is shown in
 \autoref{fig:java-less-or-equal-check}. This function takes two parameters, both
 of the type \textit{BigDecimal}, and compares the \textit{lhs} to the
-\textit{rhs}, this result should be greater or equal than zero. This function
-isn't correctly defined, since this is the definition for the function
-\textit{isGreaterOrEqualThan}. This code isn't generated but is part of the
+\textit{rhs}; this result should be greater or equal than zero. This function
+is not correctly defined since this is the definition of the function
+\textit{isGreaterOrEqualThan}. This code is not generated but is part of the
 fixed code.
 
-Clearly, we've discovered a bug in the \gls{sut} for the transition
+Clearly, we have discovered a bug in the \gls{sut} for the transition
 interest. As discussed in \autoref{sec:ch3-evalution}, it is possible to have
 bugs in the fixed code. With this experiment and testing the Javadatomic
-generator, we can conclude that we've found a bug in the fixed code.
+generator, we can conclude that we have found a bug in the fixed code.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[language=Java]
@@ -931,17 +931,17 @@ public static boolean isLessOrEqualThan(BigDecimal lhs, BigDecimal rhs) {
 % Interest squants dimensionlessdata
 
 This test run tests the \gls{sut} generated by the Scala-ES generator. Looking at the
-test run, like the test run for the Javadatomic generator, it seems to be
+test run, as the test runs for the Javadatomic generator, it seems to be
 that the transition \textit{interest} fails. The results of the test run are shown in
 \autoref{fig:result-scalaes-interest}. Line number 51 shows the failing request
-for the \textit{interest} transition, an error message is returned with the HTTP status
+for the \textit{interest} transition; an error message is returned with the HTTP status
 code 400. Also, in this test run is construction the current state for the
 \textit{interest} transition successful (see line number 26). In this test run, the
 simulation has generated the same trace for the \textit{interest} transition as for the
 Javadatomic generator. The state of the account in the \gls{sut} looks as follows in
 \autoref{fig:interest-opened-account-scalaes-json}. Also here the state of the
-account opened and the balance seems to be the same when the account was opened.
-So, the performed \textit{interest} transition has failed and the state of the account
+account opened, and the balance seems to be the same when the account was opened.
+So, the performed \textit{interest} transition has failed, and the state of the account
 is the same before performing the transition.
 
 \begin{sourcecode}[h!]
@@ -1023,11 +1023,11 @@ account.Interest[&quot;currentInterest&quot;])","code":"400")
 \end{sourcecode}
 \FloatBarrier
 
-Likewise, the Javadatomic generator, we've discovered a bug in the \gls{sut}, since
-the simulated transition isn't conform to the specification. To know where this
-bug occurs and which code isn't properly generated, the response from the
+Likewise, the Javadatomic generator, we have discovered a bug in the \gls{sut}, since
+the simulated transition is not conform to the specification. To know where this
+bug occurs and which code is not properly generated, the response from the
 \textit{interest} transition request gives an error message. According to the error
-message, the \gls{sut} isn't able to construct the instance of \textit{Dimensionless}
+message, the \gls{sut} is not able to construct the instance of \textit{Dimensionless}
 for the transition parameter \textit{currentInterest}. This error seems to occur
 in the class \textit{Interest}, which is shown in
 \autoref{fig:scala-gen-interest-json}. The parameter \textit{currentInterest}
@@ -1049,7 +1049,7 @@ the \textit{interest} transition and as you can see is the class \textit{Interes
 as the second parameter. This class is used to bind the interest parameter as a
 type of the \textit{Interest} class.
 
-In short, we've discovered a bug in the \gls{sut}
+In short, we have discovered a bug in the \gls{sut}
 for the \textit{interest} transition. The \textit{interest} transition bug in the Javadatomic
 generator belongs to the fixed code category, but in this case, for the Scala-ES
 generator, the bug belongs to the injected code category, since the
@@ -1076,14 +1076,14 @@ def interest(@Suspended asyncResponse: AsyncResponse,
 \subsection{Bugs}
 The expectation for the criteria bugs from \autoref{sec:ch5-eval-criteria} is to
 find bugs in the \gls{sut} where execution traces from the \gls{smt} solver
-isn't accepted by the \gls{sut}. For example, a generated pre- or postconditions
-aren't satisfied by the execution from the traces.
+is not accepted by the \gls{sut}. For example, a generated pre- or postconditions
+are not satisfied by the execution from the traces.
 
-In this experiment, we've found bugs in the code generators. For both bugs,
+In this experiment, we have found bugs in the code generators. For both bugs,
 \autoref{sec:bug-interest-javadatomic} and \autoref{sec:bug-interest-scalaes},
-it wasn't possible to perform the execution from the traces returned by the
-\gls{smt} solver. The preconditions aren't satisfied for both bugs. To conclude,
-we did find bugs as expected where the \gls{sut} wasn't conform to the
+it was not possible to perform the execution from the traces returned by the
+\gls{smt} solver. The preconditions are not satisfied for both bugs. To conclude,
+we did find bugs as expected where the \gls{sut} was not conform to the
 specification.
 
 This experiment is using more complex specifications which implement
@@ -1093,7 +1093,7 @@ the \gls{sut}. According to the results from \autoref{sec:ch5-results}, the
 tested on all generators. As expected, the synchronisation is tested in the
 \gls{sut}, but no faults were found. There does not seem to be any faults in
 partial failure or asynchrony. In our case, the expectation is to find bugs in
-synchronisation where the \gls{sut} doesn't produce a unanimous final outcome.
+synchronisation where the \gls{sut} does not produce a unanimous final outcome.
 In the case of the expectation of the \gls{sut} producing not unanimous final
 outcome, no faults were found here either.
 
@@ -1133,7 +1133,7 @@ By performing the test runs more often, it can be said that the \gls{smt} solver
 regularly generates the same traces for transitions. In our case, this is not
 bad, as long as every transition is tested despite the randomness of the traces.
 However, testing unique traces may result in finding more bugs in the
-\gls{sut}. The \gls{smt} solver can be configured to use random seeds in order
+\gls{sut}. The \gls{smt} solver can be configured to use random seeds
 to control the propositional variable selection heuristic in the \gls{smt} core.
 \unsure{ref? stackoverflow}
 % https://stackoverflow.com/questions/24219509/use-of-random-seeds-in-z3
@@ -1143,23 +1143,23 @@ to control the propositional variable selection heuristic in the \gls{smt} core.
 \subsection{Coverage}
 
 The expectation of the coverage criteria is to test all the transitions from a
-specification since the simulation is able to test single steps. This holds also
+specification since the simulation can test single steps. This also holds
 for the complex specifications.
 
 With this experiment, it is possible to test all the transitions, except the
 \textit{close} transition. Even it is possible to test transitions from the
 complex specifications. The reason for not able to test the \textit{close}
-transition is that the precondition of this transition isn't satisfied due to
+transition is that the precondition of this transition is not satisfied due to
 the current state defined for this transition. Altogether, with this experiment,
 it is possible to test all the transitions when the preconditions of a given
 transition are satisfied by the current state.
 
-In this experiment is a fixed configurable time-out used. Just as it isn't
+In this experiment is a fixed configurable time-out used. Just as it is not
 possible to test the \textit{close} transition, it is also possible not to test
 transitions due to the chosen configurable time-out.
 The reason for this is, for example, a high configurable time-out that makes it
 impossible to test the chosen transition, because of the precondition of the
-chosen transition isn't satisfied by the current state, like the \textit{close}
+chosen transition is not satisfied by the current state, like the \textit{close}
 transition; or a low configurable time-out that makes it impossible to reach a
 state to test the chosen transition.
 
@@ -1179,17 +1179,17 @@ the \gls{sut}. Although there is a limitation in the testing of states. Within a
 trace, not every instance may contain the state of it.
 \improvement{add results for this in codegen akka}
 
-Also with this experiment we've found bugs in the code generators. The bug
+Also with this experiment, we have found bugs in the code generators. The bug
 in the \textit{interest} transition from \autoref{sec:bug-interest-javadatomic} is found
 in the fixed code. Another bug for the same \textit{interest} transition from
 \autoref{sec:bug-interest-scalaes} belongs to the category injected code since
 the bug is found in the generated code from the specification. As discussed in
 \autoref{sec:ch3-evalution}, it is possible that there might be bugs in
 templating, in the fixed code or the injected code. With the test run of this
-experiment, we've found bugs for both categories.
+experiment, we have found bugs for both categories.
 
-As discussed before, with this experiment it wasn't possible to test the
-\textit{close} transition. The the precondition of this transition isn't
+As discussed before, with this experiment it was not possible to test the
+\textit{close} transition. The the precondition of this transition is not
 satisfied due to the current state defined for this transition. To sum up, with
 this experiment it is possible to test all the transitions when the
 preconditions of a given transition are satisfied by the current state. The
@@ -1205,8 +1205,8 @@ $\forall e s_{1} \to s_{2}, (! s_{2} pre(e) \lor s_{2} pre(e) in s_{1} post(e))$
 In the conducted experiments are the specifications account and transaction used
 to test the \gls{sut} from these specifications. With these experiments
 and specifications, we did find faults in the code generators. Although
-these specifications are quite simple, \textit{e.g.}, for a bank these
-specifications would be more complex. These experiments take into account the
+these specifications are quite simple, \textit{e.g.}, the specifications within
+a bank would be more complex. These experiments take into account the
 generosity of specifications, but with such a large amount of complex
 specifications, it is questionable whether these experiments still produce
 valuable results.
@@ -1222,6 +1222,6 @@ can cause the conducted experiments give incorrect results.
 \subsection*{Valid execution trace}
 The experiment from \autoref{sec:ch5} tests only valid execution traces from
 the \gls{smt} solver, \textit{i.e.}, testing only what should be possible according to
-the specification. Testing valid execution traces is not enough, testing not
-valid execution traces can be valuable. The experiment from
+the specification. Testing valid execution traces is not enough, testing
+invalid execution traces can be valuable. The experiment from
 \autoref{sec:ch4} already does this, but as discussed it has a few limitations.

@@ -1274,20 +1274,21 @@ This experiment is using more complex specifications which implement
 synchronisation. As discussed, it should be possible to test synchronisation in
 the \gls{sut}. According to the results from \autoref{sec:ch5-results}, the
 \textit{book} transition which implements synchronisation has been successfully
-tested on all generators. As expected, the synchronisation is tested in the
-\gls{sut}, but no faults were found. There does not seem to be any faults in
-partial failure or asynchrony. In our case, the expectation is to find bugs in
-synchronisation where the \gls{sut} does not produce a unanimous final outcome.
-In the case of the expectation of the \gls{sut} producing not unanimous final
-outcome, no faults were found here either.
+tested on all generators, except the distributed Codegen-Akka. As expected, the
+synchronisation is tested in the \gls{sut}, but no faults were found. There does
+not seem to be any faults in partial failure or asynchrony.
 
 Not being able to find bugs does not mean that there are no faults in the
 synchronisation. This can be due to the way of testing or the setup how the
-\gls{sut} runs. The \gls{sut} is run as single nodes, both the Scala system and
-Cassandra. By running multiple nodes, it is possible to focus more on the
-testing of the unanimous final outcome of the \gls{sut}s. Unfortunately, this is
-currently not possible because the \gls{sut} cannot run distributed and the test
-approach needs to be changed.
+\gls{sut} runs. With the Codegen-Akka generator, the \gls{sut} is run as single
+nodes, both the Scala system and Cassandra. By running multiple nodes, it is
+possible to focus more on the testing of the unanimous final outcome of the
+\gls{sut}s.
+Therefore, the test run \label{sec:bug-dist-nodes} is run to test with multiple
+nodes. Faults were found in different results between the nodes.
+The expectation is to find bugs in synchronisation where the \gls{sut} does not
+produce a unanimous final outcome. In the case of the expectation of the
+\gls{sut} producing a not unanimous final outcome, faults were found.
 
 The \textit{book} transition in this experiment is the only transition which
 implements synchronisation. With the use of more complex specifications, in the

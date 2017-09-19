@@ -283,7 +283,7 @@ request is successful.
 
 \section{Conclusion}
 
-As we have seen with this lightweight version, it can find one specific bug with the use of an \gls{smt} solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As described in~\cite[p.274]{voelter2013dsl}, the majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be bugs in the fixed code. The second part is the template control code which is injected into the generated code. The manually introduced bug from the previous chapter belongs  to this category.
+As we have seen with this lightweight version, it can find one specific bug with the use of an \gls{smt} solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As described in~\cite[p.~274]{voelter2013dsl}, the majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be bugs in the fixed code. The second part is the template control code which is injected into the generated code. The manually introduced bug from the previous chapter belongs  to this category.
 
 \unsure{\textbf{Onduidelijkheid DSL fowler}: styles of code generation: Model-Aware Generation and Model Ignorant Generation. Styles for generating textual output: Transformer
 Generation and Templated Generation.}

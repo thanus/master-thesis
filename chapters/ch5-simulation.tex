@@ -102,7 +102,7 @@ already done to test existing banking systems. Although, in this approach, it
 was only possible to test the \gls{sut} interactively using the simulation. In this
 approach are the traces from the \gls{smt} solver used to check whether the
 \gls{sut} accepts the execution from the trace and whether it behaves as the
-specification.~\cite[p.5]{stoel_storm_vinju_bosman_2016}
+specification.~\cite[p.~5]{stoel_storm_vinju_bosman_2016}
 
 By using the traces, it also solves the problems from the previous experiment.
 With the use of traces, we know exactly which possible transitions the
@@ -229,7 +229,7 @@ conform to the new state from the trace
 
 The transition function for the simulation looks as follows: $p(s_{1}, s_{2})$,
 which has the pre- and postcondition of the to be executed transition
-\cite[p.6]{stoel_storm_vinju_bosman_2016}. The current state $s_{1}$ holds the
+\cite[p.~6]{stoel_storm_vinju_bosman_2016}. The current state $s_{1}$ holds the
 constraints of the current values of the simulated specification. Hereafter, to
 execute the transition, the user is asked to provide the data for the transition
 parameters.
@@ -353,7 +353,7 @@ satisfiable.
 Since simulation is used for reasoning about individual steps, that explains why
 the transition parameters data values for the chosen transition should be
 provided by the user. As discussed earlier is in the model testing approach
-of the study \cite[p.6]{stoel_storm_vinju_bosman_2016} chosen for interactively
+of the study \cite[p.~6]{stoel_storm_vinju_bosman_2016} chosen for interactively
 using the simulation.
 
 Manually providing the transition parameters data values
@@ -374,7 +374,7 @@ the chosen transition. \unsure{what about expression as iban?}
 
 \subsubsection*{Traces}\label{sec:ch5-traces}
 A valid trace is a chain of valid transitions from one state to the next state
-\cite[p.5]{stoel_storm_vinju_bosman_2016}. The trace may contain multiple steps,
+\cite[p.~5]{stoel_storm_vinju_bosman_2016}. The trace may contain multiple steps,
 \textit{e.g.}, to unblock an account, an account needs first to be opened and
 blocked. This requires after executing each step; the step needs to be tested,
 in the sense of automatically repeating the testing process. Each step from the
@@ -388,7 +388,7 @@ performing the step.
 
 After everything is defined for the simulation, the simulation can test whether
 it can make the single step. The simulation then works as follows
-\cite[p.6]{stoel_storm_vinju_bosman_2016}:
+\cite[p.~6]{stoel_storm_vinju_bosman_2016}:
 \begin{enumerate}
 \item Check whether it is possible to satisfy the constraints of the chosen
 transition given the current state and the transition parameters data values of
@@ -425,7 +425,7 @@ and trace are compared to find any misbehaviour in the \gls{sut}.
 Before a \textit{Rebel} specification is checked or simulated is the specification
 normalised. This normalisation process is done to make the \gls{smt} formulas easier
 and also to give it partially semantics
-\cite[p.5]{stoel_storm_vinju_bosman_2016}. Desugaring the life cycle is part of
+\cite[p.~5]{stoel_storm_vinju_bosman_2016}. Desugaring the life cycle is part of
 the normalisation process. The life cycle is desugared to strengthen the pre-
 and postconditions of the transitions with the life cycle information.
 Therefore, are two fields added, \textit{\_state} and \textit{\_step}, to the fields of the
@@ -434,7 +434,7 @@ identity of the current state is assigned to the \textit{\_state} field, and the
 of the transition which led to the current state is assigned to the field
 \textit{\_step}. This results into that the original life cycle can be expressed, by
 adding constraints on the \textit{\_state} and \textit{\_step} fields to the transitions pre- and
-postconditions \cite[p.5]{stoel_storm_vinju_bosman_2016}.
+postconditions \cite[p.~5]{stoel_storm_vinju_bosman_2016}.
 
 The newly added fields
 are also present within the trace from the \gls{smt} solver. In our case, we only use

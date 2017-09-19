@@ -1335,7 +1335,7 @@ to control the propositional variable selection heuristic in the \gls{smt} core.
 
 \subsection{Coverage}
 
-The expectation of the coverage criteria is to test all the transitions from a
+The coverage criteria expect to test all the transitions from a
 specification since the simulation can test single steps. This also holds
 for the complex specifications.
 
@@ -1347,6 +1347,13 @@ the current state defined for this transition. Altogether, with this experiment,
 it is possible to test all the transitions when the preconditions of a given
 transition are satisfied by the current state.
 
+Another expectation is that faults a like partial failure and asynchrony cause
+the inability to test transitions, which leads to a lower coverage. As discussed
+in the criteria bugs, no faults were found in partial failure or asynchrony.
+This leads not to the inability to test transitions. Again, not being able to
+find bugs does not mean that there are no faults. The reason for this can be the
+way of testing or the setup how the \gls{sut} runs.
+
 In this experiment is a fixed configurable time-out used. Just as it is not
 possible to test the \textit{close} transition, it is also possible not to test
 transitions due to the chosen configurable time-out.
@@ -1355,8 +1362,6 @@ impossible to test the chosen transition, because of the precondition of the
 chosen transition is not satisfied by the current state, like the \textit{close}
 transition; or a low configurable time-out that makes it impossible to reach a
 state to test the chosen transition.
-
-\info{ordering and timing}
 
 \section{Conclusion}
 In this experiment are more complex specifications used for testing.

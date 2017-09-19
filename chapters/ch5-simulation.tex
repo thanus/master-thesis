@@ -847,8 +847,8 @@ opened -> interest -> opened
 
 Endpoint: /Account/MD14FLBLJOYGVJMDUZVKLU4C/OpenAccount
 JSON payload: { "OpenAccount": { "initialDeposit":"EUR 50.00" } }
-Response: ("body":"{\"iban\":\"MD14FLBLJOYGVJMDUZVKLU4C\"}","isSuccessful":"true","message":"OK",
-"errorBody":"","code":"200")
+Response: ("body":"{\"iban\":\"MD14FLBLJOYGVJMDUZVKLU4C\"}","isSuccessful":"true",
+  "message":"OK","errorBody":"","code":"200")
 
 1:
   now = 12 Jul 2016, 12:00:00
@@ -938,7 +938,8 @@ which throws the exception.
 \begin{sourcecode}[h!]
 \begin{lstlisting}[language=Java]
 if(! (isLessOrEqualThan(currentInterest, 10 /* % */))) {
-  throw new BuildCASTransactionException("Predicate did not hold: InterestTransaction: currentInterest <= 10%");
+  throw new BuildCASTransactionException("Predicate did not hold: InterestTransaction: currentInterest
+	  <= 10%");
 }
 \end{lstlisting}
 \caption{Code in Java}\label{fig:java-gen-interest-pre}

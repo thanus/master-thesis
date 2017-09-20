@@ -4,7 +4,7 @@ In this chapter, we discuss further the results from the experiments and answers
 
 \section{RQ 1: How is the input/output of the generated system tested?}
 
-\subsection{Experiment: Mutated Checking}
+\subsection{Experiment 1: Invalid execution traces}
 In \autoref{sec:ch4}, we have seen an experiment where it is possible to automatically generate a test for every transition from a given specification. This experiment tests the inverse of a specification, i.e. testing what should be not possible according to the specification. Testing is done by using checking for a given transition and testing this in the \gls{sut}.
 
 Testing the inverse is also often used in mutation testing. Mutation testing generates faulty programs (mutants) by syntactic changes, in our case, we create only one faulty version of the program. The faulty program is generated based on the mutation operator Negate Conditionals Mutator. The mutant in this testing approach is killed when the result from the \gls{smt} solver and the \gls{sut} are the same.
@@ -13,7 +13,7 @@ In \autoref{sec:ch4-evaluation}, we discussed the evaluation of this experiment.
 % The theory for this found bug is $\forall e s_{1} \to s_{2}, s_{2} \gets s_{1}, pre(e)$.
 
 
-\subsection{Experiment: Checking & Simulation}
+\subsection{Experiment 2: Valid execution traces}
 The experiment of \autoref{sec:ch5} has solved a few limitation of the previous experiment. This experiment extends the model testing approach with Rebel.
 
 In this model testing approach are the traces used to check whether the \gls{sut} accept the execution from the trace and whether it behaves as the specification. Therefore are the traces used in this approach.

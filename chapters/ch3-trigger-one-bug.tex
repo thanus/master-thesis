@@ -65,7 +65,7 @@ event close() {
 \end{sourcecode}
 \FloatBarrier
 
-\section{Method}
+\section{Method}\label{sec:ch3-method}
 
 As mentioned earlier, an initial lightweight version is expected, then it will
 be extended with motivated improvements with evaluation and validation. The
@@ -267,8 +267,8 @@ When the model checkers returns that a given state is not reachable,
 traces are not available. Models (traces) are not available when "unsat" is
 returned by Z3.
 In this case, traces cannot be used since they are not provided. Although, to
-reach the given state are the \textit{openAccount} and \textit{close} transition
-used.
+reach the given state, the \textit{openAccount} and \textit{close} transition
+are used.
 
 \info{add reference for no model when unsat}
 
@@ -282,8 +282,3 @@ request is successful.
 \section{Conclusion}
 
 As we have seen with this lightweight version, it can find one specific bug with the use of an \gls{smt} solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As described in~\cite[p.~274]{voelter2013dsl}, the majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be bugs in the fixed code. The second part is the template control code which is injected into the generated code. The manually introduced bug from the previous chapter belongs  to this category.
-
-\unsure{\textbf{Onduidelijkheid DSL fowler}: styles of code generation: Model-Aware Generation and Model Ignorant Generation. Styles for generating textual output: Transformer
-Generation and Templated Generation.}
-
-\info{transactions, atomic commits, consistency. <- dit is moeilijk te doen. welke bugs verwacht je? het is moeilijk iets te generate. en uitleggen waarom het moeilijk is testen.}

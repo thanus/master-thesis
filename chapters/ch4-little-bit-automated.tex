@@ -28,18 +28,27 @@ Thus what is not possible according to the specification is tested.
 
 \subsubsection{Bugs}
 Since we are testing with this approach the inverse of the preconditions, thus
-what should be not possible according to the specification, it is expected to
+what should be not possible according to the specification. It is expected to
 find bugs in the \gls{sut} where it is possible to perform the inverse of a
-transition.
+transition. So faults can be found like preconditions which are not properly
+generated. An example of this is the manually created bug
+(\autoref{fig:ch3-res-codegenakka-account}) for the lightweight version.
 
 \subsubsection{Efficiency}
 In this approach is checking used to check what is not possible according to the
 specification. Therefore, the same tested transition should be tested in the
-\gls{sut}.
+\gls{sut}. To test all transitions from the account specification, it may take
+longer since some transactions require an initial state for which transitions
+need to be performed to reach this state.
 
 \subsubsection{Coverage}
 The experiment is going to generate a test for all transitions. Therefore,
-it is expected to test all the transitions of a specification.
+it is expected to test all the transitions of a specification. With the criteria
+bugs, we discussed the expectation to find faults in not properly generated
+preconditions. This may lead to the inability to test transitions. For example,
+when a failure (incorrect preconditions) occurs during reaching the initial
+state of the \textit{withdraw} transition. This leads to the inability to test
+the \textit{withdraw} transition.
 
 \section{Approach}
 The testing approach is a well-known approach in mutation testing. Mutation testing is

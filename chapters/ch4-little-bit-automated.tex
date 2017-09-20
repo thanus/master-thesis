@@ -367,27 +367,39 @@ private str g(e:(Expr)`<Expr lhs> \< <Expr rhs>`, tmap t) = "(<g(lhs, t)> \< <g(
 
 \subsection{Bugs}
 In \autoref{sec:ch4-eval-criteria} we discussed the expectations of the criteria
-bugs. We expected to find bugs in the \gls{sut} where it is possible to perform the
-inverse of a transition.
+bugs. We expected to find bugs in the \gls{sut} where it is possible to perform
+the inverse of a transition. Thus it is expected to find bugs where the
+preconditions are not properly generated.
 
 With this experiment, we have found a bug in the \gls{sut}, which was
 discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
 since the \gls{sut} is not able to compile. With the bug from
 \autoref{sec:bug-close-account}, it is possible that the final state closed is
 reached where the preconditions of the \textit{close} transition do not hold.
-So as expected, we did find a bug in performing the inverse of a transition.
+So as expected, we did find a bug in performing the inverse of a transition
+where the preconditions were not properly generated.
+
+\info{traces are possible}
 
 \subsection{Efficiency}
 For the criteria efficiency, it is expected to check what is not possible
 according to the specification, i.e. testing the same transition in checking as
-well as the \gls{sut}.
+well as in the \gls{sut}.
 
 A part of the generated test for a transition is checking, which is used to test
 the state to reach with the replaced preconditions. So, in this experiment, we
 are testing what should be not possible according to the
-specification. The result of the checking from the \gls{smt} solver varies,
-\textit{e.g.}, an opened account can be reached by the \textit{openAccount}
-transition or by the transition \textit{openAccount} and \textit{withdraw}.
+specification. The expectation is that the same transitions with checking should
+be performed on the \gls{sut}. However, the result of the checking from the
+\gls{smt} solver varies, \textit{e.g.}, an opened account can be reached by the
+\textit{openAccount} transition or by the transition \textit{openAccount} and
+\textit{withdraw}. Thus the test framework is not able to perform the same
+transitions on the \gls{sut} as the transitions from checking.
+
+With testing all transitions from the account specification, it is possible that
+testing may take longer. As expected, this is the case since due to the initial
+state transitions are more executed and tested. To conclude, the testing process
+may take longer to test all the transitions.
 
 \subsection{Coverage}
 It is expected for this criteria to test all the transitions of the
@@ -400,6 +412,10 @@ transition computed by the \gls{smt} solver. This causes some false positives in
 test run. Also, it is difficult to play like the \gls{smt} solver; it is unknown which
 result the \gls{smt} solver will give. The \gls{smt} solver is also smarter/better in checking
 the satisfiability of a given constraints.
+
+Failure occurring along the way in constructing the initial state of a transition
+may lead to the inability to test transitions. Unfortunately, there does not
+seem to be any faults in here.
 
 \section{Conclusion}
 In this experiment is the account specification used to test the \gls{sut}.

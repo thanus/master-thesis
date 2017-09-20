@@ -153,7 +153,8 @@ to as an \gls{acp}. The essence of \gls{acp} is to achieve global atomicity. The
 protocol ensures a unanimous final outcome of a distributed transaction,
 regardless of the failures that may occur.~\cite[p.~3204]{al2009two} In our
 case, the expectation is to find bugs in synchronisation where the \gls{sut}
-does not produce a unanimous final outcome.
+does not produce a unanimous final outcome. However, the traces from the
+\gls{smt} solver must also be unanimous to the \gls{sut}.
 
 \subsubsection{Efficiency}
 In the experiment from \autoref{sec:ch5}, we have seen that with the use of

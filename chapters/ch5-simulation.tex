@@ -1297,6 +1297,8 @@ nodes. Faults were found in different results between the nodes.
 The expectation is to find bugs in synchronisation where the \gls{sut} does not
 produce a unanimous final outcome. In the case of the expectation of the
 \gls{sut} producing a not unanimous final outcome, faults were found.
+Partial failure may also occur, for example when external systems are
+communicating with the distributed Codegen-Akka, but this is not the case.
 
 The \textit{book} transition in this experiment is the only transition which
 implements synchronisation. With the use of more complex specifications, in the

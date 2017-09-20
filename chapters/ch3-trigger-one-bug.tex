@@ -2,8 +2,6 @@
 
 In this chapter, we explain how to implement the lightweight proof of concept. The intention of the lightweight version is to know that the test approach can find a bug in generated systems. Therefore, we need to understand how the existing foundations from \textit{Rebel} can be reused.
 
-\info{lezen over: small world hypothesis}
-
 \section{The account specification}
 An extended account specification~\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Account.ebl}} from \autoref{fig:simple-account-spec} is used for this experiment, the implementation in \textit{Rebel} is shown in \autoref{fig:account-spec}. According to the specification, an account can be opened with a minimum deposit of 50 euro. When an account is opened, it is possible to withdraw or deposit money. Besides deposit and withdraw, the balance may increase or decrease by interest. To disable any account, the \textit{block} event can be used to put the account to the state blocked. The final state of account is closed. Therefore there should not be any remaining balance. When an account is in the state closed, no further action is allowed since it is in the final state. The invariant is specified to keep every account with a positive balance.
 

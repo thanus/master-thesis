@@ -1288,8 +1288,9 @@ not seem to be any faults in partial failure or asynchrony.
 Not being able to find bugs does not mean that there are no faults in the
 synchronisation. This can be due to the way of testing or the setup how the
 \gls{sut} runs. With the Codegen-Akka generator, the \gls{sut} is run as single
-nodes, both the Scala system and Cassandra. By running multiple nodes, it is
-possible to focus more on the testing of the unanimous final outcome of the
+nodes, both the Scala system and Cassandra.
+The \gls{acp} is still applied with single nodes. By running multiple nodes, it
+is possible to focus more on the testing of the unanimous final outcome of the
 \gls{sut}s.
 Therefore, the test run \label{sec:bug-dist-nodes} is run to test with multiple
 nodes. Faults were found in different results between the nodes.

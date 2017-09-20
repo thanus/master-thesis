@@ -21,15 +21,15 @@ transition, we want to check whether it is possible to have a closed account
 where the balance is not equal to zero, for the transition \textit{withdraw} we
 want to check whether a negative balance can be achieved with the transition.
 
-To conclude, with this approach we are testing the inverse of the preconditions.
+To conclude, with this approach we are testing the opposite of the preconditions.
 Thus what is not possible according to the specification is tested.
 
 \subsection{Evaluation criteria}\label{sec:ch4-eval-criteria}
 
 \subsubsection{Bugs}
-Since we are testing with this approach the inverse of the preconditions, thus
+Since we are testing with this approach the opposite of the preconditions, thus
 what should be not possible according to the specification. It is expected to
-find bugs in the \gls{sut} where it is possible to perform the inverse of a
+find bugs in the \gls{sut} where it is possible to perform the opposite of a
 transition. So faults can be found like preconditions which are not properly
 generated. An example of this is the manually created bug
 (\autoref{fig:ch3-res-codegenakka-account}) for the lightweight version.
@@ -102,7 +102,7 @@ Earlier the definition of the \textit{close} event transition was given in
 \autoref{fig:account-close-event} which contains the following statement
 \code{this.balance == EUR 0.00;}. When this statement is translated to tebl
 with a negated conditional, it looks as follows
-\code{balance != EUR 0.00;}. Thus the replaced conditional is the inverse
+\code{balance != EUR 0.00;}. Thus the replaced conditional is the opposite
 condition of the statement defined in the \textit{close} transition.
 
 Replacing conditionals to negated conditionals is done for all conditionals with
@@ -368,7 +368,7 @@ private str g(e:(Expr)`<Expr lhs> \< <Expr rhs>`, tmap t) = "(<g(lhs, t)> \< <g(
 \subsection{Bugs}
 In \autoref{sec:ch4-eval-criteria} we discussed the expectations of the criteria
 bugs. We expected to find bugs in the \gls{sut} where it is possible to perform
-the inverse of a transition. Thus it is expected to find bugs where the
+the opposite of a transition. Thus it is expected to find bugs where the
 preconditions are not properly generated.
 
 With this experiment, we have found a bug in the \gls{sut}, which was
@@ -376,7 +376,7 @@ discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
 since the \gls{sut} is not able to compile. With the bug from
 \autoref{sec:bug-close-account}, it is possible that the final state closed is
 reached where the preconditions of the \textit{close} transition do not hold.
-So as expected, we did find a bug in performing the inverse of a transition
+So as expected, we did find a bug in performing the opposite of a transition
 where the preconditions were not properly generated.
 
 \info{traces are possible}

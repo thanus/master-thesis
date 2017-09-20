@@ -786,7 +786,8 @@ validated -> book -> booked
 
 Endpoint: /Account/NL60IZNV8233056080/OpenAccount
 JSON payload: { "OpenAccount": { "initialDeposit":"EUR 50.00" } }
-Response: ("body":"CommandSuccess(OpenAccount(50.00 EUR))","isSuccessful":"true","message":"OK","errorBody":"","code":"200")
+Response: ("body":"CommandSuccess(OpenAccount(50.00 EUR))","isSuccessful":"true","message":"OK",
+  "errorBody":"","code":"200")
 Could not find state ?, expected  "state":{"?":{}}
 \end{lstlisting}
 \caption{State not found for entities}\label{fig:result-not-found-state}

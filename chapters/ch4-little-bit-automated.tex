@@ -21,8 +21,11 @@ state is not enough, the properties of interest for a transition needs to be
 specified. Each property is different per transition, so these properties should
 be different for the defined state. For example for the \textit{close}
 transition, we want to check whether it is possible to have a closed account
-where the balance is not equal to zero, for the transition \textit{withdraw} we
-want to check whether a negative balance can be achieved with the transition.
+where the balance is not equal to zero (as in \autoref{sec:ch3-method}),
+for the transition \textit{withdraw} we want to check whether a negative balance
+can be achieved with the transition. Again, with checking traces are not
+available when a state is not reachable. In this case, traces cannot be used
+with opposite preconditions since they are not provided.
 
 To conclude, with this approach we are testing the opposite of the preconditions.
 Thus what is not possible according to the specification is tested.
@@ -129,7 +132,7 @@ will replace conditionals according to the replacement table in
 \end{table}
 \FloatBarrier
 
-\subsection{\gls{sut}}
+\subsection{Generated system}
 The conditionals for the transition in the \gls{sut} are also replaced.
 Although, it is not necessary to replace always the conditionals. For some
 transitions is an initial state required, \textit{e.g.}, to execute the transition unblock
@@ -382,7 +385,13 @@ reached where the preconditions of the \textit{close} transition do not hold.
 So as expected, we did find a bug in performing the opposite of a transition
 where the preconditions were not properly generated.
 
-\info{traces are possible}
+In this experiment traces are not used because they cannot be provided by the
+\gls{SMT} solver when a state is not reachable. The expectation is that with
+testing the opposite preconditions, not reachable states, traces are not
+provided. Remarkable is that with testing some transition, the traces are
+provided, because the state to reach with checking are reachable. For example,
+the \textit{block} transition has no precondition which means that the state to
+reach is reachable with checking.
 
 \subsection{Efficiency}
 For the criteria efficiency, it is expected to check what is not possible

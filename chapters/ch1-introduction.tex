@@ -145,25 +145,25 @@ techniques like Concolic testing~\cite{sen2007concolic}, Fuzz testing~\cite{gode
 Model-based testing entails the process and techniques for automatic generation
 of test cases using abstract models.~\cite{utting2012taxonomy, tretmans2008model, dalal1999model}
 Test cases are generated based on these models and then executed on the
-\gls{sut}. These models represents the behaviours of a \gls{sut} and/or its
+\gls{sut}. These models represent the behaviours of a \gls{sut} and/or its
 environment.~\cite{utting2012taxonomy, tretmans2008model}
 
-After defining the model, test selection criteria needs to be defined to
-transform this criteria into test case specifications. Test case specifications
-describes on a high level the desired test case. Test cases are generated when
+After defining the model, test selection criteria need to be defined to
+transform these criteria into test case specifications. Test case specifications
+describe on a high level the desired test case. Test cases are generated when
 the model and test case specifications are defined.~\cite{utting2012taxonomy}
 Then a test execution environment can be used to automatically execute test
 cases and record verdicts.
 
 The main difference with our approach and model-based testing is that the model
-is already present. The model in \textit{Rebel} are the \textit{Rebel}
-specifications. \textit{Rebel} specifications describes banking products and
+is already present. The model in \textit{Rebel} is the \textit{Rebel}
+specifications. \textit{Rebel} specifications describe banking products, and
 also running systems are generated from it. The model in model-based testing is
 built from informal requirements or existing specification
 documents.~\cite[p.~2]{utting2012taxonomy} This model
 shares the same characteristics as \textit{Rebel} specifications.
 
-In model-based testing, there exists several test generation technologies to
+In model-based testing, there exist several test generation technologies to
 generate test cases, such as random generation, (bounded) model checking,
 etc.~\cite[p.~8-9]{utting2012taxonomy}
 As mentioned earlier, \textit{Rebel} offers automated simulation and checking of

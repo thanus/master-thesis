@@ -82,6 +82,18 @@ In the category compilation belongs bugs which are not compilable systems genera
 Most of the bugs we did find with the experiments are within the category templating. We split this category into two parts, fixed code and injected code. With the experiment from \autoref{sec:ch5}, we did find two bugs in the code generators. One bug is from the Javadatomic generator, the code which causes the bug is not generated from the specification. This code is part of the skeleton where the code from the specification is generated. So, the identified bug in the \gls{sut} belongs to the category templating within the fixed code. The bug within the Scala-ES generator belongs to injected code. The identified bug is caused by the generation of code from a given specification. To conclude, within the category templating, it is possible to have bugs either in fixed code or injected code.
 
 \subsection{Distribution}
-Distribution is another category for bugs, although we did not find any bugs related to distribution with our experiments. The experiment from \autoref{sec:ch5} tests also transitions which contain synchronisation. Since no bugs are found, it can be assumed that the synchronised transitions works, in the sense of the result of the tested transitions were the same as the trace from the \gls{smt} solver. As discussed before, the synchronised transitions are also translated to logical formulas. These formulas contain no logic about synchronisation, and therefore it should be possible to identify misbehaviour in synchronisation. Several studies also claim to find faults in distributed algorithms.
+Distribution is another category for bugs, although we did not find any bugs
+related to distribution with our experiments when the \gls{sut} is run as single
+nodes. In the experiment from \autoref{sec:ch5} faults were found in
+distribution when the Codegen-Akka system is run in a distributed mode. In the
+distributed Codegen-Akka faults were found in not unanimous final outcome
+between the nodes.
 
-% encoding strategy.
+The experiment from \autoref{sec:ch5} tests also transitions which contain
+synchronisation. No bugs are found in synchronisation, it can be assumed that
+the synchronised transitions works, in the sense of the result of the tested
+transitions were the same as the trace from the \gls{smt} solver. As discussed
+before, the synchronised transitions are also translated to logical formulas.
+These formulas contain no logic about synchronisation, and therefore it should
+be possible to identify misbehaviour in synchronisation. Several studies also
+claim to find faults in distributed algorithms.

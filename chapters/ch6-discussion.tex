@@ -1,6 +1,7 @@
 \chapter{Discussion}
 
-In this chapter, we discuss further the results from the experiments and answers will be given to the sub research questions. Hereafter, threats to the validity of the conducted experiments are discussed.
+In this chapter, we discuss further the results from the experiments and answers
+will be given to the sub research questions.
 
 \section{RQ 1: How is the input/output of the generated system tested?}
 
@@ -12,6 +13,29 @@ Testing the opposite is also often used in mutation testing. Mutation testing ge
 In \autoref{sec:ch4-evaluation}, we discussed the evaluation of this experiment. In short, this experiment produces some false positives/negatives. The reasons for this are varying results from the \gls{smt} solver and the comparability of performed transitions between the \gls{smt} solver and the \gls{sut}. Also, the \gls{smt} solver is smarter and better in checking the checking the satisfiability. With this experiment, we did find two bugs in the \gls{sut}; only one bug is within our scope.
 % The theory for this found bug is $\forall e s_{1} \to s_{2}, s_{2} \gets s_{1}, pre(e)$.
 
+In this experiment are traces not used since with checking traces are not
+available when a state is not reachable. The assumption was that these states
+were not reachable due to the opposite preconditions. As discussed in the
+experiment, in some transitions the state to reach are reachable, \textit{e.g.},
+when no preconditions are supplied or when a precondition is not applied on a
+property of a specification (which is not part of a transition). In the
+experiment is mutation testing applied on the executed transition in the
+\gls{sut}. Instead of mutation testing the executed transition in the
+\gls{sut}, mutation testing can also be applied to the \textit{Rebel}
+specifications.
+The specifications are then mutated, then tests can be generated that
+distinguish between the original model and the mutated
+specification.~\cite[p.~8]{utting2012taxonomy}
+Traces are also available with this approach since only the specification is
+mutated and it can be interpreted by the \gls{smt} solver. These traces can be
+used to test the \gls{sut}, which allows this approach to be combined with the
+second experiment. As a result, the limitation of this experiment is solved
+with the use of \gls{smt} solver; it is not necessary anymore to check the
+satisfiability in the \gls{sut}. The study \cite{paradkar2005case} reports that
+model-based testing technique using mutation has valuable fault detection
+effectiveness.
+
+% [1,9] related to mutation model-based testing
 
 \subsection{Experiment 2: Valid execution traces}
 The experiment of \autoref{sec:ch5} has solved a few limitation of the previous experiment. This experiment extends the model testing approach with Rebel.

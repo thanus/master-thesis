@@ -452,6 +452,8 @@ sugared back to compare it to the \gls{sut}.
 As discussed in the code generation section, the request made to the \gls{api} of the
 \gls{sut} are "standardized", but the response from the \gls{sut} is not. For the
 post-transition check, it is necessary to check the new state in the \gls{sut}.
+The model and \gls{sut} are at different level of abstraction, and these
+different levels need to be bridged.~\cite{utting2007practical}
 Therefore, an adapter needs to be defined to communicate the results of the
 traces with the \gls{sut}.
 

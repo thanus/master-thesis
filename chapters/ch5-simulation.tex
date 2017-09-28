@@ -640,11 +640,12 @@ Investigating the test run, it seems to be that all transitions are tested
 successfully, except the transition \textit{close}. Also, there seems to be a
 limitation in testing the state of a specification.
 
-\subsubsection{\textit{close} transition}\label{sec:close-no-test-codegenakka}
+\subsubsection{\textit{Close} transition}\label{sec:close-no-test-codegenakka}
 
 The result of \textit{close} transition test is shown in
-\autoref{fig:result-codegenakka-close}. As shown on line number 28 is
-constructing the current state for the \textit{close} transition successful. Then the
+\autoref{fig:result-codegenakka-close-p1} and \autoref{fig:result-codegenakka-close-p2}.
+As shown on line number 3 of \autoref{fig:result-codegenakka-close-p2}, 
+constructing the current state for the \textit{close} transition is successful. Then the
 simulation is asked to simulate the \textit{close} transition, but according to the
 traces of the simulation, the simulation was not able to make the step. The
 simulation returns only the state before the transition.
@@ -675,7 +676,13 @@ opened -> close -> closed
     ?
     var accountNumber (type: IBAN) = FO9402337176862639
     var balance (type: Money) = EUR50.00
+\end{lstlisting}
+\caption{No test generated for \textit{close} transition (part 1)}\label{fig:result-codegenakka-close-p1}
+\end{sourcecode}
+\FloatBarrier
 
+\begin{sourcecode}[h!]
+\begin{lstlisting}[]
 Endpoint: /Account/FO9402337176862639/OpenAccount
 JSON payload: { "OpenAccount": { "initialDeposit":"EUR 50.00" } }
 Response: ("body":"CommandSuccess(OpenAccount(50.00 EUR))","isSuccessful":"true","message":"OK",
@@ -690,7 +697,7 @@ Response: ("body":"CommandSuccess(OpenAccount(50.00 EUR))","isSuccessful":"true"
     var accountNumber (type: IBAN) = FO9402337176862639
     var balance (type: Money) = EUR50.00
 \end{lstlisting}
-\caption{No test generated for \textit{close} transition}\label{fig:result-codegenakka-close}
+\caption{No test generated for \textit{close} transition (part 2)}\label{fig:result-codegenakka-close-p2}
 \end{sourcecode}
 \FloatBarrier
 
@@ -744,7 +751,7 @@ can see the same question mark. Both question mark relates to each other, which
 is the state of a given specification.
 
 In testing single specifications, \textit{e.g.}, in
-\autoref{fig:result-codegenakka-close}, we have seen that the state is present
+\autoref{fig:result-codegenakka-close-p1} and \autoref{fig:result-codegenakka-close-p2}, we have seen that the state is present
 from the result of the \gls{smt} solver. In this case, the model checker/simulation
 does not return the state when multiple instances are involved. This also
 happens in the \textit{start} and \textit{fail} transitions.

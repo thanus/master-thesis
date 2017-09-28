@@ -644,7 +644,7 @@ limitation in testing the state of a specification.
 
 The result of \textit{close} transition test is shown in
 \autoref{fig:result-codegenakka-close-p1} and \autoref{fig:result-codegenakka-close-p2}.
-As shown on line number 3 of \autoref{fig:result-codegenakka-close-p2}, 
+As shown on line number 3 of \autoref{fig:result-codegenakka-close-p2},
 constructing the current state for the \textit{close} transition is successful. Then the
 simulation is asked to simulate the \textit{close} transition, but according to the
 traces of the simulation, the simulation was not able to make the step. The
@@ -812,13 +812,16 @@ Could not find state ?, expected  "state":{"?":{}}
 \subsection{Codegen-Javadatomic}\label{sec:bug-interest-javadatomic}
 
 In this test run is the Javadatomic generator used. After investigating the test
-run, it seems to be that testing the transition \textit{interest} fails. As you can see
-in \autoref{fig:result-javadatomic-interest} on line number 55, the request made
+run, it seems to be that testing the transition \textit{interest} fails.
+The output of the test run for this transition is shown in
+\autoref{fig:result-javadatomic-interest-p1} and \autoref{fig:result-javadatomic-interest-p2}.
+As you can see in \autoref{fig:result-javadatomic-interest-p2} on line number 26, the request made
 for \textit{interest} transition is not successful, and the HTTP status code returned 400
 is returned. Constructing the current state for the \textit{interest} transition seems to
-be successful (see line number 28). According to the simulation, on line number
-40, the step interest is made with a negative percentage (- 7709). On line
-number 47, you can see the instance after performing the interest step, which
+be successful (see line number 28 of \autoref{fig:result-javadatomic-interest-p1}).
+According to the simulation, on line number
+10, the step interest is made with a negative percentage (- 7709). On line
+number 17, you can see the instance after performing the interest step, which
 resulted into an account entity with the state opened and with a negative
 balance. To conclude, the transition \textit{interest} is possible according to the
 simulation.
@@ -864,7 +867,13 @@ Endpoint: /Account/MD14FLBLJOYGVJMDUZVKLU4C/OpenAccount
 JSON payload: { "OpenAccount": { "initialDeposit":"EUR 50.00" } }
 Response: ("body":"{\"iban\":\"MD14FLBLJOYGVJMDUZVKLU4C\"}","isSuccessful":"true",
   "message":"OK","errorBody":"","code":"200")
+\end{lstlisting}
+\caption{Failing test on \textit{interest} transition with the use of javadatomic generator (part 1)}\label{fig:result-javadatomic-interest-p1}
+\end{sourcecode}
+\FloatBarrier
 
+\begin{sourcecode}[h!]
+\begin{lstlisting}[]
 1:
   now = 12 Jul 2016, 12:00:00
 
@@ -891,7 +900,7 @@ Endpoint: /Account/MD14FLBLJOYGVJMDUZVKLU4C/Interest
 JSON payload: { "Interest": { "currentInterest":"-77.09" } }
 Response: ("body":"","isSuccessful":"false","message":"Bad Request","errorBody":"","code":"400")
 \end{lstlisting}
-\caption{Failing test on \textit{interest} transition with the use of javadatomic generator}\label{fig:result-javadatomic-interest}
+\caption{Failing test on \textit{interest} transition with the use of javadatomic generator (part 2))}\label{fig:result-javadatomic-interest-p2}
 \end{sourcecode}
 \FloatBarrier
 

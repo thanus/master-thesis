@@ -173,6 +173,9 @@ the bounded model checking to test the \gls{sut}.
 
 \subsection*{Runtime verification}
 
+Runtime verification is a technique to ensure that a system at the time of
+execution meets the desired
+behaviour.~\cite{leucker2009brief, havelund2008verify, falcone2009runtime}
 Runtime verification is seen as a lightweight verification in addition to
 verification techniques like model checking and
 testing.~\cite[p.~294]{leucker2009brief} This gives the possibility to react
@@ -181,19 +184,19 @@ are in model checking, but a variant of linear temporal logic is often used.
 The main difference between runtime verification and other verification
 techniques is that runtime verification is performed at runtime.
 The focus of runtime verification is to detect satisfactions or violations of
-safety properties.~\cite[p.~294]{leucker2009brief}
+safety properties.~\cite{leucker2009brief, falcone2009runtime}
 
 The monitor performs the checking whether an execution in the system meets the
 safety property.~\cite[p.~295]{leucker2009brief}
 The device which reads a finite trace and gives a certain verdict is called
 monitor. The monitors are usually automatically generated from a high
-specification in runtime verification.
+specification in runtime verification.~\cite{leucker2009brief, falcone2009runtime}
 
 The main similarity of runtime verification with our approach is the ability to
 test systems at runtime. In our approach, the generated systems are being tested
 against the \gls{api}, which is at runtime.
 Runtime verification is only considered to detect satisfactions or violations of
-safety properties.~\cite[p.~298]{leucker2009brief}
+safety properties.~\cite{leucker2009brief, falcone2009runtime}
 In our approach, simulation and checking, which uses bounded model checking,
 will be used to test the generated systems. Bounded model checking is also used
 to check whether a safety property holds.~\cite[p.~4]{stoel_storm_vinju_bosman_2016}

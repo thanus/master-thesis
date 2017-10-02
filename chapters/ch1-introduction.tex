@@ -16,7 +16,7 @@ process within large systems can be challenging, it entails not only defining
 and executing many test cases, solving thousands of errors, handling
 thousands of modules, but also enormous project management. To facilitate this
 process \textit{Rebel} offers automated simulation and checking of specifications with
-the use of an \gls{smt} solver. This solves to some
+the use of a \gls{smt} solver. This solves to some
 extent the testing and reasoning of \textit{Rebel} specifications, but this is only
 within in the \textit{Rebel} domain.
 
@@ -51,7 +51,7 @@ Especially for ING Bank, it is important that there is no corrupted data within
 the runtime systems.
 
 
-\subsection{Research method}\label{sec:research-method}
+\subsection{Solution direction}\label{sec:solution-direction}
 
 The research is about testing the implementation correctness of specifications.
 For the problems in \autoref{sec:problem-statement}, the
@@ -75,12 +75,31 @@ solver which holds the key in testing the generated system. Theoretically, with
 this approach, it is possible to regain the benefits from the \textit{Rebel} domain, and
 again able to test and reason about \textit{Rebel} specifications and generated system.
 
-The hypothesis is that the \gls{smt} solver can be used to test the implementation
-correctness of a specification against a generated system. To do this,
-research needs to be carried out for testing the generated system
-with the \gls{smt} solver, mappings (traces) between these systems. With the given approach, a
-few assumptions need to be made:
+The main research question is as follows: \textit{How to validate the generated code
+from a Rebel specification?}. To research this, the \gls{smt} solver is used as
+an oracle for testing the generated code. So the \gls{smt} solver will be used
+to test the implementation correctness of specifications in the generated
+system. To clarify implementation correctness, we emphasise templating,
+compilation and distribution. This applies to the code generators and the
+generated code.
+First, the code generators use templating to generate code from the
+specifications. The generated code should correctly map to the input code from
+templates. If not, the generated code and \textit{Rebel} specifications will
+have different meanings.
+Secondly, the generated code from the code generators needs to compile.
+Otherwise, it is not possible to run or test the generated system.
+Lastly, the implementation of the generated system must conform to the
+\textit{Rebel} semantics, \textit{e.g.}, synchronisation and distribution. For
+instance, transition atomicity should also be guaranteed in the generated
+systems. A transition is only allowed to be executed when the preconditions
+hold. No transitions should change the relevant values before the preconditions
+and during the execution of the transition. After the execution of the
+transition, the postconditions of the transition should hold.
+Concepts such as transactions~\cite[p.~6]{tanenbaum2017distributed} and
+locking~\cite[p.~10]{tanenbaum2017distributed} influence transition atomicity in
+the implementation of the specifications (generated system).
 
+With the given approach, a few assumptions need to be made:
 \begin{itemize}
 \item \textbf{The specification is always correct.}
 The specifications are written correctly, \textit{i.e.}, the specifications are
@@ -99,18 +118,6 @@ formulas, this will result into misbehaviour of the specification which may lead
 to incorrect results.
 \end{itemize}
 
-At first, an initial lightweight version is expected, then it will be extended with motivated
-improvements with evaluation and validation. The proof of concept is a testing
-tool for testing the implementation correctness of a specification of \gls{sut}.
-
-The
-approach is to start with the lightweight version which can trigger a bug and
-test it with the \gls{smt} solver. For the lightweight version, it is an easily
-reproducible bug. Then the lightweight version is improved with smarter
-testing techniques to generate tests automatically, and these improvements are done
-with evaluation and validation. For example, by using existing software testing
-techniques like Concolic testing~\cite{sen2007concolic}, Fuzz testing~\cite{godefroid2008automated} and Mutation testing~\cite{jia2011analysis}.
-
 \subsection{Research questions}\label{sec:research-questions}
 The following questions are defined to achieve the research goal:
 
@@ -125,6 +132,20 @@ The following questions are defined to achieve the research goal:
   \end{description}
 
 \end{description}
+
+\subsection{Research method}\label{sec:research-method}
+At first, an initial lightweight version is expected, then it will be extended with motivated
+improvements with evaluation and validation. The proof of concept is a testing
+tool for testing the implementation correctness of a specification of \gls{sut}.
+
+The
+approach is to start with the lightweight version which can trigger a bug and
+test it with the \gls{smt} solver. For the lightweight version, it is an easily
+reproducible bug. Then the lightweight version is improved with smarter
+testing techniques to generate tests automatically, and these improvements are done
+with evaluation and validation. For example, by using existing software testing
+techniques like Concolic testing~\cite{sen2007concolic},
+Fuzz testing~\cite{godefroid2008automated} and Mutation testing~\cite{jia2011analysis}.
 
 \section{Contributions}
 % The research has the following contributions:

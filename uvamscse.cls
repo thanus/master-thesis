@@ -65,6 +65,8 @@
 \newcommand{\authemail}[1]{\renewcommand{\uvaemail}{{\ttfamily\email{#1}}\par}}
 \newcommand{\uvasuper}{One does not simply do a thesis without \texttt{$\backslash$supervisor}!}
 \newcommand{\supervisor}[1]{\renewcommand{\uvasuper}{#1}}
+\newcommand{\hostsuper}{One does not simply do a thesis without \texttt{$\backslash$hostsupervisor}!}
+\newcommand{\hostsupervisor}[1]{\renewcommand{\hostsuper}{#1}}
 
 \newcommand{\uvapic}{}
 \newcommand{\coverpic}[2][.9\textwidth]{\renewcommand{\uvapic}{\centerline{\includegraphics[width=#1]{#2}}}}
@@ -139,7 +141,8 @@
   \end{center}
   \vfill
   \begin{tabular}{ll}
-  	\textbf{Supervisor:} 		& \uvasuper\\
+  	\textbf{Research Supervisor:} 		& \uvasuper\\
+    \textbf{Host Supervisor:} 		& \hostsuper\\
   	\textbf{Host organisation:} & \uvahost
   \end{tabular}
   \uvacoverfoot

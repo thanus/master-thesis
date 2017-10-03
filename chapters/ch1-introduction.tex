@@ -134,6 +134,13 @@ The following questions are defined to achieve the research goal:
 \end{description}
 
 \subsection{Research method}\label{sec:research-method}
+We test generated systems by the code generators in two ways, invalid execution
+and valid execution. The first experiment tests invalid execution in the
+generated systems. Therefore, the test framework will use checking to check the
+satisfiability of a given specification. However, testing valid execution can
+also provide valuable results. The second experiment tests valid execution in
+the generated systems with the use of checking and simulation.
+
 At first, an initial lightweight version is expected, then it will be extended with motivated
 improvements with evaluation and validation. The proof of concept is a testing
 tool for testing the implementation correctness of a specification of \gls{sut}.

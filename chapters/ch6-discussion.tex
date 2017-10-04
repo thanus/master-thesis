@@ -51,8 +51,6 @@ To perform and test transitions from traces are three steps done, pre-transition
 \subsection{Varying results from the SMT solver}
 In \autoref{sec:ch4-evaluation}, we already discussed the limitation of this testing approach. The test run of this experiment produces some false positives/negatives. As mentioned earlier, this is due to the varying results from the \gls{smt} solver and the comparability of performed transitions between the \gls{smt} solver and the \gls{sut}.
 
-% future work mutating the specification
-
 \subsection{Invalid current state}
 In \autoref{sec:close-no-test-codegenakka}, we have seen that the experiment is not able to test the \textit{close} transition. In short, it is not able to test this transition because the current state and its values were not satisfying for the transition to the next state. In this case, the simulation is not able to perform the transition, although this transition can be made in the \gls{sut} with satisfying parameters.
 

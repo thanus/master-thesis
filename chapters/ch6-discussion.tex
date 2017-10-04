@@ -168,20 +168,33 @@ Just as mentioned there, this bug is out of scope, since the intention is to
 find misbehaviour in \gls{sut} with our test framework.
 Therefore, the generated system from the code generators needs to compile.
 
-
 \subsection{Distribution}
 Distribution is another category for bugs, although we did not find any bugs
 related to distribution with our experiments when the \gls{sut} is run as single
-nodes. In the experiment from \autoref{sec:ch5} faults were found in
+nodes.
+
+The implementation of the generated system must conform to the
+\textit{Rebel} semantics, \textit{e.g.}, synchronisation and distribution. For
+instance, transition atomicity should also be guaranteed in the generated
+systems. Concepts such as transactions~\cite[p.~6]{tanenbaum2017distributed} and
+locking~\cite[p.~10]{tanenbaum2017distributed} influence transition atomicity in
+the implementation of the specifications (generated system). Partial failure
+and asynchrony makes it also difficult to build and test distributed
+systems.~\cite[p.~1]{mccaffrey2016verification}
+
+In the experiment from \autoref{sec:ch5} faults were found in
 distribution when the Codegen-Akka system is run in a distributed mode. In the
 distributed Codegen-Akka faults were found in not unanimous final outcome
-between the nodes.
+between the nodes. There is no consistency between the nodes since each node may
+produce a different result.
 
 The experiment from \autoref{sec:ch5} tests also transitions which contain
 synchronisation. No bugs are found in synchronisation, it can be assumed that
 the synchronised transitions works, in the sense of the result of the tested
-transitions were the same as the trace from the \gls{smt} solver. As discussed
-before, the synchronised transitions are also translated to logical formulas.
+transitions were the same as the trace from the \gls{smt} solver.
+Also, there does not seem to be any faults in partial failure or asynchrony.
+As discussed before, the synchronised transitions are also translated to logical
+formulas.
 These formulas contain no logic about synchronisation, and therefore it should
 be possible to identify misbehaviour in synchronisation. Several studies also
 claim to find faults in distributed algorithms.

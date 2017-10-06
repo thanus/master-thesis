@@ -4,16 +4,32 @@
 
 \section{Rebel}
 
-\textit{Rebel} is a formal specification language written in the language workbench Rascal~\cite{RascalGTTSE}. The specification language is developed by ING\footnote{\url{https://www.ing.nl/}} and \gls{cwi}\footnote{\url{https://www.cwi.nl/}}.
+\textit{Rebel} is a formal specification language written in the language
+workbench Rascal~\cite{RascalGTTSE}. The specification language is developed by
+ING\footnote{\url{https://www.ing.nl/}} and
+\gls{cwi}\footnote{\url{https://www.cwi.nl/}}.
 
-The language is used for controlling the intrinsic complexity of software for financial enterprise systems.~\cite[p.~1]{stoel_storm_vinju_bosman_2016} The goal of \textit{Rebel} is to develop applications based on verified specifications that are easy to write and understand.
-The formal specification language makes product descriptions more precise, and it removes the ambiguity. The simulation in the language is used as an early prototyping mechanism to verify the product with the user.
+The language is used for controlling the intrinsic complexity of software for
+financial enterprise systems.~\cite[p.~1]{stoel_storm_vinju_bosman_2016} The
+goal of \textit{Rebel} is to develop applications based on verified
+specifications that are easy to write and understand.
+The formal specification language makes product descriptions more precise, and
+it removes the ambiguity. The simulation in the language is used as an early
+prototyping mechanism to verify the product with the user.
 \textit{Rebel} can specify banking products like savings accounts.
 
-The mapping of the \textit{Rebel} language to the \gls{smt} formulas makes it possible to simulate and check these specifications. Simulation and checking specifications can be used for early fault detection.
+The mapping of the \textit{Rebel} language to the \gls{smt} formulas makes it
+possible to simulate and check these specifications. Simulation and checking
+specifications can be used for early fault detection.
 
 \subsection{Example specification}
-An example of a \textit{Rebel} specification is given in \autoref{fig:simple-account-spec}. The specification specifies a simple account where it is only possible to open an account with some balance. After opening an account, the state of the account goes to the opened state which is also the final state. When the account is in its final state, no further action is allowed. Notice also the fields of the specification; these are the account number of type \textit{IBAN} and balance of type \textit{Money}.
+An example of a \textit{Rebel} specification is given in
+\autoref{fig:simple-account-spec}. The specification specifies a simple account
+where it is only possible to open an account with some balance. After opening an
+account, the state of the account goes to the opened state which is also the
+final state. When the account is in its final state, no further action is
+allowed. Notice also the fields of the specification; these are the account
+number of type \textit{IBAN} and balance of type \textit{Money}.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -37,9 +53,18 @@ specification Account {
 \end{sourcecode}
 \FloatBarrier
 
-As shown in the specification, it describes only what is possible with an account and not how. The specification does not contain the definition of the events. These definitions are specified somewhere else to promote reuse of events and invariants for other \textit{Rebel} entities, and to make \textit{Rebel} specifications more concise.~\cite[p.~4]{stoel_storm_vinju_bosman_2016}
+As shown in the specification, it describes only what is possible with an
+account and not how. The specification does not contain the definition of the
+events. These definitions are specified somewhere else to promote reuse of
+events and invariants for other \textit{Rebel} entities, and to make
+\textit{Rebel} specifications more concise.~\cite[p.~4]{stoel_storm_vinju_bosman_2016}
 
-The definition of the transition \textit{openAccount} is illustrated in \autoref{fig:account-openaccount-event}. The precondition of the transition is that the initial deposit should be equal or above 0 euro. To assign the value to the field balance, the keyword new is used in the postcondition. This refers to the value of the variable in the post-state after the execution of the transition.~\cite[p.~4]{stoel_storm_vinju_bosman_2016}
+The definition of the transition \textit{openAccount} is illustrated in
+\autoref{fig:account-openaccount-event}. The precondition of the transition is
+that the initial deposit should be equal or above 0 euro. To assign the value
+to the field balance, the keyword new is used in the postcondition. This refers
+to the value of the variable in the post-state after the execution of the
+transition.~\cite[p.~4]{stoel_storm_vinju_bosman_2016}
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -59,9 +84,21 @@ event openAccount[minimalDeposit: Money = EUR 0.00](initialDeposit: Money) {
 \subsection{Code generation}\label{sec:ch2-codegen}
 % A Source Code Generator Based on UML Specification
 
-Writing programs that write programs is called code generation.~\cite[p.~3]{herrington2003code} Code generation in software engineering projects can result in a valuable impact on productivity and quality. The volume of code generated by the code generator would take much longer when it is written manually. Generating code from templates preserves consistent code quality throughout the entire code base. Even when a bug is encountered or improvements are made in generated code, in short time can these errors be fixed through revising the templates and starting the code generation process.~\cite[p.~15-17]{herrington2003code} These fixes are applied consistently throughout the code base.
+Writing programs that write programs is called code
+generation.~\cite[p.~3]{herrington2003code} Code generation in software
+engineering projects can result in a valuable impact on productivity and
+quality. The volume of code generated by the code generator would take much
+longer when it is written manually. Generating code from templates preserves
+consistent code quality throughout the entire code base. Even when a bug is
+encountered or improvements are made in generated code, in short time can these
+errors be fixed through revising the templates and starting the code generation
+process.~\cite[p.~15-17]{herrington2003code} These fixes are applied
+consistently throughout the code base.
 
-The code generators of ING Bank are capable of generating source code from a \textit{Rebel} specification. These generators are a template-based generator which uses a Rascal (which has a page-template feature)\cite{RascalGTTSE} to build code. The following generators exist right now for \textit{Rebel}:
+The code generators of ING Bank are capable of generating source code from a
+\textit{Rebel} specification. These generators are a template-based generator
+which uses a Rascal (which has a page-template feature)\cite{RascalGTTSE} to
+build code. The following generators exist right now for \textit{Rebel}:
 \begin{itemize}
 
 \item Codegen-Akka: The Codegen-Akka generator generates a Scala system from
@@ -79,27 +116,63 @@ system. The implementation of the generated system uses
 
 \end{itemize}
 
-The \gls{api}'s of the generated system from the code generators are not standardised. The request which is made for transitions are all implemented in the same way between the code generators. However, the response returned by the generated system may differ. For example a request for the transition given in \autoref{fig:account-openaccount-event} looks as follows: \code{\{ "OpenAccount": \{ "initialDeposit": "EUR 50.00" \} \}}. Since the interactions for transitions within the generated systems are the same, all three code generators can be used to test the implementation of \textit{Rebel} specifications.
+The \gls{api}'s of the generated system from the code generators are not
+standardised. The request which is made for transitions are all implemented in
+the same way between the code generators. However, the response returned by the
+generated system may differ. For example a request for the transition given in
+\autoref{fig:account-openaccount-event} looks as follows:
+\code{\{ "OpenAccount": \{ "initialDeposit": "EUR 50.00" \} \}}. Since the
+interactions for transitions within the generated systems are the same, all
+three code generators can be used to test the implementation of \textit{Rebel}
+specifications.
 
 \section{Simulation and Checking Specifications}
 
 % \info{theory about formal verification?}
 % Here we describe two verification techniques we implemented for \textit{Rebel} (both use a similar encoding).
 
-The semantics of \textit{Rebel} is defined as labelled transition systems.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} Thus the current state of a specification holds the state name with the current fields assignments and the event parameters which causes the current state. The labelled transitions map to the events and their preconditions and postconditions. \textit{Rebel} has also support to specify invariants for a given specification. These are predicates which should always be true. These predicates are defined as external specifications of expected behaviour, that is why they are converted to additional formulas. \unsure{SMT van nu doet dit niet?}
+The semantics of \textit{Rebel} is defined as labelled transition
+systems.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} Thus the current state of a
+specification holds the state name with the current fields assignments and the
+event parameters which causes the current state. The labelled transitions map
+to the events and their preconditions and postconditions. \textit{Rebel} has
+also support to specify invariants for a given specification. These are
+predicates which should always be true. These predicates are defined as external
+specifications of expected behaviour, that is why they are converted to
+additional formulas. \unsure{SMT van nu doet dit niet?}
 
 
-Bounded model checking can be used for \textit{Rebel} specifications. Therefore, \textit{Rebel} is defined as an \gls{smt} problem by encoding it to symbolic bounded model checking (with data). The goal of model checking is to find a state which is reachable with some properties which don't hold.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} For example, for the specification from \autoref{fig:simple-account-spec}, an account within the state opened with a negative balance. \textit{Rebel} uses \gls{smt} solver Z3~\cite{moura_bjorner_2008} for simulation and checking.
+Bounded model checking can be used for \textit{Rebel} specifications. Therefore,
+\textit{Rebel} is defined as an \gls{smt} problem by encoding it to symbolic
+bounded model checking (with data). The goal of model checking is to find a
+state which is reachable with some properties which don't
+hold.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} For example, for the
+specification from \autoref{fig:simple-account-spec}, an account within the
+state opened with a negative balance. \textit{Rebel} uses \gls{smt} solver
+Z3~\cite{moura_bjorner_2008} for simulation and checking.
 
 \subsection{Bounded checking}
 \unsure{paper is niet consistent met nu?}
 
-Checking of \textit{Rebel} specifications is used to check the consistency of a given specification.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} A specification is consistent when invariants hold in all reachable states. A state is reachable when it can be reached from the initial state via valid transitions.
+Checking of \textit{Rebel} specifications is used to check the consistency of a
+given specification.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} A specification
+is consistent when invariants hold in all reachable states. A state is reachable
+when it can be reached from the initial state via valid transitions.
 
-The bounded analysis tries to find the smallest (the least possible steps) possible counterexample; this is fully automatic and incremental. Thus the given computations by the \gls{smt} solver satisfies the route from pre-condition to post-condition for every transition.
-First, it tries to reach an invalid state in one step. If that did not succeed, then it tries to reach the invalid state in two steps. This process continues until a counterexample is found or configurable time-out is met. The bounded analysis tries to prove the following: $\theta (s_{0}) \land P(s_{0}) \land p(s_{0}, s_{1}) \land P(s_{1}) \land \dots p(s_{k-1}, s_{k}) \land \neg P(s_{k})$.
+The bounded analysis tries to find the smallest (the least possible steps)
+possible counterexample; this is fully automatic and incremental. Thus the given
+computations by the \gls{smt} solver satisfies the route from pre-condition to
+post-condition for every transition.
+First, it tries to reach an invalid state in one step. If that did not succeed,
+then it tries to reach the invalid state in two steps. This process continues
+until a counterexample is found or configurable time-out is met. The bounded
+analysis tries to prove the following:
+$\theta (s_{0}) \land P(s_{0}) \land p(s_{0}, s_{1}) \land P(s_{1}) \land \dots p(s_{k-1}, s_{k}) \land \neg P(s_{k})$.
 
-An example of checking \textit{Rebel} specifications is given in \autoref{fig:tebl-opened-simple-account}. These checks can be defined in so-called tebl files. The \gls{smt} solver tries to reach the state opened of account with the balance above 0 euro. As configurable time-out is six used.
+An example of checking \textit{Rebel} specifications is given in
+\autoref{fig:tebl-opened-simple-account}. These checks can be defined in
+so-called tebl files. The \gls{smt} solver tries to reach the state opened of
+account with the balance above 0 euro. As configurable time-out is six used.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -118,4 +191,11 @@ check openAccountCheck reachable in max 6 steps;
 \FloatBarrier
 
 \subsection{Simulation}
-The purpose of simulation and checking differs. The purpose of the simulation is to check the external consistency, and checking is used for the internal consistency.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} As explained in the previous paragraph, checking is used to reason about all possible traces. Simulation focuses on individual steps to reason about. Thus with the simulator, the user can quickly check the specification behaves as expected. As for checking, the same strategy is used in the simulation, \textit{i.e.}, using \gls{smt} solver and encoding for \textit{Rebel} Specifications.
+The purpose of simulation and checking differs. The purpose of the simulation is
+to check the external consistency, and checking is used for the internal
+consistency.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} As explained in the
+previous paragraph, checking is used to reason about all possible traces.
+Simulation focuses on individual steps to reason about. Thus with the simulator,
+the user can quickly check the specification behaves as expected. As for
+checking, the same strategy is used in the simulation, \textit{i.e.}, using
+\gls{smt} solver and encoding for \textit{Rebel} Specifications.

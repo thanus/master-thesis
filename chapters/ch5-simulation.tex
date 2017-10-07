@@ -372,12 +372,15 @@ postconditions of the chosen transition. At the time of the publication of the
 study~\cite{stoel_storm_vinju_bosman_2016}, this was not possible in the simulation, so
 the simulation should be slightly modified.
 
-In cooperation with the author of the study~\cite{stoel_storm_vinju_bosman_2016} is this feature added to the simulation.~\footnote{\url{https://github.com/cwi-swat/rebel/commit/0d29eb30a82cc5dd6d8be750daa4a24e4e2786be}}
+In cooperation with the author of the study~\cite{stoel_storm_vinju_bosman_2016}
+is this feature added to the simulation.~\footnote{\url{https://github.com/cwi-swat/rebel/commit/0d29eb30a82cc5dd6d8be750daa4a24e4e2786be}}
 The simulation is now able that both state variables and transition variables
 can be left open, in the sense of using the expression \textit{ANY}. When the
 expression \textit{ANY} is used, the \gls{smt} solver will fill a value for the
 corresponding transition parameter, satisfying the pre- and postconditions for
-the chosen transition. \unsure{what about expression as iban?}
+the chosen transition. Although, this will not be suitable for expressions like
+\textit{IBAN}. As discussed earlier, the value generated will not conform to the
+\textit{IBAN} standards.
 
 \subsubsection*{Traces}\label{sec:ch5-traces}
 A valid trace is a chain of valid transitions from one state to the next state

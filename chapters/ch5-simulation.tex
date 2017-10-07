@@ -116,13 +116,13 @@ So, in this approach, we are going to use the traces to check the behaviour of t
 
 \subsection{Evaluation criteria}\label{sec:ch5-eval-criteria}
 
-\subsubsection{Bugs}
+\subsubsection{faults}
 In this approach we are using the traces from the \gls{smt} solver to test the
 \gls{sut}, thus testing what should be possible according to the specification.
-The expectation here is to find bugs in the \gls{sut} which does not accept the
+The expectation here is to find faults in the \gls{sut} which does not accept the
 execution from the traces. For instance, the generated pre- or postconditions
 are not satisfied by the transition from the traces or the generated
-postcondition which leads to different results. An example of this is the bug
+postcondition which leads to different results. An example of this is the fault
 that we have found in \autoref{sec:bug-close-account}.
 
 In \autoref{sec:ch5-complex-spec} we discussed that we are going to use more
@@ -152,7 +152,7 @@ protocol~\cite[p.~3204]{al2009two}. A protocol like \gls{2pc} is also referred
 to as an \gls{acp}. The essence of \gls{acp} is to achieve global atomicity. The
 protocol ensures a unanimous final outcome of a distributed transaction,
 regardless of the failures that may occur.~\cite[p.~3204]{al2009two} In our
-case, the expectation is to find bugs in synchronisation where the \gls{sut}
+case, the expectation is to find faults in synchronisation where the \gls{sut}
 does not produce a unanimous final outcome. However, the traces from the
 \gls{smt} solver must also be unanimous to the \gls{sut}.
 
@@ -185,7 +185,7 @@ As discussed, this experiment is going to use more complex specifications,
 the use of the simulation, it is expected to test transitions which depend and
 interact with other specifications.
 
-With the criteria bugs, we discussed that it is expected to find faults in
+With the criteria faults, we discussed that it is expected to find faults in
 partial failure and asynchrony. These characteristics may lead to not testing
 transitions. To illustrate what is meant, let us look at the case of partial
 failure within the \textit{book} transition. When components fail along the way
@@ -948,7 +948,7 @@ event interest[maxInterest: Percentage = 10%](currentInterest: Percentage) {
 \end{sourcecode}
 \FloatBarrier
 
-Now we know that we have discovered a bug since the simulated transition is
+Now we know that we have discovered a fault since the simulated transition is
 conform to the specification, we want to know where this misbehaviour occurs and
 which code is not correctly generated. The generated code for the \textit{interest} event
 definition from \autoref{fig:account-interest-event} contains the following
@@ -980,10 +980,10 @@ is not correctly defined since this is the definition of the function
 \textit{isGreaterOrEqualThan}. This code is not generated but is part of the
 fixed code.
 
-Clearly, we have discovered a bug in the \gls{sut} for the transition
+Clearly, we have discovered a fault in the \gls{sut} for the transition
 interest. As discussed in \autoref{sec:ch3-evalution}, it is possible to have
-bugs in the fixed code. With this experiment and testing the Javadatomic
-generator, we can conclude that we have found a bug in the fixed code.
+faults in the fixed code. With this experiment and testing the Javadatomic
+generator, we can conclude that we have found a fault in the fixed code.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[language=Java]
@@ -1100,9 +1100,9 @@ account.Interest[&quot;currentInterest&quot;])","code":"400")
 \end{sourcecode}
 \FloatBarrier
 
-Likewise, the Javadatomic generator, we have discovered a bug in the \gls{sut}, since
+Likewise, the Javadatomic generator, we have discovered a fault in the \gls{sut}, since
 the simulated transition is not conform to the specification. To know where this
-bug occurs and which code is not properly generated, the response from the
+fault occurs and which code is not properly generated, the response from the
 \textit{interest} transition request gives an error message. According to the error
 message, the \gls{sut} is not able to construct the instance of \textit{Dimensionless}
 for the transition parameter \textit{currentInterest}. This error seems to occur
@@ -1126,10 +1126,10 @@ the \textit{interest} transition and as you can see is the class \textit{Interes
 as the second parameter. This class is used to bind the interest parameter as a
 type of the \textit{Interest} class.
 
-In short, we have discovered a bug in the \gls{sut}
-for the \textit{interest} transition. The \textit{interest} transition bug in the Javadatomic
+In short, we have discovered a fault in the \gls{sut}
+for the \textit{interest} transition. The \textit{interest} transition fault in the Javadatomic
 generator belongs to the fixed code category, but in this case, for the Scala-ES
-generator, the bug belongs to the injected code category, since the
+generator, the fault belongs to the injected code category, since the
 \textit{Interest} class is generated and injected in the generated code.
 
 \begin{sourcecode}[h!]
@@ -1293,17 +1293,17 @@ To conclude, in this experiment the \gls{sut}s does not produce a unanimous fina
 
 \section{Evaluation}\label{sec:ch5-evaluation}
 
-\subsection{Bugs}
-The expectation for the criteria bugs from \autoref{sec:ch5-eval-criteria} is to
-find bugs in the \gls{sut} where execution traces from the \gls{smt} solver
+\subsection{faults}
+The expectation for the criteria faults from \autoref{sec:ch5-eval-criteria} is to
+find faults in the \gls{sut} where execution traces from the \gls{smt} solver
 is not accepted by the \gls{sut}. For example, a generated pre- or postconditions
 are not satisfied by the execution from the traces.
 
-In this experiment, we have found bugs in the code generators. For both bugs,
+In this experiment, we have found faults in the code generators. For both faults,
 \autoref{sec:bug-interest-javadatomic} and \autoref{sec:bug-interest-scalaes},
 it was not possible to perform the execution from the traces returned by the
-\gls{smt} solver. The preconditions are not satisfied for both bugs. To conclude,
-we did find bugs as expected where the \gls{sut} was not conform to the
+\gls{smt} solver. The preconditions are not satisfied for both faults. To conclude,
+we did find faults as expected where the \gls{sut} was not conform to the
 specification.
 
 This experiment is using more complex specifications which implement
@@ -1314,7 +1314,7 @@ tested on all generators, except the distributed Codegen-Akka. As expected, the
 synchronisation is tested in the \gls{sut}, but no faults were found. There does
 not seem to be any faults in partial failure or asynchrony.
 
-Not being able to find bugs does not mean that there are no faults in the
+Not being able to find faults does not mean that there are no faults in the
 synchronisation. This can be due to the way of testing or the setup how the
 \gls{sut} runs. With the Codegen-Akka generator, the \gls{sut} is run as single
 nodes, both the Scala system and Cassandra.
@@ -1323,7 +1323,7 @@ is possible to focus more on the testing of the unanimous final outcome of the
 \gls{sut}s.
 Therefore, the test run \label{sec:bug-dist-nodes} is run to test with multiple
 nodes. Faults were found in different results between the nodes.
-The expectation is to find bugs in synchronisation where the \gls{sut} does not
+The expectation is to find faults in synchronisation where the \gls{sut} does not
 produce a unanimous final outcome. In the case of the expectation of the
 \gls{sut} producing a not unanimous final outcome, faults were found.
 Partial failure may also occur, for example when external systems are
@@ -1367,7 +1367,7 @@ solver is used to test a transition in two different test runs, namely
 By performing the test runs more often, it can be said that the \gls{smt} solver
 regularly generates the same traces for transitions. In our case, this is not
 bad, as long as every transition is tested despite the randomness of the traces.
-However, testing unique traces may result in finding more bugs in the
+However, testing unique traces may result in finding more faults in the
 \gls{sut}. A solution is to configure the \gls{smt} solver to use random seeds
 to control the propositional variable selection heuristic in the \gls{smt} core.
 % https://stackoverflow.com/questions/24219509/use-of-random-seeds-in-z3
@@ -1388,9 +1388,9 @@ transition are satisfied by the current state.
 
 Another expectation is that faults a like partial failure and asynchrony cause
 the inability to test transitions, which leads to a lower coverage. As discussed
-in the criteria bugs, no faults were found in partial failure or asynchrony.
+in the criteria faults, no faults were found in partial failure or asynchrony.
 This leads not to the inability to test transitions. Again, not being able to
-find bugs does not mean that there are no faults. The reason for this can be the
+find faults does not mean that there are no faults. The reason for this can be the
 way of testing or the setup how the \gls{sut} runs.
 
 In this experiment is a fixed configurable time-out used. Just as it is not
@@ -1415,16 +1415,16 @@ the transitions are performed in the \gls{sut} in three steps to identify misbeh
 the \gls{sut}. Although there is a limitation in the testing of states. Within a
 trace, not every instance may contain the state of it.
 
-Also with this experiment, we have found bugs in the code generators. The bug
+Also with this experiment, we have found faults in the code generators. The fault
 in the \textit{interest} transition from \autoref{sec:bug-interest-javadatomic} is found
-in the fixed code. Another bug for the same \textit{interest} transition from
+in the fixed code. Another fault for the same \textit{interest} transition from
 \autoref{sec:bug-interest-scalaes} belongs to the category injected code since
-the bug is found in the generated code from the specification. As discussed in
-\autoref{sec:ch3-evalution}, it is possible that there might be bugs in
+the fault is found in the generated code from the specification. As discussed in
+\autoref{sec:ch3-evalution}, it is possible that there might be faults in
 templating, in the fixed code or the injected code. With these test runs of this
-experiment, we have found bugs for both categories.
+experiment, we have found faults for both categories.
 
-More complex specifications are used in this experiment which implements 
+More complex specifications are used in this experiment which implements
 synchronisation.
 The test framework has successfully tested all generators which
 implements the synchronisation. No faults were found, except in the distributed

@@ -128,7 +128,7 @@ The following questions are defined to achieve the research goal:
     \item [SQ1] How is the input/output of the generated system tested?
     \item [SQ2] Are there any false positives/negatives when the generated
     system has been implemented correctly?
-    \item [SQ3] What kind of bugs can be found and what are the factors?
+    \item [SQ3] What kind of faults can be found and what are the factors?
   \end{description}
 
 \end{description}
@@ -146,9 +146,15 @@ improvements with evaluation and validation. The proof of concept is a testing
 tool for testing the implementation correctness of a specification of \gls{sut}.
 
 The
-approach is to start with the lightweight version which can trigger a bug and
-test it with the \gls{smt} solver. For the lightweight version, it is an easily
-reproducible bug. Then the lightweight version is improved with smarter
+approach is to start with the lightweight version which can trigger a fault and
+test it with the \gls{smt} solver. A fault is seen as the deviation between the
+current behaviour and the expected behaviour.~\cite{delgado2004taxonomy, leucker2009brief}
+Typically this is identified by the deviation between the current and expected
+state of the system. In our case, the expected state and behaviour is defined in
+the \textit{Rebel} specifications.
+
+For the lightweight version, it is an easily
+reproducible fault. Then the lightweight version is improved with smarter
 testing techniques to generate tests automatically, and these improvements are done
 with evaluation and validation. For example, by using existing software testing
 techniques like Concolic testing~\cite{sen2007concolic},
@@ -166,7 +172,7 @@ The research has the following contributions:
   important part of the test approach. These limitations can lead to false
   positives when the generated system is generated correctly.
 
-  \item The bugs and factors encountered in the generated system that was found
+  \item The faults and factors encountered in the generated system that was found
   using the methodologies.
 \end{enumerate}
 
@@ -264,5 +270,5 @@ discussed in \autoref{sec:ch3}. The invalid execution experiment and its results
 are discussed in \autoref{sec:ch4}. The valid execution and its results are
 discussed in \autoref{sec:ch5}. \autoref{sec:ch6} contains the answers for each
 research question, also containing a discussion of the conducted experiments,
-limitations and found bugs. Finally, a conclusion of this thesis is given in
+limitations and found faults. Finally, a conclusion of this thesis is given in
 \autoref{sec:ch7}.

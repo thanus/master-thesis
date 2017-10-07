@@ -4,14 +4,14 @@
 known.}{George E. P. Box}
 
 The lightweight proof of concept discussed in \autoref{sec:ch3} is only able
-to trigger one bug which is created manually. In this chapter, we discuss how
+to trigger one fault which is created manually. In this chapter, we discuss how
 the lightweight proof of concept is automated and the test results of the
 generated system.
 
 \section{Method}
 
 The lightweight version from the previous chapter is only able to test one specific
-bug. The bug itself is created manually by modifying the \gls{sut}. Now,
+fault. The fault itself is created manually by modifying the \gls{sut}. Now,
 this lightweight version needs to be automated to automatically generate a test
 for every transition from a specification.
 
@@ -35,12 +35,12 @@ Thus what is not possible according to the specification is tested.
 
 \subsection{Evaluation criteria}\label{sec:ch4-eval-criteria}
 
-\subsubsection{Bugs}
+\subsubsection{faults}
 Since we are testing with this approach the opposite of the preconditions, thus
 what should be not possible according to the specification. It is expected to
-find bugs in the \gls{sut} where it is possible to perform the opposite of a
+find faults in the \gls{sut} where it is possible to perform the opposite of a
 transition. So faults can be found like preconditions which are not properly
-generated. An example of this is the manually created bug
+generated. An example of this is the manually created fault
 (\autoref{fig:ch3-res-codegenakka-account}) for the lightweight version.
 
 \subsubsection{Efficiency}
@@ -53,7 +53,7 @@ need to be performed to reach this state.
 \subsubsection{Coverage}
 The experiment is going to generate a test for all transitions. Therefore,
 it is expected to test all the transitions of a specification. With the criteria
-bugs, we discussed the expectation to find faults in not properly generated
+faults, we discussed the expectation to find faults in not properly generated
 preconditions. This may lead to the inability to test transitions. For example,
 when a failure (incorrect preconditions) occurs during reaching the initial
 state of the \textit{withdraw} transition. This leads to the inability to test
@@ -205,7 +205,7 @@ close                       & \xmark{}            \\ \bottomrule
 \subsection{Codegen-Akka}
 
 % https://github.com/cwi-swat/ing-rebel-generators/commit/999e6b40307a79fb245ace15375c27461c92374e
-\subsubsection{Bug: closing an account with balance}\label{sec:bug-close-account}
+\subsubsection{Closing an account with balance}\label{sec:bug-close-account}
 When this automated version of checking is executed, it produces some false
 positives. After investigating the tests for the transitions, the test for the \textit{close}
 transition seems not be successful (see \autoref{fig:result-close-account}).
@@ -234,7 +234,7 @@ closed, which is correct according to the specification, but the balance of the
 account is 52 euro. In \autoref{fig:account-close-event} we already discussed
 the event  definition of the \textit{close} transition, which is that the
 balance should be equal to zero. From this, we can conclude that we have
-discovered a bug in the \gls{sut}.
+discovered a fault in the \gls{sut}.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -255,7 +255,7 @@ discovered a bug in the \gls{sut}.
 \end{sourcecode}
 \FloatBarrier
 
-Now we know that we have discovered a bug, we want to know why this behaviour
+Now we know that we have discovered a fault, we want to know why this behaviour
 occurs and whether it is due to the generated code from the specification. The
 method which handles the \textit{close} transition has the following check in
 \autoref{fig:java-notequal-check}. The if statement checks whether the balance
@@ -295,7 +295,7 @@ is not possible anymore to close an account with some balance. This also applies
 to other statements which use the equal operator.
 
 % https://github.com/cwi-swat/ing-rebel-generators/pull/6
-\subsubsection{Bug: deposit with a maximum amount}\label{sec:bug-compile-max-deposit}
+\subsubsection{Deposit with a maximum amount}\label{sec:bug-compile-max-deposit}
 
 The automated checking is implemented with the ability to first start the
 \gls{sut} and then run the tests against it. For a new test run, the
@@ -374,18 +374,18 @@ private str g(e:(Expr)`<Expr lhs> \< <Expr rhs>`, tmap t) = "(<g(lhs, t)> \< <g(
 
 \section{Evaluation}\label{sec:ch4-evaluation}
 
-\subsection{Bugs}
+\subsection{faults}
 In \autoref{sec:ch4-eval-criteria} we discussed the expectations of the criteria
-bugs. We expected to find bugs in the \gls{sut} where it is possible to perform
-the opposite of a transition. Thus it is expected to find bugs where the
+faults. We expected to find faults in the \gls{sut} where it is possible to perform
+the opposite of a transition. Thus it is expected to find faults where the
 preconditions are not properly generated.
 
-With this experiment, we have found a bug in the \gls{sut}, which was
-discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
-since the \gls{sut} is not able to compile. With the bug from
+With this experiment, we have found a fault in the \gls{sut}, which was
+discussed in \autoref{sec:bug-close-account}. The other fault is out of scope
+since the \gls{sut} is not able to compile. With the fault from
 \autoref{sec:bug-close-account}, it is possible that the final state closed is
 reached where the preconditions of the \textit{close} transition do not hold.
-So as expected, we did find a bug in performing the opposite of a transition
+So as expected, we did find a fault in performing the opposite of a transition
 where the preconditions were not properly generated.
 
 In this experiment traces are not used because they cannot be provided by the
@@ -455,9 +455,9 @@ the satisfiability of a given constraints.
 To conclude, the checking used in this experiment tests only the states, regardless of which transitions are
 being performed, and testing the \gls{sut} focuses more on testing transitions.
 
-With this experiment, we have found a bug in the \gls{sut}, which was
-discussed in \autoref{sec:bug-close-account}. The other bug is out of scope
-since the \gls{sut} is not able to compile. The found bug belongs to the category
+With this experiment, we have found a fault in the \gls{sut}, which was
+discussed in \autoref{sec:bug-close-account}. The other fault is out of scope
+since the \gls{sut} is not able to compile. The found fault belongs to the category
 injected code since the generated code for the precondition is wrong. In this
 case, the final state closed is reached where the preconditions of the \textit{close}
 transition do not hold.
@@ -483,7 +483,7 @@ transition do not hold.
 \subsection*{Limited specifications}
 In the conducted experiment is the account specification account used
 to test the \gls{sut}. With this experiment and specification,
-we did find a bug in the code generators.
+we did find a fault in the code generators.
 
 The used account specification in this experiment is quite simple. With the use
 of more interacting specifications, the chance is bigger to find faults in the code

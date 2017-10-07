@@ -1,6 +1,6 @@
 \chapter{Test mechanics}\label{sec:ch3}
 
-In this chapter, we explain how to implement the lightweight proof of concept. The intention of the lightweight version is to know that the test approach can find a bug in generated systems. Therefore, we need to understand how the existing foundations from \textit{Rebel} can be reused.
+In this chapter, we explain how to implement the lightweight proof of concept. The intention of the lightweight version is to know that the test approach can find a fault in generated systems. Therefore, we need to understand how the existing foundations from \textit{Rebel} can be reused.
 
 \section{The account specification}
 An extended account specification~\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Account.ebl}} from \autoref{fig:simple-account-spec} is used for this experiment, the implementation in \textit{Rebel} is shown in \autoref{fig:account-spec}. According to the specification, an account can be opened with a minimum deposit of 50 euro. When an account is opened, it is possible to withdraw or deposit money. Besides deposit and withdraw, the balance may increase or decrease by interest. To disable any account, the \textit{block} event can be used to put the account to the state blocked. The final state of account is closed. Therefore there should not be any remaining balance. When an account is in the state closed, no further action is allowed since it is in the final state. The invariant is specified to keep every account with a positive balance.
@@ -69,10 +69,10 @@ event close() {
 
 As mentioned earlier, an initial lightweight version is expected, then it will
 be extended with motivated improvements with evaluation and validation. The
-approach is to start with a lightweight version which can trigger a bug
+approach is to start with a lightweight version which can trigger a fault
 and test it with the \gls{smt} solver. For the lightweight version, it is an easily
-reproducible bug. This lightweight version is then able to trigger and test one
-specific bug.
+reproducible fault. This lightweight version is then able to trigger and test one
+specific fault.
 
 \autoref{fig:account-close-pre} illustrates the code which is generated to check
 the precondition for the \textit{close} event. From this code, we can see that the
@@ -95,12 +95,12 @@ case Close() => {
 \end{sourcecode}
 \FloatBarrier
 
-The first bug to trigger is to close an account with some balance. To do this, the precondition of the \textit{close} event should be changed in the generated system (see \autoref{fig:mod-spec-gen}). By manually making the changes in the generated system, the \gls{sut}, we know that there is definitely a bug in the generated system, assuming that the specification is correct.
+The first fault to trigger is to close an account with some balance. To do this, the precondition of the \textit{close} event should be changed in the generated system (see \autoref{fig:mod-spec-gen}). By manually making the changes in the generated system, the \gls{sut}, we know that there is definitely a fault in the generated system, assuming that the specification is correct.
 
 The modified precondition looks as follows in
 \autoref{fig:account-close-mod-pre}. The precondition is changed to
 \textit{RebelConditionCheck.success}, this means that the precondition is
-satisfied. Right now we have introduced a bug in the \gls{sut}.
+satisfied. Right now we have introduced a fault in the \gls{sut}.
 Thus the \gls{sut} is not conform to the specification.
 
 \begin{figure}[h!]
@@ -122,10 +122,10 @@ case Close() => {
 
 \subsection{Evaluation criteria}\label{sec:ch4-eval-criteria}
 
-\subsubsection{Bugs}
+\subsubsection{faults}
 Since the precondition of the \textit{close} transition is modified in the \gls{sut},
-we know that the \gls{sut} contains the bug to close an account with some balance. For
-the lightweight version, it is expected to find this bug in the \gls{sut}.
+we know that the \gls{sut} contains the fault to close an account with some balance. For
+the lightweight version, it is expected to find this fault in the \gls{sut}.
 
 \subsubsection{Efficiency}
 The lightweight version will use checking to check whether it is possible to have
@@ -133,8 +133,8 @@ a closed account with some balance. Therefore, it is expected to test the same
 transition in the \gls{sut}.
 
 \subsubsection{Coverage}
-With this lightweight version, we are going to trigger one single bug in the \gls{sut},
-\textit{i.e.} finding the bug for the \textit{close} transition. Thus from the
+With this lightweight version, we are going to trigger one single fault in the \gls{sut},
+\textit{i.e.} finding the fault for the \textit{close} transition. Thus from the
 account specification, we are testing only the transition \textit{close}.
 
 \section{Approach}
@@ -147,7 +147,7 @@ account specification, we are testing only the transition \textit{close}.
 \FloatBarrier
 
 The testing approach is shown in \autoref{fig:mod-bug-test}.
-We discussed earlier that we are going to use the \gls{smt} solver to find bugs in the
+We discussed earlier that we are going to use the \gls{smt} solver to find faults in the
 \gls{sut}. Having an account with some balance in the state closed should not be possible
 according to the specification. To let the \gls{smt} solver solve this situation, it
 is necessary to generate the appropriate \gls{smt} formulas. Therefore, checking can
@@ -195,7 +195,7 @@ the \gls{sut}.
 \subsection{Codegen-Akka}
 
 Since we have defined the input for both systems and can compare it, we
-can trigger the bug and compare the results of it. The results of testing the
+can trigger the fault and compare the results of it. The results of testing the
 \textit{close} transition are shown in \autoref{fig:ch3-res-codegenakka-account}.
 
 \begin{table}[h!]
@@ -251,9 +251,9 @@ precondition.
 
 \section{Evaluation}\label{sec:ch3-evalution}
 
-\subsubsection{Bugs}
-The expectation for the bugs criteria is to find the bug in the \textit{close} transition.
-As expected, we did find the bug for the \textit{close}
+\subsubsection{faults}
+The expectation for the faults criteria is to find the fault in the \textit{close} transition.
+As expected, we did find the fault for the \textit{close}
 transition due to the manually modified precondition.
 
 \subsubsection{Efficiency}
@@ -273,7 +273,7 @@ are used.
 \info{add reference for no model when unsat}
 
 \subsubsection{Coverage}
-The lightweight version is used only to trigger a single bug in the \gls{sut}. As
+The lightweight version is used only to trigger a single fault in the \gls{sut}. As
 expected, only the transition \textit{close} tested. Although, to close an
 account the account needs to be first opened. Therefore, the transition
 \textit{openAccount} performed, but this transition is not tested whether the
@@ -281,4 +281,4 @@ request is successful.
 
 \section{Conclusion}
 
-As we have seen with this lightweight version, it can find one specific bug with the use of an \gls{smt} solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As described in~\cite[p.~274]{voelter2013dsl}, the majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be bugs in the fixed code. The second part is the template control code which is injected into the generated code. The manually introduced bug from the previous chapter belongs  to this category.
+As we have seen with this lightweight version, it can find one specific fault with the use of an \gls{smt} solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As described in~\cite[p.~274]{voelter2013dsl}, the majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be faults in the fixed code. The second part is the template control code which is injected into the generated code. The manually introduced fault from the previous chapter belongs  to this category.

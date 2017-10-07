@@ -1,10 +1,10 @@
-\chapter{Experiment 2: Valid execution traces}\label{sec:ch5}
+\chapter{Experiment 2: Valid execution}\label{sec:ch5}
 
 In the experiment from \autoref{sec:ch4}, we designed a tool to test generated
 systems, \textit{i.e.} testing invalid execution trace. However, testing valid
 execution trace can also provide valuable results to test whether the generated
 system conforms to the specification. In this chapter, we discuss how we are
-testing the valid execution traces and how to solve the limitations of the
+testing the valid execution and how to solve the limitations of the
 experiment from \autoref{sec:ch4}.
 
 \section{More complex specifications}\label{sec:ch5-complex-spec}
@@ -116,7 +116,7 @@ So, in this approach, we are going to use the traces to check the behaviour of t
 
 \subsection{Evaluation criteria}\label{sec:ch5-eval-criteria}
 
-\subsubsection{faults}
+\subsubsection{Faults}
 In this approach we are using the traces from the \gls{smt} solver to test the
 \gls{sut}, thus testing what should be possible according to the specification.
 The expectation here is to find faults in the \gls{sut} which does not accept the
@@ -1293,11 +1293,11 @@ To conclude, in this experiment the \gls{sut}s does not produce a unanimous fina
 
 \section{Evaluation}\label{sec:ch5-evaluation}
 
-\subsection{faults}
+\subsection{Faults}
 The expectation for the criteria faults from \autoref{sec:ch5-eval-criteria} is to
-find faults in the \gls{sut} where execution traces from the \gls{smt} solver
-is not accepted by the \gls{sut}. For example, a generated pre- or postconditions
-are not satisfied by the execution from the traces.
+find faults in the \gls{sut} which does not accept the execution from the
+traces. For example, a generated pre- or postconditions are not satisfied by
+the execution from the traces.
 
 In this experiment, we have found faults in the code generators. For both faults,
 \autoref{sec:bug-interest-javadatomic} and \autoref{sec:bug-interest-scalaes},
@@ -1460,9 +1460,9 @@ specifications. We already discussed before the limitation of interpretation of
 be more unknown limitations of the interpretation of \textit{Rebel} specifications, which
 can cause the conducted experiments give incorrect results.
 
-\subsection*{Valid execution trace}
-The experiment from \autoref{sec:ch5} tests only valid execution traces from
-the \gls{smt} solver, \textit{i.e.}, testing only what should be possible according to
-the specification. Testing valid execution traces is not enough, testing
-invalid execution traces can be valuable. The experiment from
-\autoref{sec:ch4} already does this, but as discussed it has a few limitations.
+\subsection*{Valid execution}
+The experiment from \autoref{sec:ch5} tests only valid execution from the traces
+of the \gls{smt} solver, \textit{i.e.}, testing only what should be possible
+according to the specification. Testing valid execution is not enough, testing
+invalid execution can be valuable. The experiment from \autoref{sec:ch4} already
+does this, but as discussed it has a few limitations.

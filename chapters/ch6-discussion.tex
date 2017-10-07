@@ -81,8 +81,9 @@ since each node may produce a different result. So with this test approach
 faults can be found in distributed systems.
 
 Although there is a limitation in the testing of states. Within a trace, not
-every instance may contain the state of it. The intention is to test all
-transitions, but with this testing approach, it is only possible to test
+every instance may contain the state of it (inconclusive state).
+The intention is to test all transitions,
+but with this testing approach, it is only possible to test
 transitions when the preconditions of a given transition are satisfied by the
 current state. Thus theory for this testing approach is as follows:
 $\forall e s_{1} \to s_{2}, (! s_{2} pre(e) \lor s_{2} pre(e) in s_{1} post(e))$.

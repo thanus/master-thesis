@@ -1316,6 +1316,27 @@ Response:
 \end{sourcecode}
 \FloatBarrier
 
+\begin{sourcecode}[h!]
+\begin{lstlisting}[]
+[info] [ERROR] [09/14/2017 14:42:31.146] Failed to serialize remote message
+  [class com.ing.rebel.Rebel$CurrentState$CurrentStateInternal] using serializer
+	[class com.romix.akka.serialization.kryo.KryoSerializer].
+  Transient association error (association remains live)
+[info] akka.remote.MessageSerializer$SerializationException: Failed to serialize remote message
+  [class com.ing.rebel.Rebel$CurrentState$CurrentStateInternal] using serializer
+  [class com.romix.akka.serialization.kryo.KryoSerializer].
+\end{lstlisting}
+\caption{Serialization error in Node 1}\label{fig:dist-interest-serialization}
+\end{sourcecode}
+\FloatBarrier
+
+When the post-transition check is performed on Node 2, an exception is thrown
+which is shown in \autoref{fig:dist-interest-serialization}. This exception is a
+serialisation error which is thrown because it is not able to serialise the
+\textit{Rebel} instance account. It is remarkable that this exception appears in
+Node 1 when the post-transition check is performed on Node 2. Thus it is not
+possible to retrieve an instance from Node 2 because of a serialisation error.
+
 Now we have only discussed the test results of the \textit{interest} transition.
 According to the results of \autoref{sec:ch5-run-dist-codegenakka}, besides the
 \textit{interest} transition, all other transitions fail. The reason for the

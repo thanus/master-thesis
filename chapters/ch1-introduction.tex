@@ -312,6 +312,48 @@ Thirdly, test execution is in our approach done at runtime.
 As mentioned earlier, the property-based testing approach generated unit tests.
 These unit tests are run in the test mode of the generated system.
 
+\subsection*{Testing distributed systems}
+
+Distributed systems are difficult to build, because of partial failure and
+asynchrony.~\cite[p.~1]{mccaffrey2016verification}
+In order to create a correct system, these two concepts of distributed systems
+need to be addressed. Solving these problems often result in complex solutions.
+The study~\cite{mccaffrey2016verification} describes verifications of
+distributed systems in two categories, namely formal verification and
+verification in the wild.
+
+Formal verification is a systematic process which uses mathematical reasoning to
+proves properties about a system.~\cite{mccaffrey2016verification, sanghavi2010formal}
+This results in a system that can be said to be provably correct.
+Formal specification languages allow to model and verify the correctness of
+concurrent systems.~\cite[p.~2]{mccaffrey2016verification}
+An example of a formal specification language is TLA+ which is used with by
+\gls{aws} to verify critical systems.~\cite[p.~1]{newcombe2014use}
+\gls{aws} has applied various techniques (fault-injection testing, stress testing,
+etc.). However, they still find subtle bugs hidden in complex fault-tolerant
+systems.
+The use of TLA+ has yielded valuable results for \gls{aws} in two ways. Finding
+bugs that could not be found in other ways, and making performance optimisations
+without the loss of correctness.~\cite[p.~3]{newcombe2014use}
+
+Model checking, which is also a formal method, determines whether a system is
+provably correct. Model checkers systematically use state-space exploration to
+provide the paths for a system.~\cite[p.~3]{mccaffrey2016verification}
+A system is provably correct when all path have been executed.
+\gls{aws} has used TLA+ specifications in combination with a model checker. This
+resulted in the identification of a bug that could cause data loss in DynamoDB,
+which is a data store.~\cite[p.~7]{newcombe2014use}
+The shortest trace for this bug contained 35 steps.
+
+Compared to formal verification, given that formal verification is expensive,
+test methods can be used that give confidence that the systems are built
+correctly.~\cite[p.~4]{mccaffrey2016verification}
+Simple test methods such as unit and integration tests or property-based testing
+can already be a way to test distributed systems.
+Fault-injection testing is a test method for causing or introducing an error in
+the system. By forcing the occurrence of failures, it allows the observation
+and measurement of the systems by the engineers.
+
 \section{Outline}
 This section outlines the structure of the thesis. \autoref{sec:ch2} contains
 the background of this thesis. As this research focuses on experiments that

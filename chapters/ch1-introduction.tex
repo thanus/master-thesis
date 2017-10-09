@@ -109,13 +109,14 @@ With the given approach, a few assumptions need to be made:
 \begin{itemize}
 \item \textbf{The specification is always correct.}
 The specifications are written correctly, \textit{i.e.}, the specifications are
-correctly modelled from the business point of view. An incorrect specification
-will probably not pass the checking or simulation, and testing a generated
-system derived from an incorrect specification is not really effective.
-\item \textbf{The generated system can be compiled.} When the generated
-system cannot be compiled, it is possible that there might be a fault in the
-code generator. Although, with this approach testing a not compilable system is
-impossible.
+correctly modelled from the business point of view.
+It is not effective to test incorrect specifications. Testing
+inconsistent behaviour is senseless and therefore wasted time. It is also much
+more difficult because there is nothing to tell about the expectations.
+\item \textbf{The generated system can be compiled.} Note that we are testing
+the generated code, not the generator. Showing that a generator always generates
+compilable code is a different interesting questions which is out of scope of
+this thesis.
 \item \textbf{The \textit{Rebel} specifications are correctly interpreted by the \gls{smt}
 solver.} The \gls{smt} solver is used as an oracle/black box in the testing approach
 since it is an interpreter for \textit{Rebel} specification. However, when

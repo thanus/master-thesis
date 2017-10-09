@@ -50,7 +50,6 @@ system should be identified.
 Especially for ING Bank, it is important that there is no corrupted data within
 the runtime systems.
 
-
 \subsection{Solution direction}\label{sec:solution-direction}
 
 The research is about testing the implementation correctness of specifications.
@@ -75,6 +74,8 @@ solver which holds the key in testing the generated system. Theoretically, with
 this approach, it is possible to regain the benefits from the \textit{Rebel} domain, and
 again able to test and reason about \textit{Rebel} specifications and generated system.
 
+\subsubsection{Expectations}
+
 The main research question is as follows: \textit{How to validate the generated code
 from a Rebel specification?}. To research this, the \gls{smt} solver is used as
 an oracle for testing the generated code. So the \gls{smt} solver will be used
@@ -82,22 +83,27 @@ to test the implementation correctness of specifications in the generated
 system. To clarify implementation correctness, we emphasise templating,
 compilation and distribution. This applies to the code generators and the
 generated code.
-First, the code generators use templating to generate code from the
-specifications. The generated code should correctly map to the input code from
-templates. If not, the generated code and \textit{Rebel} specifications will
-have different meanings.
-Secondly, the generated code from the code generators needs to compile.
-Otherwise, it is not possible to run or test the generated system.
-Lastly, the implementation of the generated system must conform to the
-\textit{Rebel} semantics, \textit{e.g.}, synchronisation and distribution. For
-instance, transition atomicity should also be guaranteed in the generated
-systems. A transition is only allowed to be executed when the preconditions
-hold. No transitions should change the relevant values before the preconditions
-and during the execution of the transition. After the execution of the
-transition, the postconditions of the transition should hold.
-Concepts such as transactions~\cite[p.~6]{tanenbaum2017distributed} and
-locking~\cite[p.~10]{tanenbaum2017distributed} influence transition atomicity in
-the implementation of the specifications (generated system).
+
+\begin{itemize}
+  \item \textbf{Templating} The code generators use templating to generate code
+  from the specifications. The generated code should correctly map to the input
+  code from templates. If not, the generated code and \textit{Rebel}
+  specifications will have different meanings.
+  \item \textbf{Compilation} The generated code from the code generators needs
+  to compile. Otherwise, it is not possible to run or test the generated system.
+  \item \textbf{Distribution} The implementation of the generated system must
+  conform to the \textit{Rebel} semantics, \textit{e.g.}, synchronisation and
+  distribution. For instance, transition atomicity should also be guaranteed in
+  the generated systems. A transition is only allowed to be executed when the
+  preconditions hold. No transitions should change the relevant values before
+  the preconditions and during the execution of the transition. After the
+  execution of the transition, the postconditions of the transition should hold.
+  Concepts such as transactions~\cite[p.~6]{tanenbaum2017distributed} and
+  locking~\cite[p.~10]{tanenbaum2017distributed} influence transition atomicity
+  in the implementation of the specifications (generated system).
+\end{itemize}
+
+\subsubsection{Assumptions}
 
 With the given approach, a few assumptions need to be made:
 \begin{itemize}

@@ -1,7 +1,5 @@
 \chapter{Background}\label{sec:ch2}
 
-\info{add background about smt/sat}
-
 \section{Rebel}
 
 \textit{Rebel} is a formal specification language written in the language
@@ -139,8 +137,7 @@ to the events and their preconditions and postconditions. \textit{Rebel} has
 also support to specify invariants for a given specification. These are
 predicates which should always be true. These predicates are defined as external
 specifications of expected behaviour, that is why they are converted to
-additional formulas. \unsure{SMT van nu doet dit niet?}
-
+additional formulas.
 
 Bounded model checking can be used for \textit{Rebel} specifications. Therefore,
 \textit{Rebel} is defined as an \gls{smt} problem by encoding it to symbolic
@@ -152,7 +149,6 @@ state opened with a negative balance. \textit{Rebel} uses \gls{smt} solver
 Z3~\cite{moura_bjorner_2008} for simulation and checking.
 
 \subsection{Bounded checking}
-\unsure{paper is niet consistent met nu?}
 
 Checking of \textit{Rebel} specifications is used to check the consistency of a
 given specification.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} A specification

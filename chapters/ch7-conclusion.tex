@@ -56,7 +56,7 @@ compilation and distribution.
 
 \subsubsection{Mutation model-based testing}
 
-The second experiment has its limitations due to the inability to use traces
+The first experiment has its limitations due to the inability to use traces
 since with checking traces are not available when a state is not reachable.
 Instead of applying mutation testing on the execution transition in the
 \gls{sut}, it can be applied to the \textit{Rebel} specification.
@@ -69,6 +69,7 @@ approach to be combined with the second experiment. As a result, the limitation
 of this experiment is solved with the use of \gls{smt} solver.
 
 \subsubsection{Bounded checking}
+
 Model checking \textit{Rebel} specifications is bounded. The bounded analysis is
 used to find the smallest possible counterexample.~\cite[p.~5]{stoel_storm_vinju_bosman_2016}
 Finding a counterexample is automatic and incremental,
@@ -82,6 +83,7 @@ be used to test more extensively. On the other hand, due to a high configuration
 timeout, testing can be time-consuming.
 
 \subsubsection{Invalid current state}
+
 The second experiment tests valid execution in the generated systems, with the
 use of existing testing techniques within \textit{Rebel} to generate tests for
 transitions, namely checking and simulation. The intention of this experiment is
@@ -94,6 +96,7 @@ framework or the \gls{smt} solver. Although it is better to solve this by the
 \gls{smt} solver as this is one of the purposes of the \gls{smt} solver.
 
 \subsubsection{More complex specifications}
+
 In the conducted experiments are only the specifications account or combined
 with the transaction specification used to test the \gls{sut} from these
 specifications. With these experiments and specifications, we did find faults in

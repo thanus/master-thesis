@@ -462,22 +462,6 @@ injected code since the generated code for the precondition is wrong. In this
 case, the final state closed is reached where the preconditions of the \textit{close}
 transition do not hold.
 
-% So the theory for this found bug is
-% $\forall e s_{1} \to s_{2}, s_{2} \gets s_{1}, pre(e)$.
-
-% claims from finding the bugs.
-
-% \begin{itemize}
-% \item je bent in een state gekomen via een preconditie
-% \item de transitie zelf verander de pre conditie niet, (de preconditie geldt dan in de postconditie)
-% \item het was de laatste
-
-% \item $\forall e s1 \to s2, in s2 geldt pre(e) \lor (! pre(e) \land post(e))$
-% \item $\forall e s1 \to s2, in s2 post(e)$
-% % of?
-% \item $\forall e s1 \to s2, s2 alleen bereikbaar via (1), dan pre(e)$
-% \end{itemize}
-
 \section{Threats to validity}
 
 \subsection*{Limited specifications}

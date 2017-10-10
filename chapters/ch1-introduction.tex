@@ -115,8 +115,8 @@ inconsistent behaviour is senseless and therefore wasted time. It is also much
 more difficult because there is nothing to tell about the expectations.
 \item \textbf{The generated system can be compiled.} Note that we are testing
 the generated code, not the generator. Showing that a generator always generates
-compilable code is a different interesting questions which is out of scope of
-this thesis.
+compilable code is a different interesting questions which is out of the scope
+of this thesis.
 \item \textbf{The \textit{Rebel} specifications are correctly interpreted by the \gls{smt}
 solver.} The \gls{smt} solver is used as an oracle/black box in the testing approach
 since it is an interpreter for \textit{Rebel} specification. However, when
@@ -330,7 +330,7 @@ concurrent systems.~\cite[p.~2]{mccaffrey2016verification}
 An example of a formal specification language is TLA+ which is used with by
 \gls{aws} to verify critical systems.~\cite[p.~1]{newcombe2014use}
 \gls{aws} has applied various techniques (fault-injection testing, stress testing,
-etc.). However, they still find subtle bugs hidden in complex fault-tolerant
+etc.). However, they still found subtle bugs hidden in complex fault-tolerant
 systems.
 The use of TLA+ has yielded valuable results for \gls{aws} in two ways. Finding
 bugs that could not be found in other ways, and making performance optimisations
@@ -353,6 +353,13 @@ can already be a way to test distributed systems.
 Fault-injection testing is a test method for causing or introducing an error in
 the system. By forcing the occurrence of failures, it allows the observation
 and measurement of the systems by the engineers.
+
+The main similarity with our approach and the approach described above is the
+use of formal verification. \textit{Rebel} is also formal specification
+language.~\cite[p.~1]{stoel_storm_vinju_bosman_2016} Model checking is also
+available with \textit{Rebel} specifications, although this is bounded. Other
+test methods as described above can be used to test distributed systems, but
+this is out of the scope of this thesis.
 
 \section{Outline}
 This section outlines the structure of the thesis. \autoref{sec:ch2} contains

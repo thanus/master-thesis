@@ -4,20 +4,23 @@
   behaviour of a larger part of the system. Within the domain knowledge,
   reasoning about the expected behaviour of a system, changes and errors are
   hard. \textit{Rebel} aims to solve these challenges by centralising the domain
-  knowledge and relating it to the running systems. \textit{Rebel} is a formal
-  specification language in which financial products can be specified.
+  knowledge and to generate running systems from this domain knowledge.
+  \textit{Rebel} is a formal specification language in which financial products
+  can be specified.
 
   Software testing is an important part of software projects. To facilitate the
   process \textit{Rebel} offers automated simulation and checking of
-  specifications with the use of a satisfiability modulo theories solver. This
-  solves to some extent the testing and reasoning of \textit{Rebel}
-  specifications, but this is only within in the \textit{Rebel} domain.
+  specifications with the use of a SMT solver. Simulation and checking make use
+  of bounded model checking. This solves to some extent the testing and
+  reasoning of \textit{Rebel} specifications, but this is only within in the
+  \textit{Rebel} domain.
 
   Code generators generate code from the \textit{Rebel} specifications.
   It is not always straightforward to generate a correct system from
   \textit{Rebel}. The problem with code generation is that the resulting product
   is leaving the \textit{Rebel} domain, causing loss of testing and reasoning
-  with the use of formal methods. The running systems which are generated from
+  with the use of formal methods. \textit{Rebel} is declarative while an
+  implementation is not. The running systems which are generated from
   specifications need to be properly based on these specifications; it should
   conform to these specifications.
 

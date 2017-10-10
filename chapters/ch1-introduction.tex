@@ -101,9 +101,10 @@ find. The three implementation correctness dimensions are discussed below:
   conform to the \textit{Rebel} semantics, \textit{e.g.}, synchronisation and
   distribution. For instance, transition atomicity should also be guaranteed in
   the generated systems. A transition is only allowed to be executed when the
-  preconditions hold. No transitions should change the relevant values before
-  the preconditions and during the execution of the transition. After the
-  execution of the transition, the postconditions of the transition should hold.
+  preconditions hold. As part of postconditions, no transitions should change
+  the relevant values before the preconditions and during the execution of the
+  transition. After the execution of the transition, the postconditions of the
+  transition should hold.
   Concepts such as transactions~\cite[p.~6]{tanenbaum2017distributed} and
   locking~\cite[p.~10]{tanenbaum2017distributed} influence transition atomicity
   in the implementation of the specifications (generated system).
@@ -154,7 +155,7 @@ satisfiability of a given specification. However, testing valid execution can
 also provide valuable results. The second experiment tests valid execution in
 the generated systems with the use of checking and simulation.
 
-At first, an initial lightweight version is expected, then it will be extended with motivated
+At first, an initial lightweight version will be developed; then it will be extended with motivated
 improvements with evaluation and validation. The proof of concept is a testing
 tool for testing the implementation correctness of a specification of \gls{sut}.
 
@@ -190,6 +191,9 @@ The research has the following contributions:
 \end{enumerate}
 
 \section{Related Work}
+
+Testing generated systems can be performed on different aspects. This section
+briefly introduces relevant work of this thesis.
 
 \subsection*{Model-based testing}
 
@@ -237,8 +241,8 @@ techniques is that runtime verification is performed at runtime.
 The focus of runtime verification is to detect satisfactions or violations of
 safety properties.~\cite{leucker2009brief, falcone2009runtime}
 
-The monitor performs the checking whether an execution in the system meets the
-safety property.~\cite[p.~295]{leucker2009brief}
+A so-called monitor in runtime verification performs the checking whether an
+execution in the system meets the safety property.~\cite[p.~295]{leucker2009brief}
 The device which reads a finite trace and gives a certain verdict is called
 monitor. The monitors are usually automatically generated from a high
 specification in runtime verification.~\cite{leucker2009brief, falcone2009runtime}
@@ -251,9 +255,10 @@ safety properties.~\cite{leucker2009brief, falcone2009runtime}
 In our approach, simulation and checking, which uses bounded model checking,
 will be used to test the generated systems. Bounded model checking is also used
 to check whether a safety property holds.~\cite[p.~4]{stoel_storm_vinju_bosman_2016}
-Although, the approach we have chosen for is
-not only to check the safety property but also to check whether a certain
-execution is (not) possible in the generated system.
+Some property of interest which is used in bounded model checking to check
+whether it holds is called a safety property. Although, the approach we have
+chosen for is not only to check the safety property but also to check whether a
+certain execution is (not) possible in the generated system.
 
 The main difference between runtime verification and model checking is the
 presence of a model of the system to be checked.

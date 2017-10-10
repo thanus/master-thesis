@@ -53,8 +53,8 @@ specification Account {
 
 As shown in the specification, it describes only what is possible with an
 account and not how. The specification does not contain the definition of the
-events. These definitions are specified somewhere else to promote reuse of
-events and invariants for other \textit{Rebel} entities, and to make
+transitions (events). These definitions are specified somewhere else to promote reuse of
+transitions and invariants for other \textit{Rebel} entities, and to make
 \textit{Rebel} specifications more concise.~\cite[p.~4]{stoel_storm_vinju_bosman_2016}
 
 The definition of the transition \textit{openAccount} is illustrated in
@@ -121,18 +121,16 @@ specifications.
 
 \section{Simulation and Checking Specifications}
 
-% \info{theory about formal verification?}
 % Here we describe two verification techniques we implemented for \textit{Rebel} (both use a similar encoding).
 
 The semantics of \textit{Rebel} is defined as labelled transition
 systems.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} Thus the current state of a
 specification holds the state name with the current fields assignments and the
 event parameters which causes the current state. The labelled transitions map
-to the events and their preconditions and postconditions. \textit{Rebel} has
+to the transitions and their preconditions and postconditions. \textit{Rebel} has
 also support to specify invariants for a given specification. These are
-predicates which should always be true. These predicates are defined as external
-specifications of expected behaviour, that is why they are converted to
-additional formulas.
+predicates which should always be true during the lifecycle of an instance of
+the specification.
 
 Bounded model checking can be used for \textit{Rebel} specifications. Therefore,
 \textit{Rebel} is defined as an \gls{smt} problem by encoding it to symbolic
@@ -150,20 +148,24 @@ given specification.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} A specification
 is consistent when invariants hold in all reachable states. A state is reachable
 when it can be reached from the initial state via valid transitions.
 
-The bounded analysis tries to find the smallest (the least possible steps)
-possible counterexample; this is fully automatic and incremental. Thus the given
-computations by the \gls{smt} solver satisfies the route from pre-condition to
-post-condition for every transition.
+The bounded analysis tries to find the smallest (the least possible steps within
+bounds) possible counterexample; this is fully automatic and incremental.
+Thus the given computations by the \gls{smt} solver satisfies the route from
+pre-condition to post-condition for every transition.
 First, it tries to reach an invalid state in one step. If that did not succeed,
 then it tries to reach the invalid state in two steps. This process continues
-until a counterexample is found or configurable time-out is met. The bounded
-analysis tries to prove the following:
-$\theta (s_{0}) \land P(s_{0}) \land p(s_{0}, s_{1}) \land P(s_{1}) \land \dots p(s_{k-1}, s_{k}) \land \neg P(s_{k})$.
+until a counterexample is found or configurable timeout (bound) is met.
+A configurable timeout is used to control the maximum spent waiting time of the
+user.~\cite[p.~5]{stoel_storm_vinju_bosman_2016}
 
 An example of checking \textit{Rebel} specifications is given in
 \autoref{fig:tebl-opened-simple-account}. These checks can be defined in
-so-called tebl files. The \gls{smt} solver tries to reach the state opened of
-account with the balance above 0 euro. As configurable time-out is six used.
+so-called tebl files. As configurable time-out is six used.
+In this case, the \gls{smt} solver tries to find the smallest possible
+counterexample with an opened account with the balance above 0 euro.
+The \gls{smt} solver checks incremental whether the state can be reached in
+steps until a counterexample is found or the configuration timeout (bound) is
+reached.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -182,10 +184,8 @@ check openAccountCheck reachable in max 6 steps;
 \FloatBarrier
 
 \subsection{Simulation}
-The purpose of simulation and checking differs. The purpose of the simulation is
-to check the external consistency, and checking is used for the internal
-consistency.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} As explained in the
-previous paragraph, checking is used to reason about all possible traces.
+The purpose of simulation and checking differs. As explained in the
+previous paragraph, checking is used to reason about possible counterexamples.
 Simulation focuses on individual steps to reason about. Thus with the simulator,
 the user can quickly check the specification behaves as expected. As for
 checking, the same strategy is used in the simulation, \textit{i.e.}, using

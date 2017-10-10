@@ -28,7 +28,7 @@ being used to indicate between whom the transaction takes place.
 According to the transaction specification, the transaction first
 needs to be started. When a transaction is in the state validated, and a booking
 cannot be made, the transition \textit{fail} can be used to put the transaction in its
-final state failed. To successfully complete a transaction is the transition
+final state failed. To successfully execute a transaction is the transition
 \textit{book} used. In comparison to the account specification, does the transaction
 specification two final states, which are booked and failed. When the final
 state booked or failed is reached, then there is no further action allowed.
@@ -40,9 +40,10 @@ seen pre- and postconditions. Sync expressions are used for synchronisation.
 These sync expressions are also translated to \gls{smt} formulas.
 
 The sync expressions translated to the \gls{smt} solver are also logical formulas.
-These formulas do not have logic about synchronisation. Of course, the \gls{sut} has
-implemented synchronisation for these transitions. So it is possible to also
-test synchronisation in the \gls{sut}. There are also several studies which report
+These formulas do not have logic about the implementation of synchronisation.
+Of course, the \gls{sut} has implemented synchronisation for these transitions.
+So it is possible to also test synchronisation in the \gls{sut}.
+There are also several studies which report
 that \gls{smt}-based approaches to model checking can be used to test distributed
 algorithms.~\cite{konnov2015you, alberti2015smt, mccaffrey2016verification}
 
@@ -51,6 +52,7 @@ algorithms.~\cite{konnov2015you, alberti2015smt, mccaffrey2016verification}
 The \textit{book} transition uses the synchronisation feature to express sync
 operations (see \autoref{fig:transaction-book-event}). A sync operation is here
 used to withdraw an amount from one account and to deposit to another account.
+This allows the \gls{sut} to run distributed to test with our approach.
 
 % \info{new scala generator, two-phase commit for distribution.}
 % \info{explain sync stuff and about distribution, look at implementation of
@@ -104,9 +106,9 @@ event book() {
 As discussed in \autoref{sec:research-method}, a model testing approach is
 already done to test existing banking systems. Although, in this approach, it
 was only possible to test the \gls{sut} interactively using the simulation. In this
-approach are the traces from the \gls{smt} solver used to check whether the
-\gls{sut} accepts the execution from the trace and whether it behaves as the
-specification.~\cite[p.~5]{stoel_storm_vinju_bosman_2016}
+approach, the traces from the \gls{smt} solver are used to check whether the
+\gls{sut} accepts the execution from the traces, and whether the execution is
+conforms to the specification.~\cite[p.~5]{stoel_storm_vinju_bosman_2016}
 
 By using the traces, it also solves the problems from the previous experiment.
 With the use of traces, we know exactly which possible transitions the
@@ -171,9 +173,10 @@ By using the traces for testing, the same path computed by the \gls{smt} solver
 are performed in the \gls{sut} and we can check whether the given
 execution is possible in the \gls{sut}. Thus the expectation is to perform the
 same transition from the traces should be performed in the \gls{sut}.
-However, it may take longer to test all transitions from specifications as each
-transition needs to be tested and some transitions require an initial state for
-which transitions need to be performed to reach this state.
+However, it may take longer to test all transitions from specifications, as each
+transition needs to be tested. Some transitions require an initial state for
+which transitions need to be executed to reach this state.
+As a result, previously executed transitions can be executed again.
 
 \subsubsection{Coverage}
 In this experiment, the simulation is used to test transitions. Since
@@ -208,8 +211,8 @@ which is then the \gls{sut}.
 When the \gls{sut} is generated from the \gls{csts}, the \gls{sut} can be tested by the test
 framework. The test case generator traverses the \gls{csts} of the specifications to
 generates test cases for all transitions. Using the information from the \gls{csts},
-the simulation is requested for a test case for a chosen transition. The
-simulation provides then a trace (test case) for the requested transition.
+the simulation and checking are requested for a test case for a chosen transition.
+The simulation and checking provide then a trace (test case) for the requested transition.
 
 To test the \gls{sut} using the generated test cases, the data
 from these test cases are provided to the test case adapter. Finally, the test
@@ -222,8 +225,17 @@ case adapter communicates this data to the \gls{sut}.
 \end{figure}
 \FloatBarrier
 
-To playback the steps from a given trace on the \gls{sut}, we are going to split every
-transition into three steps as in the
+As discussed before, the study~\cite[p.~5]{stoel_storm_vinju_bosman_2016}
+carried out a model testing approach to test existing banking systems.
+Although, in this approach, it was only possible to test the \gls{sut}
+interactively using the simulation.
+The traces from the \gls{smt} solver are used in this approach to check whether the
+\gls{sut} accepts the execution from the traces, and whether the execution is
+conforms to the specification.~\cite[p.~5]{stoel_storm_vinju_bosman_2016}
+Thus the traces are played in the \gls{sut}.
+
+In our approach to playback the steps from a given trace on the \gls{sut}, we
+are going to split every transition into three steps as in the
 study~\cite[p.~6]{stoel_storm_vinju_bosman_2016}:
 \begin{enumerate}
 \item \textbf{pre-transition check} Check whether the current state from the \gls{sut}
@@ -239,7 +251,7 @@ which has the pre- and postcondition of the to be executed transition
 \cite[p.~6]{stoel_storm_vinju_bosman_2016}. The current state $s_{1}$ holds the
 constraints of the current values of the simulated specification. Hereafter, to
 execute the transition, the user is asked to provide the data for the transition
-parameters.
+parameters to reach the resulting state, $s_{2}$.
 
 Before using the simulation, two challenges need to be solved: defining the
 current state for a given transition and providing the transition parameters
@@ -311,10 +323,11 @@ specification are reachable within four steps. The determination of the
 configurable time-out per specification is left as future work.
 
 When the current state is defined, the generated tebl is given to the model
-checker. When the current state is satisfiable are the traces used to perform
-the transitions in the \gls{sut}. This is in more depth described in the section
-\autoref{sec:ch5-traces}. Performing each step from a trace entails the three
-steps to test and perform the transition.
+checker. The model checker provides traces when the current state is
+satisfiable.
+Then the traces are executed on the \gls{sut}, which is in more depth described
+in the section \autoref{sec:ch5-traces}. Performing each step from a trace
+entails the three steps to test and execute the transition.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -332,7 +345,8 @@ state doCheck {
 
 check doCheck reachable in max 4 steps;
 \end{lstlisting}
-\caption{Generated tebl for the transition book}\label{fig:tebl-gen-validated-transaction}
+\caption{A tebl for the current state for the transition \textit{book} generated
+by the test case generator}\label{fig:tebl-gen-validated-transaction}
 \end{sourcecode}
 \FloatBarrier
 
@@ -404,7 +418,7 @@ it can make the single step. The simulation then works as follows
 transition given the current state and the transition parameters data values of
 the event: $p(s_{1}, s_{2})$
 \item Check whether the invariants hold in the state after the transition:
-$P(s2)$.
+$P(s_{2})$. The function $P$ is the invariants (safety properties).
 \end{enumerate}
 
 When this step can be made, with the use of traces, the step can be played on
@@ -427,7 +441,7 @@ To check whether the new state from the \gls{sut} is
 conform to the trace, the state and values from the instances are read after
 performing the transition. The endpoint is then determined to retrieve the state
 of these instances in the \gls{sut}. Then, the results of these instances from the \gls{sut}
-and trace are compared to find any misbehaviour in the \gls{sut}.
+and the trace are compared to find any misbehaviour in the \gls{sut}.
 
 \subsubsection{Normalisation}
 
@@ -448,8 +462,11 @@ postconditions \cite[p.~5]{stoel_storm_vinju_bosman_2016}.
 The newly added fields
 are also present within the trace from the \gls{smt} solver. In our case, we only use
 the \textit{\_state} field, because we already know which transition led to the current
-state. To compare the current state from the \textit{\_state} field, it needs to be
-sugared back to compare it to the \gls{sut}.
+state.
+To compare the current state from the \textit{\_state} field, the distinct
+identity of \textit{\_state} field needs to be
+converted to compare it to the \gls{sut}.
+
 % Adding Frame Conditions. To guard the fields that are not changed by the event frame conditions are added (Jack- son 2012). These frame conditions make sure that a field has the same value after the transition as before.
 
 \subsubsection{Test case adapter}\label{sec:ch5-adapter}
@@ -597,8 +614,8 @@ fail                        & \cmark{}               & \cmark{}            \\ \b
 
 \subsection{Distributed Codegen-Akka}\label{sec:ch5-run-dist-codegenakka}
 In \autoref{sec:ch5-run-codegenakka} we have seen the test results of the
-Codegen-Akka generator. In this test run is the \gls{sut} run as single nodes,
-both the Scala system and Cassandra.
+Codegen-Akka generator. In this test run is the \gls{sut} run in a distributed
+mode as multiple nodes, both the Scala system and Cassandra.
 
 With this test run, we will run the \gls{sut} distributed generated by the
 Codegen-Akka generator. The results of the test run are shown in
@@ -1337,12 +1354,12 @@ Node 1 when the post-transition check is performed on Node 2. Thus it is not
 possible to retrieve an instance from Node 2 because of a serialisation error.
 
 Now we have only discussed the test results of the \textit{interest} transition.
-According to the results of \autoref{sec:ch5-run-dist-codegenakka}, besides the
-\textit{interest} transition, all other transitions fail. The reason for the
-failing tests for the transitions is the same as for transition
-\textit{interest}. Except for the transition \textit{close}, as mentioned
-earlier, the simulation is not able to the transition.
-To conclude, in this experiment the \gls{sut}s does not produce a unanimous final outcome.
+According to the results of \autoref{sec:ch5-run-dist-codegenakka}, the other
+transitions also fail. The reason for the failing tests for the transitions is
+the same as for transition \textit{interest}.
+Except for the transition \textit{close}, as mentioned earlier, the simulation
+is not able to simulate the transition. To conclude, in this experiment the
+\gls{sut}'s does not produce a unanimous final outcome.
 
 \section{Evaluation}\label{sec:ch5-evaluation}
 
@@ -1379,6 +1396,7 @@ nodes. Faults were found in different results between the nodes.
 The expectation is to find faults in synchronisation where the \gls{sut} does not
 produce a unanimous final outcome. In the case of the expectation of the
 \gls{sut} producing a not unanimous final outcome, faults were found.
+The cause of this is serialisation errors in the nodes.
 Partial failure may also occur, for example when external systems are
 communicating with the distributed Codegen-Akka, but this is not the case.
 
@@ -1490,9 +1508,7 @@ As discussed before, with this experiment it was not possible to test the
 \textit{close} transition. The precondition of this transition is not
 satisfied due to the current state defined for this transition. To sum up, with
 this experiment it is possible to test all the transitions when the
-preconditions of a given transition are satisfied by the current state. The
-theory for this experiment is as follows:
-$\forall e s_{1} \to s_{2}, (! s_{2} pre(e) \lor s_{2} pre(e) in s_{1} post(e))$.
+preconditions of a given transition are satisfied by the current state.
 
 \section{Threats to validity}
 

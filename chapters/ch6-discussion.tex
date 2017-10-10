@@ -85,8 +85,7 @@ every instance may contain the state of it (inconclusive state).
 The intention is to test all transitions,
 but with this testing approach, it is only possible to test
 transitions when the preconditions of a given transition are satisfied by the
-current state. Thus theory for this testing approach is as follows:
-$\forall e s_{1} \to s_{2}, (! s_{2} pre(e) \lor s_{2} pre(e) in s_{1} post(e))$.
+current state.
 
 All in all, three faults are found with this experiment in the generated systems
 and code generators. One fault is identified by a slightly different test approach
@@ -96,11 +95,13 @@ templating and distribution.
 \section{RQ 2: Are there any false positives/negatives when the generated system has been implemented correctly?}
 
 \subsection{Varying results from the SMT solver}
-In \autoref{sec:ch4-evaluation}, we already discussed the limitation of this
-testing approach. The test run of this experiment produces some false
-positives/negatives. As mentioned earlier, this is due to the varying results
-from the \gls{smt} solver and the comparability of performed transitions between
-the \gls{smt} solver and the \gls{sut}.
+In the first experiment \autoref{sec:ch4-evaluation}, we already discussed the limitation of this
+testing approach. This experiment has its limitations due to the inability to
+use traces since with checking traces are not available when a state is not
+reachable. As a result, the test run of this experiment produces some false
+positives. As mentioned earlier, this is due to the varying results from the
+\gls{smt} solver and the comparability of performed transitions between the
+\gls{smt} solver and the \gls{sut}.
 
 \subsection{Invalid current state}
 In \autoref{sec:close-no-test-codegenakka}, we have seen that the experiment is
@@ -119,7 +120,8 @@ extend the model checker and define conditions of transitions. This is left as
 future work.
 
 To conclude, this experiment is only able to test transitions when the
-preconditions of a given transition are satisfied by the current state.
+preconditions of a given transition are satisfied by the current state and its
+values.
 
 % future work model checker
 
@@ -200,7 +202,8 @@ In the experiment from \autoref{sec:ch5} faults were found in
 distribution when the Codegen-Akka system is run in a distributed mode. In the
 distributed Codegen-Akka faults were found in not unanimous final outcome
 between the nodes. There is no consistency between the nodes since each node may
-produce a different result.
+produce a different result. The cause of this is serialisation errors in the
+nodes.
 
 The experiment from \autoref{sec:ch5} tests also transitions which contain
 synchronisation. No faults are found in synchronisation, it can be assumed that
@@ -209,7 +212,8 @@ transitions were the same as the trace from the \gls{smt} solver.
 Also, there does not seem to be any faults in partial failure or asynchrony.
 As discussed before, the synchronised transitions are also translated to logical
 formulas.
-These formulas contain no logic about synchronisation, and therefore it should
-be possible to identify misbehaviour in synchronisation. Several studies also
-reports to find faults in distributed algorithms with \gls{smt}-based approaches
-to model checking.~\cite{konnov2015you, alberti2015smt, mccaffrey2016verification}
+These \gls{smt} formulas contain no logic about the implementation of
+synchronisation. Therefore it should be possible to identify misbehaviour in
+synchronisation. Several studies also reports to find faults in distributed
+algorithms with \gls{smt}-based approaches to model
+checking.~\cite{konnov2015you, alberti2015smt, mccaffrey2016verification}

@@ -82,8 +82,14 @@ an oracle for testing the generated code. So the \gls{smt} solver will be used
 to test the implementation correctness of specifications in the generated
 system. To clarify implementation correctness, we emphasise templating,
 compilation and distribution. This applies to the code generators and the
-generated code.
+generated code. The implementation correctness dimensions can also be found in
+the experiments. These are therefore discussed in detail in these chapters.
 
+These are dimensions that can cause faults in the implementation. A fault can
+be introduced by templating or compilation or distribution errors.
+The expectation is to find the first faults in the first two dimensions,
+templating or compilation since faults in distribution are more difficult to
+find. The three implementation correctness dimensions are discussed below:
 \begin{itemize}
   \item \textbf{Templating} The code generators use templating to generate code
   from the specifications. The generated code should correctly map to the input

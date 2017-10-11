@@ -3,9 +3,7 @@
 In this chapter, we explain how to implement the lightweight proof of concept. The intention of the lightweight version is to know that the test approach can find a fault in generated systems. Therefore, we need to understand how the existing foundations from \textit{Rebel} can be reused.
 
 \section{The account specification}
-An extended account specification~\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Account.ebl}} from \autoref{fig:simple-account-spec} is used for this experiment, the implementation in \textit{Rebel} is shown in \autoref{fig:account-spec}. According to the specification, an account can be opened with a minimum deposit of 50 euro. When an account is opened, it is possible to withdraw or deposit money. Besides deposit and withdraw, the balance may increase or decrease by interest. To disable any account, the \textit{block} event can be used to put the account to the state blocked. The final state of account is closed. Therefore there should not be any remaining balance. When an account is in the state closed, no further action is allowed since it is in the final state. The invariant is specified to keep every account with a positive balance.
-
-% invariant paper ref, should be implemented in every event
+An extended account specification~\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Account.ebl}} from \autoref{fig:simple-account-spec} is used for this experiment, the implementation in \textit{Rebel} is shown in \autoref{fig:account-spec}. According to the specification, an account can be opened with a minimum deposit of 50 euro. When an account is opened, it is possible to withdraw or deposit money. Besides deposit and withdraw, the balance may increase or decrease by interest. To disable any account, the \textit{block} transition can be used to put the account to the state \textit{blocked}. The final state of account is \textit{closed}. To execute the transition \textit{close}, there should not be any remaining balance. When an account is in the state \textit{closed}, no further action is allowed since it is in the final state. The invariant is specified to validate every account with a positive balance.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -46,9 +44,9 @@ specification Account {
 \end{sourcecode}
 \FloatBarrier
 
-The account specification has a \textit{close} event\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Library.ebl}}
+The account specification has a \textit{close} transition\footnote{\url{https://github.com/cwi-swat/rebel/blob/e58590c7f51f59e7ee6443bb89ef09dff6febab6/rebel-core/examples/simple_transaction/Library.ebl}}
 to close an account which is illustrated in \autoref{fig:account-close-event}.
-The precondition of the \textit{close} event is that the balance of the account should be
+The precondition of the \textit{close} transition is that the balance of the account should be
 equal to zero. There are no postconditions, this means that the postconditions
 are satisfied. So there are no properties changed of the account, but only the state
 is changed to closed.
@@ -61,21 +59,21 @@ event close() {
 	}
 }
 \end{lstlisting}
-\caption{\textit{close} event definition from account specification}\label{fig:account-close-event}
+\caption{\textit{close} transition definition from account specification}\label{fig:account-close-event}
 \end{sourcecode}
 \FloatBarrier
 
 \section{Method}\label{sec:ch3-method}
 
-As mentioned earlier, an initial lightweight version is expected, then it will
+As mentioned earlier, an initial lightweight version will be developed; then it will
 be extended with motivated improvements with evaluation and validation. The
 approach is to start with a lightweight version which can trigger a fault
 and test it with the \gls{smt} solver. For the lightweight version, it is an easily
-reproducible fault. This lightweight version is then able to trigger and test one
-specific fault.
+reproducible fault. This fault is created manually in the generated system.
+This lightweight version is then able to trigger and test one specific fault.
 
 \autoref{fig:account-close-pre} illustrates the code which is generated to check
-the precondition for the \textit{close} event. From this code, we can see that the
+the precondition for the \textit{close} transition. From this code, we can see that the
 balance of an account should be zero before it is getting closed. So we can
 assume that the precondition is correctly generated.
 
@@ -91,17 +89,18 @@ case Close() => {
 
 }
 \end{lstlisting}
-\caption{Generated Precondition for \textit{close} event}\label{fig:account-close-pre}
+\caption{Generated Precondition for \textit{close} transition}\label{fig:account-close-pre}
 \end{sourcecode}
 \FloatBarrier
 
-The first fault to trigger is to close an account with some balance. To do this, the precondition of the \textit{close} event should be changed in the generated system (see \autoref{fig:mod-spec-gen}). By manually making the changes in the generated system, the \gls{sut}, we know that there is definitely a fault in the generated system, assuming that the specification is correct.
+The first fault to trigger is to close an account with some balance. To do this, the precondition of the \textit{close} transition should be changed in the generated system (see \autoref{fig:mod-spec-gen}). Note that the specification remains unchanged.
+By manually making the changes in the generated system, the \gls{sut}, we know that there is definitely a fault in the generated system, assuming that the specification is correct.
 
 The modified precondition looks as follows in
-\autoref{fig:account-close-mod-pre}. The precondition is changed to
-\textit{RebelConditionCheck.success}, this means that the precondition is
-satisfied. Right now we have introduced a fault in the \gls{sut}.
-Thus the \gls{sut} is not conform to the specification.
+\autoref{fig:account-close-mod-pre}. The precondition for the \gls{sut} is
+changed to \textit{RebelConditionCheck.success}, this means that the
+precondition is satisfied. Right now we have introduced a fault in the
+\gls{sut}. Thus the \gls{sut} is not conform to the specification.
 
 \begin{figure}[h!]
   \centering
@@ -116,7 +115,7 @@ case Close() => {
   RebelConditionCheck.success
 }
 \end{lstlisting}
-\caption{Modified Precondition for \textit{close} event}\label{fig:account-close-mod-pre}
+\caption{Modified Precondition for \textit{close} transition}\label{fig:account-close-mod-pre}
 \end{sourcecode}
 \FloatBarrier
 
@@ -136,6 +135,9 @@ transition in the \gls{sut}.
 With this lightweight version, we are going to trigger one single fault in the \gls{sut},
 \textit{i.e.} finding the fault for the \textit{close} transition. Thus from the
 account specification, we are testing only the transition \textit{close}.
+However, it is also possible to find faults in the transitions
+\textit{openAccount} since an account needs to be opened before it is getting
+closed.
 
 \section{Approach}
 
@@ -154,11 +156,11 @@ is necessary to generate the appropriate \gls{smt} formulas. Therefore, checking
 be used to check whether the given state with its properties is reachable.
 The test framework first uses checking to test whether the state is reachable.
 
-To check the state is a tebl file created which is shown in
+To check the state, a tebl file is created which is shown in
 \autoref{fig:tebl-closed-account}. It defines the state of a closed account with
 the property balance, where the balance is not equal to zero. Also, here is six
-used as configurable time-out. The \gls{smt} solver tries to solve this problem in
-max six steps.
+used as configurable timeout because the state can be reached in less than six
+steps. The \gls{smt} solver tries to solve this problem in max six steps.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -252,31 +254,45 @@ precondition.
 \section{Evaluation}\label{sec:ch3-evalution}
 
 \subsubsection{Faults}
-The expectation for the faults criteria is to find the fault in the \textit{close} transition.
-As expected, we did find the fault for the \textit{close}
-transition due to the manually modified precondition.
+The expectation for the faults criteria is to find the fault in the
+\textit{close} transition. As expected, we did find the fault for the \textit{close}
+transition due to the proper test which finds the fault. The fault is the result
+of the manually modified precondition.
 
 \subsubsection{Efficiency}
 
 Checking is used in this lightweight version to check whether it is possible
-to have an opened account with some balance. According to
+to have a closed account with some balance. According to
 \autoref{fig:ch3-res-codegenakka-account}, this state is not reachable. It is
-expected to test the same transition with checking in the \gls{sut}.
+expected to test the same transition with the checker in the \gls{sut}.
 
-When the model checkers returns that a given state is not reachable,
-traces are not available. Models (traces) are not available when "unsat" is
-returned by Z3.
-In this case, traces cannot be used since they are not provided. Although, to
-reach the given state, the \textit{openAccount} and \textit{close} transition
-are used.
+The model checker provides traces only when a given state is satisfiable.
+When a state is not reachable, the model checker does not provide traces.
+This is also the case with checking a closed account with some balance since
+this state is not reachable. Models (traces) are not available from the Z3
+solver when a given \gls{smt} problem is unsatisfiable. In this case, traces
+cannot be used since they are not provided.
+
+Although to reach the given state, the lightweight version uses
+\textit{openAccount} and \textit{close} transition.
 
 \subsubsection{Coverage}
 The lightweight version is used only to trigger a single fault in the \gls{sut}. As
 expected, only the transition \textit{close} tested. Although, to close an
 account the account needs to be first opened. Therefore, the transition
 \textit{openAccount} performed, but this transition is not tested whether the
-request is successful.
+request is successful. This is out of scope for the lightweight version.
 
 \section{Conclusion}
 
-As we have seen with this lightweight version, it can find one specific fault with the use of an \gls{smt} solver. Since the code generator is template based, it is possible to find faults in templating. There are two parts where there can occur faults during the generation parts. As described in~\cite[p.~274]{voelter2013dsl}, the majority of the generated code is fixed, some isolated parts are dependent on the input of the model. So it is possible that there might be faults in the fixed code. The second part is the template control code which is injected into the generated code. The manually introduced fault from the previous chapter belongs  to this category.
+As we have seen with this lightweight version, it can find one specific fault
+with the use of an \gls{smt} solver. Since the code generator is template based,
+it is possible to find faults in templating. There are two parts where there can
+occur faults during the generation parts.
+According to Voelter, the author of the study~\cite{voelter2013dsl},
+the majority of the generated code is fixed, some isolated parts are dependent
+on the input of the model. So it is possible that there might be faults in the
+fixed code. The second part is injected code which is generated from models that
+fill some isolated parts of the fixed code that are dependent on the input of
+the models. The manually introduced fault also belongs to this category since
+the preconditions are generated based on the \textit{Rebel} specifications.

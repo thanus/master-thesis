@@ -11,6 +11,9 @@ automatically generate a test for every transition from a given specification.
 This experiment tests the opposite of a specification, i.e. testing what should
 be not possible according to the specification. Testing is done by using
 checking for a given transition and testing this in the \gls{sut}.
+Traces cannot be used in this experiment since opposite preconditions are not
+satisfiable. The model checker provides traces only when a given state is
+satisfiable.
 
 Testing the opposite is also often used in mutation testing. Mutation testing
 generates faulty programs (mutants) by syntactic changes, in our case, we create

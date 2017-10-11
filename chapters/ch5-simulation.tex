@@ -34,8 +34,8 @@ specification two final states, which are booked and failed. When the final
 state booked or failed is reached, then there is no further action allowed.
 Note that the transaction specification does not have an invariant.
 
-Another difference in the transaction specification is that event definitions
-can contain sync expressions. From the previous event definitions, we have only
+Another difference in the transaction specification is that transition definitions
+can contain sync expressions. From the previous transition definitions, we have only
 seen pre- and postconditions. Sync expressions are used for synchronisation.
 These sync expressions are also translated to \gls{smt} formulas.
 
@@ -96,7 +96,7 @@ event book() {
 	}
 }
 \end{lstlisting}
-\caption{\textit{book} event definition from transaction specification}\label{fig:transaction-book-event}
+\caption{\textit{book} transition definition from transaction specification}\label{fig:transaction-book-event}
 \end{sourcecode}
 \FloatBarrier
 
@@ -416,7 +416,7 @@ it can make the single step. The simulation then works as follows
 \begin{enumerate}
 \item Check whether it is possible to satisfy the constraints of the chosen
 transition given the current state and the transition parameters data values of
-the event: $p(s_{1}, s_{2})$
+the transition: $p(s_{1}, s_{2})$
 \item Check whether the invariants hold in the state after the transition:
 $P(s_{2})$. The function $P$ is the invariants (safety properties).
 \end{enumerate}
@@ -452,7 +452,7 @@ and also to give it partially semantics
 the normalisation process. The life cycle is desugared to strengthen the pre-
 and postconditions of the transitions with the life cycle information.
 Therefore, are two fields added, \textit{\_state} and \textit{\_step}, to the fields of the
-specification. To each state and event is a distinct identity assigned. The
+specification. To each state and transition is a distinct identity assigned. The
 identity of the current state is assigned to the \textit{\_state} field, and the identity
 of the transition which led to the current state is assigned to the field
 \textit{\_step}. This results into that the original life cycle can be expressed, by
@@ -467,7 +467,7 @@ To compare the current state from the \textit{\_state} field, the distinct
 identity of \textit{\_state} field needs to be
 converted to compare it to the \gls{sut}.
 
-% Adding Frame Conditions. To guard the fields that are not changed by the event frame conditions are added (Jack- son 2012). These frame conditions make sure that a field has the same value after the transition as before.
+% Adding Frame Conditions. To guard the fields that are not changed by the transition frame conditions are added (Jack- son 2012). These frame conditions make sure that a field has the same value after the transition as before.
 
 \subsubsection{Test case adapter}\label{sec:ch5-adapter}
 As discussed in the code generation section, the request made to the \gls{api} of the
@@ -733,7 +733,7 @@ satisfying for $s_{2}$.
 
 The generated tebl for the current state is shown in
 \autoref{fig:tebl-gen-validated-transaction}. Only the state to reach is
-specified with the identifier of the account. As we have seen the event definition
+specified with the identifier of the account. As we have seen the transition definition
 of \textit{openAccount} in \autoref{fig:account-openaccount-event}, the account
 must be opened with a balance of 50 euros.
 
@@ -944,8 +944,8 @@ Response: ("body":"","isSuccessful":"false","message":"Bad Request","errorBody":
 \caption{Account state in the \gls{sut} after performing the \textit{interest} transition}\label{fig:interest-opened-account-json}\end{sourcecode}
 \FloatBarrier
 
-The event definition for the \textit{interest} transition is given in
-\autoref{fig:account-interest-event}. This event definition states that the
+The transition definition for the \textit{interest} transition is given in
+\autoref{fig:account-interest-event}. This transition definition states that the
 precondition is that the \textit{currentInterest} must be less than or equal
 10\%, and the postcondition is that the balance must be changed after applying
 the interest. The generated transition parameter \textit{currentInterest},
@@ -964,13 +964,13 @@ event interest[maxInterest: Percentage = 10%](currentInterest: Percentage) {
   }
 }
 \end{lstlisting}
-\caption{\textit{Interest} event definition from account specification}\label{fig:account-interest-event}
+\caption{\textit{Interest} transition definition from account specification}\label{fig:account-interest-event}
 \end{sourcecode}
 \FloatBarrier
 
 Now we know that we have discovered a fault since the simulated transition is
 conform to the specification, we want to know where this misbehaviour occurs and
-which code is not correctly generated. The generated code for the \textit{interest} event
+which code is not correctly generated. The generated code for the \textit{interest} transition
 definition from \autoref{fig:account-interest-event} contains the following
 check in \autoref{fig:java-gen-interest-pre}. The generated code for the
 preconditions seems to be good since it uses a \textit{isLessOrEqualThan}

@@ -74,7 +74,7 @@ event openAccount[minimalDeposit: Money = EUR 0.00](initialDeposit: Money) {
 	}
 }
 \end{lstlisting}
-\caption{\textit{openAccount} event definition from specification}\label{fig:account-openaccount-event}
+\caption{\textit{openAccount} transition definition from specification}\label{fig:account-openaccount-event}
 \end{sourcecode}
 \FloatBarrier
 
@@ -126,7 +126,7 @@ specifications.
 The semantics of \textit{Rebel} is defined as labelled transition
 systems.~\cite[p.~5]{stoel_storm_vinju_bosman_2016} Thus the current state of a
 specification holds the state name with the current fields assignments and the
-event parameters which causes the current state. The labelled transitions map
+transition parameters which causes the current state. The labelled transitions map
 to the transitions and their preconditions and postconditions. \textit{Rebel} has
 also support to specify invariants for a given specification. These are
 predicates which should always be true during the lifecycle of an instance of

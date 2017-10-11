@@ -26,9 +26,13 @@ be different for the defined state. For example for the \textit{close}
 transition, we want to check whether it is possible to have a closed account
 where the balance is not equal to zero (as in \autoref{sec:ch3-method}),
 for the transition \textit{withdraw} we want to check whether a negative balance
-can be achieved with the transition. Again, with checking traces are not
-available when a state is not reachable. In this case, traces cannot be used
-with opposite preconditions since they are not provided.
+can be achieved with the transition.
+
+With the lightweight version, we discussed that the model checker provides traces
+only when a given state is satisfiable. When a state is not reachable, the model
+checker does not provide traces. Models (traces) are not available from the Z3
+solver when a given \gls{smt} problem is unsatisfiable. In this case, traces
+cannot be used with opposite preconditions since they are not provided.
 
 To conclude, with this approach we are testing the opposite of the preconditions.
 Thus what is not possible according to the specification is tested.
@@ -39,8 +43,8 @@ Thus what is not possible according to the specification is tested.
 Since we are testing with this approach the opposite of the preconditions, thus
 what should be not possible according to the specification. It is expected to
 find faults in the \gls{sut} where it is possible to perform the opposite of a
-transition. So faults can be found like preconditions which are not properly
-generated. An example of this is the manually created fault
+transition. For example, faults can be found like preconditions which are not
+properly generated. An example of this is the manually created fault
 (\autoref{fig:ch3-res-codegenakka-account}) for the lightweight version.
 
 \subsubsection{Efficiency}
@@ -60,16 +64,17 @@ state of the \textit{withdraw} transition. This leads to the inability to test
 the \textit{withdraw} transition.
 
 \section{Approach}
-The testing approach is a well-known approach in mutation testing. Mutation testing is
+The discussed testing approach is a well-known approach in mutation testing. Mutation testing is
 a fault-based testing technique, which generates faulty programs by syntactic
 changes to the original program.~\cite[p.~1]{jia2011analysis} The set of faulty
 programs are called mutants, each mutant contains a different syntactic change.
-In our case, only one mutant is generated. A test suite for a program is used to
-determine whether the faulty programs are detected. A mutant is killed when it
-is detected by the test suite. The mutant is in our case killed when the result
-from the \gls{smt} solver and the \gls{sut} are the same. we are using the same
-approach from \autoref{sec:ch3} to compare the results of the \gls{smt} solver and
-\gls{sut}.
+In our case, only one mutant is generated. Mutation takes place on checking of
+the specification and the execution of the transition in the \gls{sut}. A test
+suite for a program is used to determine whether the faulty programs are detected.
+A mutant is killed when it is detected by the test suite. The mutant is in our
+case killed when the result from the \gls{smt} solver and the \gls{sut} are the
+same. We are using the same approach from \autoref{sec:ch3} to compare the
+results of the \gls{smt} solver and \gls{sut}.
 
 Mutation testing generates a mutant based on
 mutation operator, which is a transformation rule that generates a mutant from
@@ -97,27 +102,29 @@ performed transition in the \gls{sut} are compared.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth{}]{figures/mutated-checking-diagram.pdf}
-  \caption{Testing approach with checking}\label{fig:mutated-checking}
+  \caption{Testing approach invalid execution}\label{fig:mutated-checking}
 \end{figure}
 \FloatBarrier
 
-\subsection{Checking}
-Only expressions which contain a reference to the specification fields needs to
+\subsection{Mutating checking}
+Only expressions which contain a reference to the specification fields need to
 be replaced since it is only possible in tebl to specify the reachable state
 with the properties of interest (these properties are not part of the
 transition).
 
-Earlier the definition of the \textit{close} event transition was given in
+Earlier the definition of the \textit{close} transition was given in
 \autoref{fig:account-close-event} which contains the following statement
 \code{this.balance == EUR 0.00;}. When this statement is translated to tebl
 with a negated conditional, it looks as follows
 \code{balance != EUR 0.00;}. Thus the replaced conditional is the opposite
 condition of the statement defined in the \textit{close} transition.
+Note also that the \textit{this} reference is removed, in tebl specifying
+\textit{this} is not necessary since the property related to the instance.
 
 Replacing conditionals to negated conditionals is done for all conditionals with
-relational operators. The chosen mutation operator Negate Conditionals Mutator
-will replace conditionals according to the replacement table in
-\autoref{fig:table-replacement-conditions}.
+relational operators from \autoref{fig:table-replacement-conditions}.
+The chosen mutation operator Negate Conditionals Mutator will replace
+conditionals according to the replacement table in \autoref{fig:table-replacement-conditions}.
 
 \begin{table}[h!]
 \centering
@@ -131,32 +138,49 @@ will replace conditionals according to the replacement table in
 \textless                  & \textgreater=                  \\
 \textless=                 & \textgreater                   \\ \bottomrule
 \end{tabular}
-\caption{Conditionals replacement~\cite{pitmutators}}\label{fig:table-replacement-conditions}
+\caption{Relational conditionals replacement~\cite{pitmutators}}\label{fig:table-replacement-conditions}
 \end{table}
 \FloatBarrier
 
-\subsection{Generated system}
+\subsection{Mutating transitions}
+
+The test case generator must test the reachability in the \gls{sut} just like
+the generated tebl for checking. As discussed before, the results (traces) from
+checking cannot be used to check the reachability in the \gls{sut} since
+traces are not available when a state is not reachable.
+
 The conditionals for the transition in the \gls{sut} are also replaced.
 Although, it is not necessary to replace always the conditionals. For some
-transitions is an initial state required, \textit{e.g.}, to execute the transition unblock
-of the account specification, the account should be in the state blocked. So an
-initial state needs to be constructed for some transitions. Of course, the \gls{smt}
-solver can construct its initial state to reach a state.
+transitions is an initial state required, \textit{e.g.}, to execute the
+transition \textit{unblock} of the account specification, the account should be
+in the state \textit{blocked}. So an initial state needs to be constructed for
+some transitions.
+Thus in constructing the initial state, it is not necessary to apply the
+replacement of conditionals. Of course, with checking the \gls{smt} solver
+constructs its initial state to reach a state.
 
+
+For example, we now only deal with how the transition \textit{deposit} is
+executed by the test case generator in the \gls{sut}, but the approach also
+applies to the other transitions.
 The definition of the \textit{deposit} transition is given in
 \autoref{fig:account-deposit-event} and contains the following statement in the
 preconditions \code{amount > EUR 0.00;}. First, the initial state needs to be
-constructed which is the state opened. Following is the replacement of the conditionals, the
+constructed which is the state opened. Therefore, the transition \textit{openAccount} is performed in the \gls{sut}.
+Following is the replacement of the conditionals, the
 replaced precondition from the \textit{deposit} transition looks as follows
-\code{amount > EUR 0.00;}. The \textit{deposit} transition needs then to be
+\code{amount < EUR 0.00;}. The \textit{deposit} transition needs then to be
 performed in the \gls{sut}.
 
-To perform the \textit{deposit} transition, the transition parameters for this
-transition must be determined satisfying replaced conditionals. The transition
-parameter for the \textit{deposit} transition, amount, should be less
-than or equal to 0 euro. Therefore, are generators implemented to generate
-values satisfying the negated conditionals. For example, the following
-transition parameter is generated to be used in the \textit{deposit} transition
+To perform the \textit{deposit} transition on the \gls{sut}, the transition
+parameters for this transition must be determined satisfying replaced
+conditionals. The transition parameter for the \textit{deposit} transition,
+amount, should be less than or equal to 0 euro. Therefore, the test case
+generator picks values which satisfy the negated conditionals.
+To communicate this to the \gls{sut}, this transition with its transition
+parameter values must be converted to \textit{JSON}.
+For example, the following transition parameter is generated in \textit{JSON} by
+the test case generator to be used in the \textit{deposit} transition
 \code{"amount": "EUR -2.00"}.
 
 \begin{sourcecode}[h!]
@@ -170,13 +194,13 @@ event deposit(amount: Money) {
 	}
 }
 \end{lstlisting}
-\caption{\textit{deposit} event definition from specification}\label{fig:account-deposit-event}
+\caption{\textit{deposit} transition definition from specification}\label{fig:account-deposit-event}
 \end{sourcecode}
 \FloatBarrier
 
 \section{Results}
 
-\subsection{Codegen-Akka}
+\subsection{Codegen-Javadatomic}
 
 For this experiment, we are testing the generator Codegen-Akka. The results
 of this test run are shown in \autoref{fig:ch5-res-codegenakka-account}. As shown
@@ -202,16 +226,17 @@ close                       & \xmark{}            \\ \bottomrule
 
 \section{Analyse}
 
-\subsection{Codegen-Akka}
+\subsection{Codegen-Javadatomic}
 
 % https://github.com/cwi-swat/ing-rebel-generators/commit/999e6b40307a79fb245ace15375c27461c92374e
 \subsubsection{Closing an account with balance}\label{sec:bug-close-account}
 When this automated version of checking is executed, it produces some false
 positives. After investigating the tests for the transitions, the test for the \textit{close}
 transition seems not be successful (see \autoref{fig:result-close-account}).
-The model checker states that the state is not reachable (the same tebl file is
-generated as in \autoref{fig:tebl-closed-account}). It seems to be that the
-state is reachable in the \gls{sut}.
+On line 6 is shown that the model checker states that the state is not reachable (the same tebl file is
+generated as in \autoref{fig:tebl-closed-account}). On the next line, it seems to be that the
+state is reachable in the \gls{sut}. So the test for \textit{close} transition
+is not successful.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -224,17 +249,17 @@ Reachability transition: false
 Execute transition result: true
 Result successful transition test: false
 \end{lstlisting}
-\caption{Result run}\label{fig:result-close-account}
+\caption{Results: test run for the \textit{close} transition}\label{fig:result-close-account}
 \end{sourcecode}
 \FloatBarrier
 
 When we take a look at the account in the \gls{sut}, it looks as
 follows in \autoref{fig:closed-account-json}. The state of the account is in
-closed, which is correct according to the specification, but the balance of the
-account is 52 euro. In \autoref{fig:account-close-event} we already discussed
-the event  definition of the \textit{close} transition, which is that the
-balance should be equal to zero. From this, we can conclude that we have
-discovered a fault in the \gls{sut}.
+\textit{closed}, which is correct according to the specification, but the
+balance of the account is 52 euro. In \autoref{fig:account-close-event} we
+already discussed the transition definition of the \textit{close} transition,
+which is that the balance should be equal to zero. From this, we can conclude
+that we have discovered a fault in the \gls{sut}.
 
 \begin{sourcecode}[h!]
 \begin{lstlisting}[]
@@ -251,7 +276,7 @@ discovered a fault in the \gls{sut}.
 	}
 }]
 \end{lstlisting}
-\caption{account state in json}\label{fig:closed-account-json}
+\caption{Account state after \textit{close} transition}\label{fig:closed-account-json}
 \end{sourcecode}
 \FloatBarrier
 
@@ -270,7 +295,7 @@ if(! (isNotEqual(_entity.getBalance(), Money.of(org.joda.money.CurrencyUnit.of("
   EUR 0.00");
 }
 \end{lstlisting}
-\caption{Code in Java}\label{fig:java-notequal-check}
+\caption{Generated precondition for the \textit{close} transition}\label{fig:java-notequal-check}
 \end{sourcecode}
 \FloatBarrier
 
@@ -285,7 +310,7 @@ synthesized to the method \textit{isNotEqual} with two parameters.
 private str g(e:(Expr)`<Expr lhs> == <Expr rhs>`, tmap t) = "isNotEqual(<g(lhs, t)>, <g(rhs, t)>)"
   when isType(t, lhs, (Type)`Percentage`) || isType(t, lhs, (Type)`Money`);
 \end{lstlisting}
-\caption{Generate equal expression in Rascal}\label{fig:rascal-datomic-synthesize-equal}
+\caption{Equals expression generator}\label{fig:rascal-datomic-synthesize-equal}
 \end{sourcecode}
 \FloatBarrier
 
@@ -321,7 +346,7 @@ event deposit(amount: Money) {
 	}
 }
 \end{lstlisting}
-\caption{\textit{deposit} event definition from specification}\label{fig:java-deposit-maxamount}
+\caption{\textit{deposit} transition definition from specification}\label{fig:java-deposit-maxamount}
 \end{sourcecode}
 \FloatBarrier
 
@@ -331,7 +356,7 @@ Error:(63, 23) java: bad operand types for binary operator '<'
   first type:  org.joda.money.Money
   second type: org.joda.money.Money
 \end{lstlisting}
-\caption{\textit{deposit} event definition from specification}\label{fig:java-result-lessthan-compile-error}
+\caption{Compile error in generated system}\label{fig:java-result-lessthan-compile-error}
 \end{sourcecode}
 \FloatBarrier
 
@@ -342,7 +367,7 @@ if(! ((amount < Money.of(org.joda.money.CurrencyUnit.of("EUR"), 200.00)))) {
   amount < EUR 250.00");
 }
 \end{lstlisting}
-\caption{Code in Java}\label{fig:java-lessthan-compile-error}
+\caption{Generated precondition for the \textit{deposit} transition}\label{fig:java-lessthan-compile-error}
 \end{sourcecode}
 \FloatBarrier
 
@@ -368,7 +393,7 @@ private str g(e:(Expr)`<Expr lhs> \> <Expr rhs>`, tmap t) = "isGreaterThan(<g(lh
   when isType(t, lhs, (Type)`Percentage`) || isType(t, lhs, (Type)`Money`);
 private str g(e:(Expr)`<Expr lhs> \< <Expr rhs>`, tmap t) = "(<g(lhs, t)> \< <g(rhs, t)>)";
 \end{lstlisting}
-\caption{Generate equal expression in Rascal}\label{fig:rascal-datomic-synthesize-lessthan}
+\caption{GreaterThan and LessThan expression generator}\label{fig:rascal-datomic-synthesize-lessthan}
 \end{sourcecode}
 \FloatBarrier
 
@@ -388,16 +413,19 @@ reached where the preconditions of the \textit{close} transition do not hold.
 So as expected, we did find a fault in performing the opposite of a transition
 where the preconditions were not properly generated.
 
-In this experiment traces are not used because they cannot be provided by the
+In this experiment, traces are not used because they cannot be provided by the
 \gls{SMT} solver when a state is not reachable. The expectation is that with
-testing the opposite preconditions, not reachable states, traces are not
-provided. Remarkable is that with testing some transition, the traces are
-provided, because the state to reach with checking are reachable. For example,
-the \textit{block} transition has no precondition which means that the state to
+testing the opposite preconditions that the traces are not provided.
+The reasons for this is that with the opposite preconditions that the state is
+not reachable, and when the state to reach is not reachable traces cannot be
+provided by the model checker.
+Remarkable is that with testing some transition, the traces are provided
+because the state to reach with checking are reachable. For example, the
+\textit{block} transition has no precondition which means that the state to
 reach is reachable with checking.
 
 \subsection{Efficiency}
-For the criteria efficiency, it is expected to check what is not possible
+For the criterion efficiency, it is expected to check what is not possible
 according to the specification, i.e. testing the same transition in checking as
 well as in the \gls{sut}.
 
@@ -408,7 +436,9 @@ specification. The expectation is that the same transitions with checking should
 be performed on the \gls{sut}. However, the result of the checking from the
 \gls{smt} solver varies, \textit{e.g.}, an opened account can be reached by the
 \textit{openAccount} transition or by the transition \textit{openAccount} and
-\textit{withdraw}. Thus the test framework is not able to perform the same
+\textit{withdraw}. This can be limited by taking a lower configuration timeout
+in checking. Mainly it remains that with checking it is not possible to focus on
+a specific transition. Thus the test framework is not able to perform the same
 transitions on the \gls{sut} as the transitions from checking.
 
 With testing all transitions from the account specification, it is possible that
@@ -417,7 +447,7 @@ state transitions are more executed and tested. To conclude, the testing process
 may take longer to test all the transitions.
 
 \subsection{Coverage}
-It is expected for this criteria to test all the transitions of the
+It is expected for this criterion to test all the transitions of the
 specification since the experiment generated tests for all transitions.
 
 In the experiment, after the checking, a transition
@@ -426,14 +456,14 @@ performed transition with its parameters in the \gls{sut} is the same as the
 transition computed by the \gls{smt} solver. This causes some false positives in the
 test run. Also, it is difficult to play like the \gls{smt} solver; it is unknown which
 result the \gls{smt} solver will give. The \gls{smt} solver is also smarter/better in checking
-the satisfiability of a given constraints.
+the satisfiability of a given constraint.
 
 Failure occurring along the way in constructing the initial state of a transition
 may lead to the inability to test transitions. Unfortunately, there does not
 seem to be any faults in here.
 
 \section{Conclusion}
-In this experiment is the account specification used to test the \gls{sut}.
+This experiment uses the account specification to test the \gls{sut}.
 This experiment generates automatically tests for transitions.
 
 A part of
@@ -442,15 +472,17 @@ reach with the replaced preconditions. So, in this experiment, we are
 testing what should be not possible according to the specification. The result
 of the checking from the \gls{smt} solver varies, \textit{e.g.}, an opened account can be
 reached by the \textit{openAccount} transition or by the transition
-\textit{openAccount} and \textit{withdraw}.
+\textit{deposit}, \textit{withdraw} and \textit{interest}.
 
 After the checking, a transition
 is performed in the \gls{sut}. In this experiment, it is unknown whether the
 performed transition with its parameters in the \gls{sut} is the same as the
-transition computed by the \gls{smt} solver. This causes some false positives in the
-test run. Also, it is difficult to play like the \gls{smt} solver; it is unknown which
-result the \gls{smt} solver will give. The \gls{smt} solver is also smarter/better in checking
-the satisfiability of a given constraints.
+transition computed by the \gls{smt} solver. This causes some false positives in
+the test run. Also, it is difficult to play like the \gls{smt} solver. It is
+unknown which result the \gls{smt} solver will give, mainly because it remains
+that with checking it is not possible to focus on a specific transition. The
+\gls{smt} solver is also smarter/better in checking the satisfiability of a
+given constraint.
 
 To conclude, the checking used in this experiment tests only the states, regardless of which transitions are
 being performed, and testing the \gls{sut} focuses more on testing transitions.
@@ -477,3 +509,4 @@ generators since the specifications are interacting with each other.
 The conducted experiment test only what should be not possible according to the
 specification. It is also important to test whether the \gls{sut} is conform to the
 specification, \textit{i.e.}, testing the valid execution trace.
+Testing valid execution can use traces as these states are reachable.

@@ -221,7 +221,7 @@ case adapter communicates this data to the \gls{sut}.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth{}]{figures/simulation-diagram.pdf}
-  \caption{Testing approach with simulation}\label{fig:simulation-testing}
+  \caption{Testing approach valid execution}\label{fig:simulation-testing}
 \end{figure}
 \FloatBarrier
 
@@ -698,7 +698,7 @@ opened -> close -> closed
     var accountNumber (type: IBAN) = FO9402337176862639
     var balance (type: Money) = EUR50.00
 \end{lstlisting}
-\caption{No test generated for \textit{close} transition (part 1)}\label{fig:result-codegenakka-close-p1}
+\caption{Test run for the \textit{close} transition (part 1)}\label{fig:result-codegenakka-close-p1}
 \end{sourcecode}
 \FloatBarrier
 
@@ -718,7 +718,7 @@ Response: ("body":"CommandSuccess(OpenAccount(50.00 EUR))","isSuccessful":"true"
     var accountNumber (type: IBAN) = FO9402337176862639
     var balance (type: Money) = EUR50.00
 \end{lstlisting}
-\caption{No test generated for \textit{close} transition (part 2)}\label{fig:result-codegenakka-close-p2}
+\caption{Test run for the \textit{close} transition (part 2)}\label{fig:result-codegenakka-close-p2}
 \end{sourcecode}
 \FloatBarrier
 
@@ -754,7 +754,7 @@ state doCheck {
 
 check doCheck reachable in max 4 steps;
 \end{lstlisting}
-\caption{Generated tebl for the transition book}\label{fig:tebl-gen-validated-transaction}
+\caption{Generated tebl for the transition \textit{book}}\label{fig:tebl-gen-validated-transaction}
 \end{sourcecode}
 \FloatBarrier
 
@@ -826,7 +826,7 @@ Response: ("body":"CommandSuccess(OpenAccount(50.00 EUR))","isSuccessful":"true"
   "errorBody":"","code":"200")
 Could not find state ?, expected  "state":{"?":{}}
 \end{lstlisting}
-\caption{State not found for entities}\label{fig:result-not-found-state}
+\caption{Test run with inconclusive states}\label{fig:result-not-found-state}
 \end{sourcecode}
 \FloatBarrier
 
@@ -890,7 +890,7 @@ JSON payload: { "OpenAccount": { "initialDeposit":"EUR 50.00" } }
 Response: ("body":"{\"iban\":\"MD14FLBLJOYGVJMDUZVKLU4C\"}","isSuccessful":"true",
   "message":"OK","errorBody":"","code":"200")
 \end{lstlisting}
-\caption{Failing test on \textit{interest} transition with the use of javadatomic generator (part 1)}\label{fig:result-javadatomic-interest-p1}
+\caption{Test run for the \textit{interest} transition with the use of javadatomic generator (part 1)}\label{fig:result-javadatomic-interest-p1}
 \end{sourcecode}
 \FloatBarrier
 
@@ -922,7 +922,7 @@ Endpoint: /Account/MD14FLBLJOYGVJMDUZVKLU4C/Interest
 JSON payload: { "Interest": { "currentInterest":"-77.09" } }
 Response: ("body":"","isSuccessful":"false","message":"Bad Request","errorBody":"","code":"400")
 \end{lstlisting}
-\caption{Failing test on \textit{interest} transition with the use of javadatomic generator (part 2))}\label{fig:result-javadatomic-interest-p2}
+\caption{Test run for the \textit{interest} transition with the use of javadatomic generator (part 2))}\label{fig:result-javadatomic-interest-p2}
 \end{sourcecode}
 \FloatBarrier
 
@@ -988,7 +988,7 @@ if(! (isLessOrEqualThan(currentInterest, 10 /* % */))) {
 	  <= 10%");
 }
 \end{lstlisting}
-\caption{Code in Java}\label{fig:java-gen-interest-pre}
+\caption{Generated precondition of the \textit{interest} transition}\label{fig:java-gen-interest-pre}
 \end{sourcecode}
 \FloatBarrier
 
@@ -1011,7 +1011,7 @@ public static boolean isLessOrEqualThan(BigDecimal lhs, BigDecimal rhs) {
   return lhs.compareTo(rhs) >= 0;
 }
 \end{lstlisting}
-\caption{Code in Java}\label{fig:java-less-or-equal-check}
+\caption{Method used by the generated precondition from \autoref{fig:java-gen-interest-pre}}\label{fig:java-less-or-equal-check}
 \end{sourcecode}
 \FloatBarrier
 
@@ -1065,7 +1065,7 @@ JSON payload: { "OpenAccount": { "initialDeposit":"EUR 50.00" } }
 Response: ("body":"{\"iban\":\"MT58PDLQ09015VOS06LIF4Q525NRO1I\"}","isSuccessful":"true",
 "message":"OK","errorBody":"","code":"200")
 \end{lstlisting}
-\caption{Failing test on \textit{interest} transition with the use of Scala-ES generator (part 1)}\label{fig:result-scalaes-interest-p1}
+\caption{Test run for the \textit{interest} transition with the use of Scala-ES generator (part 1)}\label{fig:result-scalaes-interest-p1}
 \end{sourcecode}
 \FloatBarrier
 
@@ -1100,7 +1100,7 @@ value (&#x27;-77.09&#x27;)\n at [Source: io.undertow.servlet.spec.ServletInputSt
 line: 1, column: 35] (through reference chain: nl.ing.corebank.dto.
 account.Interest[&quot;currentInterest&quot;])","code":"400")
 \end{lstlisting}
-\caption{Failing test on \textit{interest} transition with the use of Scala-ES generator (part 2)}\label{fig:result-scalaes-interest-p2}
+\caption{Test run for the \textit{interest} transition with the use of Scala-ES generator (part 2)}\label{fig:result-scalaes-interest-p2}
 \end{sourcecode}
 \FloatBarrier
 
@@ -1136,7 +1136,7 @@ indeed uses the type \textit{Dimensionless} here.
 @JsonCreator
 case class Interest(@JsonProperty("currentInterest") currentInterest: Dimensionless)
 \end{lstlisting}
-\caption{Code in Scala}\label{fig:scala-gen-interest-json}
+\caption{Generated Interst class}\label{fig:scala-gen-interest-json}
 \end{sourcecode}
 \FloatBarrier
 
@@ -1190,7 +1190,7 @@ code.
 def interest(@Suspended asyncResponse: AsyncResponse,
   @PathParam("accountNumber") accountNumber: IBAN, interest: Interest): Unit = {
 \end{lstlisting}
-\caption{Code in Scala}\label{fig:scala-gen-interest-request}
+\caption{Request handler for the transition \textit{interest}}\label{fig:scala-gen-interest-request}
 \end{sourcecode}
 \FloatBarrier
 
@@ -1279,7 +1279,7 @@ Response: ("body":"CommandSuccess(Interest(-77.09))","isSuccessful":"true","mess
 Could not find state opened, expected  "state":{"Opened":{}}
 Could not find value balance, expected  "balance":"EUR -3804.50"
 \end{lstlisting}
-\caption{}\label{fig:result-dist-codegenakka-interest}
+\caption{Test run for the transition \textit{interest} with the use of distributed Codegen-Akka}\label{fig:result-dist-codegenakka-interest}
 \end{sourcecode}
 \FloatBarrier
 

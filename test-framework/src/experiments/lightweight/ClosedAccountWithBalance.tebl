@@ -1,0 +1,9 @@
+module simple_transaction.ClosedAccountWithBalance
+
+import simple_transaction.Account 
+
+state closedAccountWithBalance {
+  closed Account with balance > EUR 0.00;
+}
+
+check closedAccountWithBalance reachable in max 6 steps;
